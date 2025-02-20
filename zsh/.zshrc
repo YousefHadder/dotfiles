@@ -153,4 +153,6 @@ source ~/scripts/fzf-git.sh
 # options :  --no-filesize --no-time --no-permissions 
 alias ls="eza --no-filesize --grid --color=always --icons=always --no-user" 
 
+# NOTE: ZOXIDE
 
+eval "$(zoxide init zsh)"
