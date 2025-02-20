@@ -6,24 +6,15 @@ return {
     "nvim-tree/nvim-web-devicons",
     "MunifTanjim/nui.nvim",
   },
-  opts = {
-    filesystem = {
-      filtered_items = {
-        visible = true, -- Show filtered items by default
-        hide_gitignored = true,
-        hide_dotfiles = false,
-        hide_hidden = false, -- Show hidden files
-      },
-    },
-    window = {
-      mappings = {
-        ["<BS>"] = "close_node",  -- Backspace to close the current node/go back
-        ["h"] = "close_node",       -- h also closes the current node/go back
-        ["l"] = "open",             -- l to open a node or file (optional)
-      },
-    },
-  },
   config = function()
+    require("neo-tree").setup({
+      filesystem = {
+        filtered_items = {
+          hide_dotfiles = false, -- set to false to show hidden files
+        },
+      },
+    })
+
     vim.keymap.set("n", "<C-n>", ":Neotree filesystem reveal left<CR>", {})
     vim.keymap.set("n", "<leader>bf", ":Neotree buffers reveal float<CR>", {})
   end,
