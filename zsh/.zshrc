@@ -152,6 +152,9 @@ source ~/scripts/fzf-git.sh
 # Next level of an ls 
 # options :  --no-filesize --no-time --no-permissions 
 alias ls="eza --no-filesize --grid --color=always --icons=always --no-user" 
+alias l="eza -l --icons --git -a"
+alias lt="eza --tree --level=2 --long --icons --git"
+alias ltree="eza --tree --level=2  --icons --git"
 
 # NOTE: ZOXIDE
 

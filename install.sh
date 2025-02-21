@@ -1,7 +1,4 @@
 #!/bin/bash
-set -e
-
-
 
 # Install xCode cli tools
 if [[ "$(uname)" == "Darwin" ]]; then
@@ -30,7 +27,6 @@ brew analytics off
 
 ## Taps
 echo "Tapping Brew..."
-brew tap homebrew/cask-fonts
 brew tap FelixKratz/formulae
 
 ## Formulae
