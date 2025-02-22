@@ -15,6 +15,9 @@ log() {
 if ! command -v brew &>/dev/null; then
   log "Homebrew not found. Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  echo >>$HOME/.zshrc
+  echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >>/home/vscode/.zshrc
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 else
   log "Homebrew is already installed."
 fi
@@ -22,13 +25,14 @@ fi
 # -------------------------------
 # Install oh-my-zsh if needed
 # -------------------------------
-if [ ! -d "${HOME}/.oh-my-zsh" ]; then
-  log "oh-my-zsh not found. Installing oh-my-zsh..."
-  # The installation script below will change your default shell. Check its options if you want to modify this.
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-else
-  log "oh-my-zsh is already installed."
+if [ -d "${HOME}/.oh-my-zsh" ]; then
+  log "oh-my-zsh already exists. Removing existing installation..."
+  rm -rf "${HOME}/.oh-my-zsh"
 fi
+
+log "Installing oh-my-zsh..."
+# The installation script will switch your shell; adjust options if needed.
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 # -------------------------------
 # Install other needed software

@@ -27,7 +27,4 @@ brew "tree-sitter"
 brew "tree"
 brew "borders"
 
-cask "font-hack-nerd-font"
-cask "font-jetbrains-mono-nerd-font"
-cask "font-sf-pro"
 
