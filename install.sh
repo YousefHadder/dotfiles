@@ -4,11 +4,6 @@ set -euo pipefail
 # Define the directory containing your dotfiles
 DOTFILES_DIR="${HOME}/dotfiles"
 
-# Helper function for printing messages
-log() {
-  echo "==> $1"
-}
-
 # -------------------------------
 # Install oh-my-zsh if needed
 # -------------------------------
@@ -56,4 +51,4 @@ stow .
 # -------------------------------
 # Create scripts
 # -------------------------------
-cp -R custom_modules/ ~/
+cp -R ./scripts/custom_modules/ ~/
