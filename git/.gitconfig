@@ -1,0 +1,26 @@
+[core]
+	excludesfile = ~/.gitignore
+	editor = nvim
+	ignorecase = false
+[push]
+  default = simple
+[color]
+  status = auto
+  diff = auto
+  branch = auto
+  interactive = auto
+  grep = auto
+  ui = auto
+
+[hub]
+  protocol = https
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[user]
+	name = Yousef Hadder
+  email = yousefhadder@github.com
