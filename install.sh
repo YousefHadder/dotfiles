@@ -44,11 +44,3 @@ fi
 # -------------------------------
 # Create symlinks for dotfiles
 # -------------------------------
-log "Creating symlinks for dotfiles..."
-
-stow .
-
-# -------------------------------
-# Create scripts
-# -------------------------------
-cp -R ./scripts/custom_modules/ ~/

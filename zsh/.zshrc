@@ -162,3 +162,4 @@ alias lg="lazygit"
 # NOTE: ZOXIDE
 
 eval "$(zoxide init zsh)"
+eval "$(rbenv init -)"
