@@ -34,11 +34,7 @@ if ! command -v brew &>/dev/null; then
   log "Homebrew not found. Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-  # Append Homebrew environment settings to .zshrc if needed
-  {
-    echo ""
-    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"'
-  } >>"$HOME/.zshrc"
+  rm ~/.zshrc
 
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 else
@@ -81,5 +77,7 @@ for package in */; do
   log "Stowing package: ${package}"
   stow -t "${HOME}" "${package}"
 done
+
+source ~/.zshrc
 
 log "All dotfiles packages have been stowed successfully."
