@@ -42,6 +42,13 @@ fi
 # For example, using apt-get, npm, pip, etc.
 
 # -------------------------------
+# Copy scripts
+# -------------------------------
+
+cd $DOTFILES_DIR
+cp -R scripts ~
+
+# -------------------------------
 # Create symlinks for dotfiles using GNU Stow
 # -------------------------------
 
