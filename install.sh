@@ -8,11 +8,11 @@ DOTFILES_DIR="${HOME}/dotfiles"
 # Install oh-my-zsh if needed
 # -------------------------------
 if [ -d "${HOME}/.oh-my-zsh" ]; then
-  log "oh-my-zsh already exists. Removing existing installation..."
+  echo "oh-my-zsh already exists. Removing existing installation..."
   rm -rf "${HOME}/.oh-my-zsh"
 fi
 
-log "Installing oh-my-zsh..."
+echo "Installing oh-my-zsh..."
 # The installation script will switch your shell; adjust options if needed.
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
@@ -20,13 +20,13 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 # Install Homebrew if needed
 # -------------------------------
 if ! command -v brew &>/dev/null; then
-  log "Homebrew not found. Installing Homebrew..."
+  echo "Homebrew not found. Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   echo >>"$HOME/.zshrc"
   echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >>$HOME/.zshrc
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 else
-  log "Homebrew is already installed."
+  echo "Homebrew is already installed."
 fi
 
 # -------------------------------
@@ -34,7 +34,7 @@ fi
 # -------------------------------
 # Example: Installing packages via Homebrew
 if [ -f "${DOTFILES_DIR}/Brewfile" ]; then
-  log "Installing packages from Brewfile..."
+  echo "Installing packages from Brewfile..."
   brew bundle --file="${DOTFILES_DIR}/Brewfile"
 fi
 
@@ -47,11 +47,11 @@ fi
 
 # Check if GNU Stow is installed
 if ! command -v stow &>/dev/null; then
-  log "GNU Stow is not installed. Please install it (e.g., via Homebrew: 'brew install stow')."
+  echo "GNU Stow is not installed. Please install it (e.g., via Homebrew: 'brew install stow')."
   exit 1
 fi
 
-log "Creating symlinks for dotfiles using GNU Stow..."
+echo "Creating symlinks for dotfiles using GNU Stow..."
 
 # Change to your dotfiles directory
 cd "${DOTFILES_DIR}" || {
@@ -63,9 +63,9 @@ cd "${DOTFILES_DIR}" || {
 for package in */; do
   # Remove the trailing slash from the package name
   package="${package%/}"
-  log "Stowing package: ${package}"
+  echo "Stowing package: ${package}"
   # -t ${HOME} tells stow to create symlinks in the home directory
   stow -t "${HOME}" "${package}"
 done
 
-log "All dotfiles packages have been stowed successfully."
+echo "All dotfiles packages have been stowed successfully."
