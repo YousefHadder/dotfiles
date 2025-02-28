@@ -29,6 +29,10 @@ else
   echo "Homebrew is already installed."
 fi
 
+# Switch the default shell to zsh
+echo "Changing default shell to zsh..."
+sudo chsh -s "$(which zsh)" "$USER"
+
 # -------------------------------
 # Install other needed software
 # -------------------------------
