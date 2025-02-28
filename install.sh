@@ -22,7 +22,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 if ! command -v brew &>/dev/null; then
   log "Homebrew not found. Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  echo >>$HOME/.zshrc
+  echo >>"$HOME/.zshrc"
   echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >>/home/vscode/.zshrc
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 else
@@ -42,5 +42,30 @@ fi
 # For example, using apt-get, npm, pip, etc.
 
 # -------------------------------
-# Create symlinks for dotfiles
+# Create symlinks for dotfiles using GNU Stow
 # -------------------------------
+
+# Check if GNU Stow is installed
+if ! command -v stow &>/dev/null; then
+  log "GNU Stow is not installed. Please install it (e.g., via Homebrew: 'brew install stow')."
+  exit 1
+fi
+
+log "Creating symlinks for dotfiles using GNU Stow..."
+
+# Change to your dotfiles directory
+cd "${DOTFILES_DIR}" || {
+  echo "Failed to cd into ${DOTFILES_DIR}"
+  exit 1
+}
+
+# Loop through all subdirectories (each representing a dotfiles package)
+for package in */; do
+  # Remove the trailing slash from the package name
+  package="${package%/}"
+  log "Stowing package: ${package}"
+  # -t ${HOME} tells stow to create symlinks in the home directory
+  stow -t "${HOME}" "${package}"
+done
+
+log "All dotfiles packages have been stowed successfully."
