@@ -6,6 +6,12 @@ log() {
   echo "[ $(date '+%Y-%m-%d %H:%M:%S') ] $*"
 }
 
+#-------------------------------
+# Switch default shell to zsh
+# -------------------------------
+log "Changing default shell to zsh..."
+sudo chsh -s "$(which zsh)" "$USER"
+
 # Define the directory containing your dotfiles
 DOTFILES_DIR="${HOME}/dotfiles"
 
@@ -22,21 +28,18 @@ log "Installing oh-my-zsh..."
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 # -------------------------------
-# Switch default shell to zsh
-# -------------------------------
-log "Changing default shell to zsh..."
-sudo chsh -s "$(which zsh)" "$USER"
-
-# -------------------------------
 # Install Homebrew if needed
 # -------------------------------
 if ! command -v brew &>/dev/null; then
   log "Homebrew not found. Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-  rm ~/.zshrc
+  if [ "$(uname)" = "Linux" ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  elif [ "$(uname)" = "Darwin" ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  fi
 
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 else
   log "Homebrew is already installed."
 fi
@@ -74,8 +77,15 @@ cd "$DOTFILES_DIR" || {
 for package in */; do
   # Remove trailing slash from the package name
   package="${package%/}"
-  log "Stowing package: ${package}"
-  stow -t "${HOME}" "${package}"
+
+  # Ask the user whether to stow this package
+  read -p "Stow package '$package'? (y/N): " answer
+  if [[ "$answer" =~ ^[Yy]$ ]]; then
+    echo "Stowing package: $package"
+    stow -t "$HOME" "$package"
+  else
+    echo "Skipping package: $package"
+  fi
 done
 
 source ~/.zshrc
