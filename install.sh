@@ -6,11 +6,21 @@ log() {
   echo "[ $(date '+%Y-%m-%d %H:%M:%S') ] $*"
 }
 
+# Ensure the script is run with sudo
+if [ "$EUID" -ne 0 ]; then
+  log "Please run as root"
+  exit 1
+fi
+
 #-------------------------------
 # Switch default shell to zsh
 # -------------------------------
 log "Changing default shell to zsh..."
-sudo chsh -s "$(which zsh)" "$USER"
+if ! command -v zsh &>/dev/null; then
+  log "zsh is not installed. Please install it first."
+  exit 1
+fi
+chsh -s "$(which zsh)" "$USER"
 
 # Define the directory containing your dotfiles
 DOTFILES_DIR="${HOME}/dotfiles"
