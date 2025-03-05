@@ -30,6 +30,7 @@ source $ZSH/oh-my-zsh.sh
    export EDITOR='nvim'
  fi
 
+alias vim=nvim
 
 export PATH=$PATH:$HOME/go/bin
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
