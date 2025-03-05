@@ -1,9 +1,12 @@
 [core]
 	excludesfile = ~/.gitignore
 	editor = nvim
-	ignorecase = false
+  ignorecase = false
+  pager = delta
+
 [push]
   default = simple
+
 [color]
   status = auto
   diff = auto
@@ -11,6 +14,10 @@
   interactive = auto
   grep = auto
   ui = auto
+
+[delta]
+  navigate = true
+  side-by-side = true
 
 [hub]
   protocol = https

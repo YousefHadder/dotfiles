@@ -87,7 +87,11 @@ alias lg="lazygit"
 alias sourcezsh="omz reload && exec zsh"
 
 # NOTE: ZOXIDE
-
 eval "$(zoxide init zsh)"
 
+eval $(thefuck --alias)
+eval $(thefuck --alias fk)
+
 eval "$(rbenv init -)"
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
