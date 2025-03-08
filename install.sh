@@ -6,11 +6,8 @@ log() {
   echo "[ $(date '+%Y-%m-%d %H:%M:%S') ] $*"
 }
 
-# Ensure the script is run with sudo
-if [ "$EUID" -ne 0 ]; then
-  log "Please run as root"
-  exit 1
-fi
+# Define the directory containing your dotfiles
+DOTFILES_DIR="${HOME}/dotfiles"
 
 #-------------------------------
 # Switch default shell to zsh
@@ -20,22 +17,16 @@ if ! command -v zsh &>/dev/null; then
   log "zsh is not installed. Please install it first."
   exit 1
 fi
-chsh -s "$(which zsh)" "$USER"
-
-# Define the directory containing your dotfiles
-DOTFILES_DIR="${HOME}/dotfiles"
 
 # -------------------------------
 # Install oh-my-zsh if needed
 # -------------------------------
-if [ -d "${HOME}/.oh-my-zsh" ]; then
-  log "oh-my-zsh already exists. Removing existing installation..."
-  rm -rf "${HOME}/.oh-my-zsh"
+if ! -d "${HOME}/.oh-my-zsh"; then
+  log "Installing oh-my-zsh..."
+  # The installation script will switch your shell; adjust options if needed.
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  sudo chsh -s "$(which zsh)" "$USER"
 fi
-
-log "Installing oh-my-zsh..."
-# The installation script will switch your shell; adjust options if needed.
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 # -------------------------------
 # Install Homebrew if needed
@@ -50,7 +41,6 @@ if ! command -v brew &>/dev/null; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     eval "$(/opt/homebrew/bin/brew shellenv)"
   fi
-
 else
   log "Homebrew is already installed."
 fi
@@ -67,8 +57,9 @@ fi
 # Copy scripts to home directory
 # -------------------------------
 log "Copying scripts..."
+
 cd "$DOTFILES_DIR"
-cp -R scripts ~/
+cp -R scripts ~/scripts
 
 # -------------------------------
 # Create symlinks for dotfiles using GNU Stow
@@ -94,8 +85,14 @@ for package in */; do
   if [[ "$answer" =~ ^[Yy]$ ]]; then
     echo "Stowing package: $package"
     stow -t "$HOME" "$package"
+    if [ "$package" = "zsh" ]; then
+      read -p "Enter your GIT_AUTHOR_NAME: " git_author_name
+      read -p "Enter your GIT_AUTHOR_EMAIL: " git_author_email
+      echo "export GIT_AUTHOR_NAME=\"$git_author_name\"" >>~/.zshrc
+      echo "export GIT_AUTHOR_EMAIL=\"$git_author_email\"" >>~/.zshrc
+    fi
   else
-    echo "Skipping package: $package"
+    echo "Skipping package: $package" n
   fi
 done
 

@@ -6,7 +6,7 @@ local keymap = vim.keymap
 local opts = { noremap = true, silent = true }
 
 -- Select all
-keymap.set("n", "<C-a>", "gg<S-v>G", opts)
+keymap.set("n", "<C-a>", "ggVG")
 
 -- move text up and down
 keymap.set("n", "<a-j>", "<esc>:m .+1<cr>==gi", opts) -- Alt-j

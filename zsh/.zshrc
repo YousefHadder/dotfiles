@@ -5,6 +5,10 @@ export ZSH="$HOME/.oh-my-zsh"
 
 export GHOSTTY_HOME=$HOME/Library/Application\ Support/com.mitchellh.ghostty/config
 
+# NOTE: Git Config
+export GIT_AUTHOR_NAME="yousefhadder"
+export GIT_AUTHOR_EMAIL="yousefhadder@github.com"
+
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
@@ -31,6 +35,7 @@ source $ZSH/oh-my-zsh.sh
  fi
 
 alias vim=nvim
+alias cd=z
 
 export PATH=$PATH:$HOME/go/bin
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
