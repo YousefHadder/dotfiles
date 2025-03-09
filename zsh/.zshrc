@@ -9,10 +9,12 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 if [ "$(uname)" = "Linux" ]; then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  BREW_HOME="/home/linuxbrew/.linuxbrew"
 elif [ "$(uname)" = "Darwin" ]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+  BREW_HOME="/opt/homebrew"
 fi
+
+eval "$($BREW_HOME/bin/brew shellenv)"
 
 # ZSH_THEME="jonathan"
 zstyle ':omz:update' mode auto      # update automatically without asking
@@ -34,15 +36,15 @@ alias vim=nvim
 alias cd=z
 
 export PATH=$PATH:$HOME/go/bin
-export PATH="/opt/homebrew/bin:$PATH"
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin":$PATH
-export PATH="/opt/homebrew/opt/ruby@3.3/bin:$PATH"
+export PATH="$BREW_HOME/bin:$PATH"
+export PATH="$BREW_HOME/opt/ruby/bin:$PATH"
+export PATH="$BREW_HOME/lib/ruby/gems/3.4.0/bin":$PATH
+export PATH="$BREW_HOME/opt/ruby@3.3/bin:$PATH"
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+[ -s "$BREW_HOME/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "$BREW_HOME/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 
 
@@ -99,8 +101,8 @@ eval $(thefuck --alias fk)
 eval "$(rbenv init -)"
 eval "$(mise activate zsh)"
 
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $BREW_HOME/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $BREW_HOME/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 eval "$(~/.local/bin/mise activate)"
-export PATH="/opt/homebrew/bin:$PATH"
+export PATH="$BREW_HOME/bin:$PATH"
 eval "$(~/.local/bin/mise activate)"
