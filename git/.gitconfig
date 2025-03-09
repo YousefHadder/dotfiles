@@ -29,5 +29,5 @@
 	required = true
 
 [user]
-	name = Yousef Hadder
-  email = yousefhadder@github.com
+	name = ${GIT_AUTHOR_NAME}
+	email = ${GIT_AUTHOR_EMAIL}

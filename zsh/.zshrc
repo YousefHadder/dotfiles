@@ -5,10 +5,6 @@ export ZSH="$HOME/.oh-my-zsh"
 
 export GHOSTTY_HOME=$HOME/Library/Application\ Support/com.mitchellh.ghostty/config
 
-# NOTE: Git Config
-export GIT_AUTHOR_NAME="yousefhadder"
-export GIT_AUTHOR_EMAIL="yousefhadder@github.com"
-
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
@@ -38,6 +34,7 @@ alias vim=nvim
 alias cd=z
 
 export PATH=$PATH:$HOME/go/bin
+export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin":$PATH
 export PATH="/opt/homebrew/opt/ruby@3.3/bin:$PATH"
@@ -46,6 +43,7 @@ export PATH="/opt/homebrew/opt/ruby@3.3/bin:$PATH"
 export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
 
 
 # Go Path
@@ -99,5 +97,10 @@ eval $(thefuck --alias)
 eval $(thefuck --alias fk)
 
 eval "$(rbenv init -)"
+eval "$(mise activate zsh)"
+
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+eval "$(~/.local/bin/mise activate)"
+export PATH="/opt/homebrew/bin:$PATH"
+eval "$(~/.local/bin/mise activate)"

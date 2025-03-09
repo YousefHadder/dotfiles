@@ -102,7 +102,7 @@ symbol = '🦕'
 
 [aws]
 format = '[─](fg:current_line)[](fg:purple)[$symbol](fg:primary bg:purple)[](fg:purple bg:box)[ $profile](fg:foreground bg:box)[](fg:box)'
-symbol = '☁️'
+symbol = ''
 
 [fill]
 symbol = '─'
