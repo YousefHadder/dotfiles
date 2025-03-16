@@ -1,9 +1,11 @@
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
 export GHOSTTY_HOME=$HOME/Library/Application\ Support/com.mitchellh.ghostty/config
+export XDG_CONFIG_HOME="$HOME/.config"
 
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -33,6 +35,7 @@ source $ZSH/oh-my-zsh.sh
  fi
 
 alias vim=nvim
+alias nvim-kickstart='NVIM_APPNAME="nvim-kickstart" nvim'
 alias cd=z
 
 export PATH=$PATH:$HOME/go/bin
