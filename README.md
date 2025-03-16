@@ -41,7 +41,7 @@ You can quickly set up these dotfiles on your machine by following these steps:
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/yourusername/dotfiles.git ~/.dotfiles
+   git clone https://github.com/yousefhadder/dotfiles.git ~/.dotfiles
    cd :~/.dotfiles
    ```
 2. Installation
