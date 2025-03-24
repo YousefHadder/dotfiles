@@ -69,8 +69,9 @@ fi
 if [ "$(basename "$SHELL")" != "zsh" ]; then
   log "zsh is not the default shell. Changing the default shell to zsh..."
   sudo chsh -s "$(which zsh)" "$USER"
-  # After changing the default shell, re-run the script with zsh.
-  exec zsh "$0" "$@"
+  # After changing the default shell, ask the user to quite and re open the terminal
+  log "Please quite the terminal and rerun for the shell change to take effect"
+  exit 0
 fi
 
 # -------------------------------
