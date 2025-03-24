@@ -46,10 +46,8 @@ export PATH="$BREW_HOME/opt/ruby@3.3/bin:$PATH"
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
-[ -s "$BREW_HOME/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "$BREW_HOME/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
-
+[ -s "$BREW_HOME/opt/nvm/nvm.sh" ] && \. "$BREW_HOME/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "$BREW_HOME/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$BREW_HOME/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 # Go Path
 export GOPATH=$HOME/go
@@ -109,3 +107,4 @@ source $BREW_HOME/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 eval "$(~/.local/bin/mise activate)"
 export PATH="$BREW_HOME/bin:$PATH"
 eval "$(~/.local/bin/mise activate)"
+
