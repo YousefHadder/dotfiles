@@ -1,31 +1,39 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Define a log function for consistent logging
+# Logging function using echo to prevent recursion
 log() {
   echo "[ $(date '+%Y-%m-%d %H:%M:%S') ] $*"
 }
 
 # Define the directory containing your dotfiles
 DOTFILES_DIR="${HOME}/dotfiles"
+OS=$(uname)
 
-#-------------------------------
-# Switch default shell to zsh
-# -------------------------------
-log "Changing default shell to zsh..."
-if ! command -v zsh &>/dev/null; then
-  log "zsh is not installed. Please install it first."
-  exit 1
-fi
+log "Detected OS: $OS"
 
-# -------------------------------
-# Install oh-my-zsh if needed
-# -------------------------------
-if ! -d "${HOME}/.oh-my-zsh"; then
-  log "Installing oh-my-zsh..."
-  # The installation script will switch your shell; adjust options if needed.
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-  sudo chsh -s "$(which zsh)" "$USER"
+# Update system based on OS
+if [ "$OS" == "Darwin" ]; then
+  log "Running macOS specific commands..."
+  log "Updating macOS..."
+  sudo softwareupdate -i -a
+
+  log "Checking for Xcode Command Line Tools..."
+  xcode-select --install 2>/dev/null
+elif [ "$OS" == "Linux" ]; then
+  log "Running Linux specific commands..."
+  if command -v apt-get >/dev/null 2>&1; then
+    log "Using apt-get to update Linux..."
+    sudo apt-get update && sudo apt-get upgrade -y
+  elif command -v yum >/dev/null 2>&1; then
+    log "Using yum to update Linux..."
+    sudo yum update -y
+  elif command -v dnf >/dev/null 2>&1; then
+    log "Using dnf to update Linux..."
+    sudo dnf upgrade -y
+  else
+    log "No supported package manager found. Please update your system manually."
+  fi
 fi
 
 # -------------------------------
@@ -33,16 +41,34 @@ fi
 # -------------------------------
 if ! command -v brew &>/dev/null; then
   log "Homebrew not found. Installing Homebrew..."
-
-  if [ "$(uname)" = "Linux" ]; then
+  if [ "$OS" == "Linux" ]; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/HEAD/install.sh)"
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-  elif [ "$(uname)" = "Darwin" ]; then
+  elif [ "$OS" == "Darwin" ]; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    eval "$(/opt/homebrew/bin/brew shellenv)"
   fi
+  eval "$($(brew --prefix)/bin/brew shellenv)"
 else
   log "Homebrew is already installed."
+fi
+
+log "Updating Homebrew..."
+brew update
+
+if ! command -v zsh &>/dev/null; then
+  log "zsh is not installed. Installing zsh..."
+  brew install zsh
+fi
+
+if [ ! -d "${HOME}/.oh-my-zsh" ]; then
+  log "Installing oh‑my‑zsh..."
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+fi
+
+if [ "$(basename "$SHELL")" != "zsh" ]; then
+  log "zsh is not the default shell. Changing the default shell to zsh..."
+  sudo chsh -s "$(which zsh)" "$USER"
+  # After changing the default shell, re-run the script with zsh.
+  exec zsh "$0" "$@"
 fi
 
 # -------------------------------
@@ -57,7 +83,6 @@ fi
 # Copy scripts to home directory
 # -------------------------------
 log "Copying scripts..."
-
 cd "$DOTFILES_DIR"
 cp -R scripts ~/scripts
 
@@ -83,7 +108,7 @@ for package in */; do
   # Ask the user whether to stow this package
   read -p "Stow package '$package'? (y/N): " answer
   if [[ "$answer" =~ ^[Yy]$ ]]; then
-    echo "Stowing package: $package"
+    log "Stowing package: $package"
     stow -t "$HOME" "$package"
     if [ "$package" = "zsh" ]; then
       read -p "Enter your GIT_AUTHOR_NAME: " git_author_name
@@ -92,10 +117,11 @@ for package in */; do
       echo "export GIT_AUTHOR_EMAIL=\"$git_author_email\"" >>~/.zshrc
     fi
   else
-    echo "Skipping package: $package" n
+    log "Skipping package: $package"
   fi
 done
 
+# Source the updated .zshrc
 source ~/.zshrc
 
 log "All dotfiles packages have been stowed successfully."
