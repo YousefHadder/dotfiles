@@ -10,6 +10,8 @@ local harpoon = require("harpoon")
 -- REQUIRED
 harpoon:setup()
 -- REQUIRED
+keymap.set("i", "<Esc>", "<Nop>", { noremap = true, desc = "Disable ESC" })
+keymap.set("i", "jk", "<ESC>", { noremap = true, desc = "Exit insert mode with jk" })
 
 -- Disable arrow keys in normal mode
 keymap.set("n", "<Up>", "<nop>", { noremap = true, silent = true })
