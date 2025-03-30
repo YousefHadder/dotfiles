@@ -1,40 +1,13 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 set -euo pipefail
 
-# Logging function using echo to prevent recursion
+# Logging function
 log() {
   echo "[ $(date '+%Y-%m-%d %H:%M:%S') ] $*"
 }
 
-# Define the directory containing your dotfiles
 DOTFILES_DIR="${HOME}/dotfiles"
 OS=$(uname)
-
-log "Detected OS: $OS"
-
-# Update system based on OS
-if [ "$OS" == "Darwin" ]; then
-  log "Running macOS specific commands..."
-  log "Updating macOS..."
-  sudo softwareupdate -i -a
-
-  log "Checking for Xcode Command Line Tools..."
-  xcode-select --install 2>/dev/null
-elif [ "$OS" == "Linux" ]; then
-  log "Running Linux specific commands..."
-  if command -v apt-get >/dev/null 2>&1; then
-    log "Using apt-get to update Linux..."
-    sudo apt-get update && sudo apt-get upgrade -y
-  elif command -v yum >/dev/null 2>&1; then
-    log "Using yum to update Linux..."
-    sudo yum update -y
-  elif command -v dnf >/dev/null 2>&1; then
-    log "Using dnf to update Linux..."
-    sudo dnf upgrade -y
-  else
-    log "No supported package manager found. Please update your system manually."
-  fi
-fi
 
 # -------------------------------
 # Install Homebrew if needed
@@ -56,24 +29,6 @@ fi
 log "Updating Homebrew..."
 brew update
 
-if ! command -v zsh &>/dev/null; then
-  log "zsh is not installed. Installing zsh..."
-  brew install zsh
-fi
-
-if [ ! -d "${HOME}/.oh-my-zsh" ]; then
-  log "Installing oh‑my‑zsh..."
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-fi
-
-if [ "$(basename "$SHELL")" != "zsh" ]; then
-  log "zsh is not the default shell. Changing the default shell to zsh..."
-  sudo chsh -s "$(which zsh)" "$USER"
-  # After changing the default shell, ask the user to quite and re open the terminal
-  log "Please quite the terminal and rerun for the shell change to take effect"
-  exit 0
-fi
-
 # -------------------------------
 # Install packages from Brewfile
 # -------------------------------
@@ -87,7 +42,7 @@ fi
 # -------------------------------
 log "Copying scripts..."
 cd "$DOTFILES_DIR"
-cp -R scripts ~/scripts
+cp -R scripts "${HOME}/scripts"
 
 # -------------------------------
 # Create symlinks for dotfiles using GNU Stow
@@ -108,23 +63,22 @@ for package in */; do
   # Remove trailing slash from the package name
   package="${package%/}"
 
-  # Ask the user whether to stow this package
-  read -p "Stow package '$package'? (y/N): " answer
+  read "answer?Stow package '$package'? (y/N): "
   if [[ "$answer" =~ ^[Yy]$ ]]; then
     log "Stowing package: $package"
     stow -t "$HOME" "$package"
     if [ "$package" = "zsh" ]; then
-      read -p "Enter your GIT_AUTHOR_NAME: " git_author_name
-      read -p "Enter your GIT_AUTHOR_EMAIL: " git_author_email
-      echo "export GIT_AUTHOR_NAME=\"$git_author_name\"" >>~/.zshrc
-      echo "export GIT_AUTHOR_EMAIL=\"$git_author_email\"" >>~/.zshrc
+      read "git_author_name?Enter your GIT_AUTHOR_NAME: "
+      read "git_author_email?Enter your GIT_AUTHOR_EMAIL: "
+      echo "export GIT_AUTHOR_NAME=\"$git_author_name\"" >>"${HOME}/.zshrc"
+      echo "export GIT_AUTHOR_EMAIL=\"$git_author_email\"" >>"${HOME}/.zshrc"
     fi
   else
     log "Skipping package: $package"
   fi
 done
 
-# Source the updated .zshrc
-source ~/.zshrc
+# Source the updated .zshrc to load any new configurations
+source "${HOME}/.zshrc"
 
 log "All dotfiles packages have been stowed successfully."
