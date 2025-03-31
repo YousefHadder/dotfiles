@@ -104,6 +104,8 @@ eval "$(mise activate zsh)"
 
 source $BREW_HOME/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $BREW_HOME/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=cyan'
+
 eval "$(~/.local/bin/mise activate)"
 export PATH="$BREW_HOME/bin:$PATH"
 eval "$(~/.local/bin/mise activate)"
