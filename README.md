@@ -44,13 +44,12 @@ You can quickly set up these dotfiles on your machine by following these steps:
    git clone https://github.com/yousefhadder/dotfiles.git ~/.dotfiles
    cd :~/.dotfiles
    ```
-2. Installation
-
-   ```bash
-   chmod +x install.sh
-   ./install.sh
-   ```
-3. Manual tweaks
+2. **Installation**
+   
+   First run the `setup.sh` script which will do all necessary updates based on the OS and switch to zsh.
+   Then you need to quite the terminal to apply the shell change, and last you can run the `install.sh` to install other needed tools.
+   
+3. **Manual tweaks**
   
    This is still in the early stages of creation, you might come across some issues installing, and depending on your machine (macos, linux, ...)
   
