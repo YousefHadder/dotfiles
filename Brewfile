@@ -2,7 +2,6 @@
 tap "FelixKratz/formulae"
 
 # Install Homebrew formulas (command-line utilities and libraries)
-brew "git"
 brew "node"
 brew "nvm"
 brew "zsh-autosuggestions"
