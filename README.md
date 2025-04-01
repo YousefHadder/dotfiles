@@ -46,7 +46,7 @@ You can quickly set up these dotfiles on your machine by following these steps:
    ```
 2. **Installation**
    
-   First run the `setup.sh` script which will do all necessary updates based on the OS and switch to zsh.
+   First run the `bootstrap` script which will do all necessary updates based on the OS and switch to zsh.
    Then you need to quite the terminal to apply the shell change, and last you can run the `install.sh` to install other needed tools.
    
 3. **Manual tweaks**
