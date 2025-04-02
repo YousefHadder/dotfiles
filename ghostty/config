@@ -1,0 +1,14 @@
+# appearance
+theme = tokyonight-storm 
+background-opacity = 0.75
+background-blur-radius = 40
+font-family = VictorMono NFM
+font-size = 15
+cursor-style = underline
+cursor-style-blink = false
+cursor-invert-fg-bg = true
+mouse-hide-while-typing = true
+
+# macOS-specific settings
+macos-titlebar-style = tabs
+macos-option-as-alt = true
