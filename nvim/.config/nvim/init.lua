@@ -17,8 +17,5 @@ cmp.setup({
     ["<CR>"] = cmp.mapping(function(fallback)
       fallback()
     end, { "i", "s" }),
-
-    -- You can add other mappings here (e.g., for navigating suggestions).
   },
-  -- Other cmp configurations...
 })
