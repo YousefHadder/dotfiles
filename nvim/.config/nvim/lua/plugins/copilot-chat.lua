@@ -1,17 +1,35 @@
 return {
   {
     "CopilotC-Nvim/CopilotChat.nvim",
-    keymaps = {
-      submit = "<S-s>",
-    },
+    branch = "main",
     dependencies = {
-      { "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
-      { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
+      { "github/copilot.vim" }, -- or github/copilot.vim
+      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
     },
-    build = "make tiktoken", -- Only on MacOS or Linux
-    opts = {
-      -- See Configuration section for options
+    build = "make tiktoken",
+    event = "VeryLazy",
+    config = function()
+      require("CopilotChat").setup({
+        auto_insert_mode = true,
+        chat_autocomplete = true,
+        show_help = false,
+        show_folds = false,
+        question_header = "  Yousef ",
+        answer_header = "  Copilot ",
+      })
+    end,
+    keys = {
+      { "<leader>cce", "<cmd>CopilotChatExplain<cr>", desc = "CopilotChat - Explain code" },
+      { "<leader>ccr", "<cmd>CopilotChatReview<cr>", desc = "CopilotChat - Review code" },
+      { "<leader>ccf", "<cmd>CopilotChatFix<cr>", desc = "CopilotChat - Fix" },
+      { "<leader>cco", "<cmd>CopilotChatOptimize<cr>", desc = "CopilotChat - Optimize" },
+      { "<leader>ccd", "<cmd>CopilotChatDocs<cr>", desc = "CopilotChat - Add Documentation" },
+      { "<leader>cct", "<cmd>CopilotChatTests<cr>", desc = "CopilotChat - Generate tests" },
+      { "<leader>ccD", "<cmd>CopilotChatFixDiagnostic<cr>", desc = "CopilotChat - diagnostic issue in file" },
+      { "<leader>ccc", "<cmd>CopilotChatCommit<cr>", desc = "CopilotChat - Commit message" },
+      { "<leader>ccs", "<cmd>CopilotChatCommitStaged<cr>", desc = "CopilotChat - Commit message" },
+      { "<leader>ccT", "<cmd>CopilotChatToggle<cr>", desc = "Toggle Copilot Chat" },
+      { "<leader>ccm", "<cmd>CopilotChatModel<cr>", desc = "Copilot Chat Models" },
     },
-    -- See Commands section for default commands if you want to lazy load on them
   },
 }
