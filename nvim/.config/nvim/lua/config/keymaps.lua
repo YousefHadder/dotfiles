@@ -47,6 +47,12 @@ keymap.set("n", "x", '"_x', opts)
 keymap.set("n", "<C-d>", "<C-d>zz", opts)
 keymap.set("n", "<C-u>", "<C-u>zz", opts)
 
+-- Navigate between splits
+keymap.set("n", "<C-k>", ":wincmd k<CR>", opts)
+keymap.set("n", "<C-j>", ":wincmd j<CR>", opts)
+keymap.set("n", "<C-h>", ":wincmd h<CR>", opts)
+keymap.set("n", "<C-l>", ":wincmd l<CR>", opts)
+
 -- Find and center
 keymap.set("n", "n", "nzzzv", opts)
 keymap.set("n", "N", "Nzzzv", opts)
