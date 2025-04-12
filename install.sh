@@ -66,13 +66,10 @@ for package in */; do
   read "answer?Stow package '$package'? (y/N): "
   if [[ "$answer" =~ ^[Yy]$ ]]; then
     log "Stowing package: $package"
-    stow -t "$HOME" "$package"
     if [ "$package" = "zsh" ]; then
-      read "git_author_name?Enter your GIT_AUTHOR_NAME: "
-      read "git_author_email?Enter your GIT_AUTHOR_EMAIL: "
-      echo "export GIT_AUTHOR_NAME=\"$git_author_name\"" >>"${HOME}/.zshrc"
-      echo "export GIT_AUTHOR_EMAIL=\"$git_author_email\"" >>"${HOME}/.zshrc"
+      rm -f "${HOME}/.zshrc"
     fi
+    stow -t "$HOME" "$package"
   else
     log "Skipping package: $package"
   fi

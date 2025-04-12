@@ -1,6 +1,6 @@
 # appearance
 theme = tokyonight-storm 
-background-opacity = 0.75
+background-opacity = 0.65
 background-blur-radius = 40
 font-family = VictorMono NFM
 font-size = 15
@@ -10,5 +10,6 @@ cursor-invert-fg-bg = true
 mouse-hide-while-typing = true
 
 # macOS-specific settings
+config-default-files = true
 macos-titlebar-style = tabs
 macos-option-as-alt = true
