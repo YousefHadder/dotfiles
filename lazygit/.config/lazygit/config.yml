@@ -1,0 +1,47 @@
+gui:
+    authorColors: {}
+    branchColors: {}
+    scrollHeight: 2
+    scrollPastBottom: true
+    mouseEvents: true
+    nerdFontsVersion: "3"
+    skipDiscardChangeWarning: false
+    skipStashWarning: false
+    sidePanelWidth: 0.3333
+    expandFocusedSidePanel: false
+    mainPanelSplitMode: flexible
+    language: auto
+    timeFormat: 02 Jan 06 15:04 MST
+    commitLength:
+        show: true
+    skipNoStagedFilesWarning: false
+    showListFooter: true
+    showFileTree: true
+    showRandomTip: true
+    showCommandLog: true
+    showBottomLine: true
+    commandLogSize: 8
+    splitDiff: auto
+theme:
+activeBorderColor:
+  - '#e78284'
+  - bold
+inactiveBorderColor:
+  - '#a5adce'
+optionsTextColor:
+  - '#8caaee'
+selectedLineBgColor:
+  - '#414559'
+cherryPickedCommitBgColor:
+  - '#51576d'
+cherryPickedCommitFgColor:
+  - '#e78284'
+unstagedChangesColor:
+  - '#e78284'
+defaultFgColor:
+  - '#c6d0f5'
+searchingActiveBorderColor:
+  - '#e5c890'
+
+authorColors:
+'*': '#babbf1'
