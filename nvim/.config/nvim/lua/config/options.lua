@@ -13,5 +13,4 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.list = true
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
-vim.api.nvim_set_hl(0, "LineNrAbove", { fg = "Yellow" })
-vim.api.nvim_set_hl(0, "LineNrBelow", { fg = "#33ff36" })
+vim.api.nvim_set_hl(0, "LineNr", { fg = "Yellow" })

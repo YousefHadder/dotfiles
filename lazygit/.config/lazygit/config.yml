@@ -22,26 +22,28 @@ gui:
     showBottomLine: true
     commandLogSize: 8
     splitDiff: auto
-theme:
-activeBorderColor:
-  - '#e78284'
-  - bold
-inactiveBorderColor:
-  - '#a5adce'
-optionsTextColor:
-  - '#8caaee'
-selectedLineBgColor:
-  - '#414559'
-cherryPickedCommitBgColor:
-  - '#51576d'
-cherryPickedCommitFgColor:
-  - '#e78284'
-unstagedChangesColor:
-  - '#e78284'
-defaultFgColor:
-  - '#c6d0f5'
-searchingActiveBorderColor:
-  - '#e5c890'
-
-authorColors:
-'*': '#babbf1'
+    theme:
+      activeBorderColor:
+        - "#ff9e64"
+        - "bold"
+      inactiveBorderColor:
+        - "#29a4bd"
+      searchingActiveBorderColor:
+        - "#ff9e64"
+        - "bold"
+      optionsTextColor:
+        - "#7aa2f7"
+      selectedLineBgColor:
+        - "#2e3c64"
+      cherryPickedCommitFgColor:
+        - "#7aa2f7"
+      cherryPickedCommitBgColor:
+        - "#bb9af7"
+      markedBaseCommitFgColor:
+        - "#7aa2f7"
+      markedBaseCommitBgColor:
+        - "#e0af68"
+      unstagedChangesColor:
+        - "#db4b4b"
+      defaultFgColor:
+        - "#c0caf5"
