@@ -32,7 +32,7 @@
 	name = yousefhadder
 	email = yousefhadder@github.com
 [credential]
-	interactive = false
+	interactive = true
 	helper = 
 	helper = /usr/local/bin/git-credential-manager
 [credential "https://dev.azure.com"]
