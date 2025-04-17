@@ -23,6 +23,7 @@ selection-foreground = #c0caf5
 
 # appearance
 theme = tokyonight-storm 
+background-opacity = 0.75
 background-blur-radius = 40
 font-family = VictorMono NFM
 font-size = 15
