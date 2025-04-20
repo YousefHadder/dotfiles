@@ -28,6 +28,9 @@ return {
         hl.LineNrBelow = {
           fg = "#ff6188",
         }
+        hl.Comment = { fg = "#7fbbb3", bg = "none", italic = true }
+        -- If you use Treesitter and want to catch @comment as well:
+        hl["@comment"] = { fg = "#7fbbb3", bg = "none", italic = true }
       end,
     })
     vim.cmd([[colorscheme tokyonight]])
