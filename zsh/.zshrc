@@ -32,7 +32,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Editor Configuration
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
+  export EDITOR='nvim'
 else
   export EDITOR='nvim'
 fi
