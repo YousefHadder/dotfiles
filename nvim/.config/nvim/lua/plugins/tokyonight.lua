@@ -21,7 +21,8 @@ return {
         sidebars = "transparent", -- style for sidebars, see below
         floats = "transparent", -- style for floating windows
       },
-      on_highlights = function(hl)
+      on_highlights = function(hl, c)
+        local visible = "#7AA2F7"
         hl.LineNrAbove = {
           fg = "#6ab8ff",
         }
@@ -31,6 +32,21 @@ return {
         hl.Comment = { fg = "#7fbbb3", bg = "none", italic = true }
         -- If you use Treesitter and want to catch @comment as well:
         hl["@comment"] = { fg = "#7fbbb3", bg = "none", italic = true }
+        hl.DiagnosticUnnecessary = { fg = visible, bg = "NONE" }
+        hl.DiagnosticVirtualTextUnnecessary = { fg = visible, bg = "NONE" }
+        hl.DiagnosticSignUnnecessary = { fg = visible, bg = "NONE" }
+        hl.DiagnosticFloatingUnnecessary = { fg = visible, bg = "NONE" }
+        hl.DiagnosticUnderlineUnnecessary = { undercurl = true, sp = visible }
+        hl.LspInlayHint = {
+          fg = "#E0AF68", -- your orange fg
+          bg = c.bg_highlight, -- subtle highlighted background
+          italic = true,
+        }
+        hl.InlayHint = {
+          fg = "#E0AF68",
+          bg = c.bg_highlight,
+          italic = true,
+        }
       end,
     })
     vim.cmd([[colorscheme tokyonight]])
