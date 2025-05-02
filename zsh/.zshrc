@@ -4,8 +4,9 @@ export PATH="$BREW_HOME/bin:$PATH"
 export PATH="$BREW_HOME/opt/ruby/bin:$PATH"
 export PATH="$BREW_HOME/lib/ruby/gems/3.4.0/bin:$PATH"
 export PATH="$BREW_HOME/opt/ruby@3.3/bin:$PATH"
-export PATH=$PATH:/usr/local/go/bin
-export GOPATH=$HOME/go  # optional but useful for many setups
+export GOPATH=$HOME/go
+export GOROOT=/usr/local/go
+export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
 
 # Environment Variables
 export ZSH="$HOME/.oh-my-zsh"
