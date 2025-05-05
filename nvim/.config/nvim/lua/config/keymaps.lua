@@ -75,3 +75,11 @@ keymap.set("v", ">", ">gv", opts)
 
 -- Keep last yanked when pasting
 keymap.set("v", "p", '"_dP', opts)
+
+vim.g.copilot_no_tab_map = true
+keymap.set("i", "<S-Tab>", [[copilot#Accept("\<Tab>")]], {
+  silent = true,
+  expr = true,
+  script = true,
+  replace_keycodes = false,
+})
