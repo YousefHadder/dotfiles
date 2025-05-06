@@ -18,27 +18,29 @@ keymap.set("n", "<Right>", "<nop>", { noremap = true, silent = true })
 keymap.set("n", "<C-a>", "ggVG")
 
 -- -- move text up and down
--- keymap.set("n", "<a-k>", "<esc>:m .-2<cr>==gi", opts) -- Alt-k
--- keymap.set("n", "<a-j>", "<esc>:m .+1<cr>==gi", opts) -- Alt-j
+keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "moves lines down in visual selection" })
+keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "moves lines up in visual selection" })
 
-keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", { noremap = true, silent = true })
-keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { noremap = true, silent = true })
+-- the how it be paste
+keymap.set("x", "<leader>p", [["_dP]])
 
--- gitsigns keymaps
-keymap.set("n", "<leader>gp", ":Gitsigns preview_hunk<CR>", opts)
-keymap.set("n", "<leader>gt", ":Gitsigns toggle_current_line_blame<CR>", opts)
+-- remember yanked
+keymap.set("v", "p", '"_dp', opts)
+
+-- Copies or Yank to system clipboard
+keymap.set("n", "<leader>Y", [["+Y]], opts)
+
+-- leader d delete wont remember as yanked/clipboard when delete pasting
+keymap.set({ "n", "v" }, "<leader>d", [["_d]])
+
+-- delete single character without copying into register
+keymap.set("n", "x", '"_x', opts)
 
 -- save file
 keymap.set({ "i", "x", "n", "s" }, "<C-w>", "<cmd>w<cr><esc>", { desc = "Save File" })
 
--- save file without auto-formatting
-keymap.set("n", "<leader>sn", "<cmd>noautocmd w <CR>", opts)
-
 -- quit file
 keymap.set("n", "<C-q>", "<cmd> q <CR>", opts)
-
--- delete single character without copying into register
-keymap.set("n", "x", '"_x', opts)
 
 -- Vertical scroll and center
 keymap.set("n", "<C-d>", "<C-d>zz", opts)
@@ -76,6 +78,20 @@ keymap.set("v", ">", ">gv", opts)
 -- Keep last yanked when pasting
 keymap.set("v", "p", '"_dP', opts)
 
+-- Move buffer to the left
+keymap.set("n", "<A-h>", ":BufferLineMovePrev<CR>", { silent = true })
+-- Move buffer to the right
+keymap.set("n", "<A-l>", ":BufferLineMovePrev<CR>", { silent = true })
+
+-- Replace the word cursor is on globally
+keymap.set(
+  "n",
+  "<leader>s",
+  [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+  { desc = "Replace word cursor is on globally" }
+)
+
+-- Use shit + tab to accept copilot compeletion suggestion.
 vim.g.copilot_no_tab_map = true
 keymap.set("i", "<S-Tab>", [[copilot#Accept("\<Tab>")]], {
   silent = true,
@@ -83,3 +99,10 @@ keymap.set("i", "<S-Tab>", [[copilot#Accept("\<Tab>")]], {
   script = true,
   replace_keycodes = false,
 })
+
+-- Copy file path to clipboard
+keymap.set("n", "<leader>fp", function()
+  local filePath = vim.fn.expand("%:~") -- Gets the file path relative to the home directory
+  vim.fn.setreg("+", filePath) -- Copy the file path to the clipboard register
+  print("File path copied to clipboard: " .. filePath) -- Optional: print message to confirm
+end, { desc = "Copy file path to clipboard" })
