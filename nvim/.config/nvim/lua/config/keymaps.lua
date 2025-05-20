@@ -81,7 +81,7 @@ keymap.set("v", "p", '"_dP', opts)
 -- Move buffer to the left
 keymap.set("n", "<A-h>", ":BufferLineMovePrev<CR>", { silent = true })
 -- Move buffer to the right
-keymap.set("n", "<A-l>", ":BufferLineMovePrev<CR>", { silent = true })
+keymap.set("n", "<A-l>", ":BufferLineMoveNext<CR>", { silent = true })
 
 -- Replace the word cursor is on globally
 keymap.set(
