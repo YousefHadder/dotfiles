@@ -86,7 +86,7 @@ keymap.set("n", "<A-l>", ":BufferLineMoveNext<CR>", { silent = true })
 -- Replace the word cursor is on globally
 keymap.set(
   "n",
-  "<leader>s",
+  "<leader>rg",
   [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
   { desc = "Replace word cursor is on globally" }
 )
