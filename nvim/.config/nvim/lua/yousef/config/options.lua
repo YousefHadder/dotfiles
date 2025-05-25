@@ -65,3 +65,20 @@ vim.opt.clipboard:append("unnamedplus") -- use system clipboard as default
 -- Whitespace and listchars
 vim.opt.list = true
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+
+-- Modern Neovim features
+vim.opt.pumheight = 15 -- completion menu height
+vim.opt.pumblend = 10 -- completion menu transparency
+vim.opt.winblend = 10 -- floating window transparency
+vim.opt.cmdheight = 0 -- hide command line when not in use
+vim.opt.laststatus = 3 -- global statusline
+vim.opt.showtabline = 2 -- always show tabs
+
+-- Better diff
+vim.opt.diffopt:append("linematch:60")
+
+-- Confirm before quitting unsaved files
+vim.opt.confirm = true
+
+-- Better search
+vim.opt.gdefault = true -- use global flag by default in search/replace

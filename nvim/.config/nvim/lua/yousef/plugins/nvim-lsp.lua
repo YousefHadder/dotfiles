@@ -4,6 +4,7 @@ return {
 		"nvim-tree/nvim-web-devicons",
 		"folke/trouble.nvim",
 		"saghen/blink.cmp",
+		"b0o/schemastore.nvim", -- JSON schemas
 	},
 	event = "VeryLazy",
 
@@ -72,7 +73,17 @@ return {
 		-- Server configurations
 		local servers = {
 			ts_ls = { root_dir = util.root_pattern("tsconfig.json") },
-			gopls = {},
+			gopls = {
+				settings = {
+					gopls = {
+						analyses = {
+							unusedparams = true,
+						},
+						staticcheck = true,
+						gofumpt = true,
+					},
+				},
+			},
 			sorbet = { env = { SRB_SKIP_GEM_RBIS = 1 } },
 			vale_ls = {},
 			eslint = { root_dir = util.root_pattern("package.json") },
@@ -92,9 +103,30 @@ return {
 					},
 				},
 			},
-			yamlls = { capabilities = yaml_capabilities },
+			yamlls = { 
+				capabilities = yaml_capabilities,
+				settings = {
+					yaml = {
+						schemas = {
+							["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+						},
+					},
+				},
+			},
 			jqls = {},
-			jsonls = {},
+			jsonls = {
+				settings = {
+					json = {
+						schemas = require('schemastore').json.schemas(),
+						validate = { enable = true },
+					},
+				},
+			},
+			-- Add more language servers
+			bashls = {},
+			dockerls = {},
+			marksman = {}, -- Markdown
+			taplo = {}, -- TOML
 		}
 
 		-- Setup servers
