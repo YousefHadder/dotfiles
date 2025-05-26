@@ -27,7 +27,7 @@ return {
         max_prefix_length = 15, -- prefix used when a buffer is de-duplicated
         truncate_names = true, -- whether or not tab names should be truncated
         tab_size = 18,
-        diagnostics = "nvim_lspw",
+        diagnostics = "nvim_lsp",
         diagnostics_update_in_insert = false, -- only applies to coc
         diagnostics_update_on_event = true, -- use nvim's diagnostic handler
         -- The diagnostics indicator can be set to nil to keep the buffer name highlight but delete the highlighting
