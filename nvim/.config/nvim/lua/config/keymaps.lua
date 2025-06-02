@@ -54,10 +54,10 @@ keymap.set("n", "<C-d>", "<C-d>zz", { noremap = true, silent = true })
 keymap.set("n", "<C-u>", "<C-u>zz", { noremap = true, silent = true })
 
 -- Navigate between splits
-keymap.set("n", "<C-k>", ":wincmd k<CR>", { noremap = true, silent = true })
-keymap.set("n", "<C-j>", ":wincmd j<CR>", { noremap = true, silent = true })
-keymap.set("n", "<C-h>", ":wincmd h<CR>", { noremap = true, silent = true })
-keymap.set("n", "<C-l>", ":wincmd l<CR>", { noremap = true, silent = true })
+keymap.set({ "n", "v" }, "<C-k>", ":wincmd k<CR>", { noremap = true, silent = true })
+keymap.set({ "n", "v" }, "<C-j>", ":wincmd j<CR>", { noremap = true, silent = true })
+keymap.set({ "n", "v" }, "<C-h>", ":wincmd h<CR>", { noremap = true, silent = true })
+keymap.set({ "n", "v" }, "<C-l>", ":wincmd l<CR>", { noremap = true, silent = true })
 
 -- Find and center
 keymap.set("n", "n", "nzzzv", { noremap = true, silent = true })
@@ -85,6 +85,9 @@ keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer
 -- Buffers
 keymap.set("n", "<Tab>", ":BufferLineCycleNext<CR>", { silent = true })
 keymap.set("n", "<S-Tab>", ":BufferLineCyclePrev<CR>", { silent = true })
+keymap.set("n", "<A-h>", "<Cmd>BufferLineMovePrev<CR>", { desc = "Move buffer left" })
+keymap.set("n", "<A-l>", "<Cmd>BufferLineMoveNext<CR>", { desc = "Move buffer right" })
+
 keymap.set("n", "<leader>bd", ":bdelete!<CR>", { noremap = true, silent = true }) -- close buffer
 keymap.set("n", "<leader>bn", "<cmd> enew <CR>", { noremap = true, silent = true }) -- new buffer
 
