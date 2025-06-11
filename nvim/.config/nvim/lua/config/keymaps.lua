@@ -38,7 +38,7 @@ keymap.set({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { expr = true, sil
 keymap.set("n", "<leader>so", "<cmd>so %<CR>", { noremap = true, silent = true, desc = "Source file" })
 
 -- save file
-keymap.set({ "i", "x", "n", "s" }, "<C-w>", "<cmd>w<cr><esc>", { desc = "Save File" })
+keymap.set({ "i", "x", "n", "s" }, "<leader>sf", "<cmd>w<cr><esc>", { desc = "Save File" })
 
 -- save file without auto-formatting
 keymap.set("n", "<leader>sn", "<cmd>noautocmd w <CR>", { noremap = true, silent = true })
@@ -87,6 +87,10 @@ keymap.set("n", "<Tab>", ":BufferLineCycleNext<CR>", { silent = true })
 keymap.set("n", "<S-Tab>", ":BufferLineCyclePrev<CR>", { silent = true })
 keymap.set("n", "<A-h>", "<Cmd>BufferLineMovePrev<CR>", { desc = "Move buffer left" })
 keymap.set("n", "<A-l>", "<Cmd>BufferLineMoveNext<CR>", { desc = "Move buffer right" })
+
+-- Toggle between horizontal and vertical splits
+keymap.set("n", "<leader>mh", ":wincmd t | wincmd K<CR>", { desc = "Change to horizontal split" })
+keymap.set("n", "<leader>mv", ":wincmd t | wincmd H<CR>", { desc = "Change to vertical split" })
 
 keymap.set("n", "<leader>bd", ":bdelete!<CR>", { noremap = true, silent = true }) -- close buffer
 keymap.set("n", "<leader>bn", "<cmd> enew <CR>", { noremap = true, silent = true }) -- new buffer
