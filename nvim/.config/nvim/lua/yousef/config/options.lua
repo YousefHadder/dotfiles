@@ -51,18 +51,29 @@ local separators = {
   blocks = { vert = '▌', horiz = '▄' },
 }
 
--- Apply the style
-vim.opt.fillchars:append(separators.thick)
-
--- make it more visible
-vim.api.nvim_set_hl(0, 'winseparator', {
-  fg = 'gray', -- adjust color to your theme
+-- Make it more visible
+vim.api.nvim_set_hl(0, "WinSeparator", {
+  fg = "#808080", -- Gray color
+  bg = "#808080", -- Gray color
   bold = true
 })
+
+-- For older Neovim versions, also set VertSplit
+vim.api.nvim_set_hl(0, "VertSplit", {
+  fg = "#808080", -- Gray color
+  bg = "#808080", -- Gray color
+  bold = true
+})
+-- Apply the style
+vim.opt.fillchars:append(separators.blocks)
+
 
 vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 vim.opt.colorcolumn = "120"
+
+
+vim.cmd [[highlight ColorColumn ctermbg=236 guibg=#808080]]
 
 -- clipboard
 vim.schedule(function()

@@ -90,7 +90,7 @@ keymap.set("i", "<S-Tab>", [[copilot#Accept("\<Tab>")]], {
   silent = true,
   expr = true,
   script = true,
-  replace_keycodes = false,
+  replace_keycodes = true,
 })
 
 keymap.set(
