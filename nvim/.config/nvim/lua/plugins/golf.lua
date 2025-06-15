@@ -1,3 +1,0 @@
-return {
-  "vuciv/golf",
-}
