@@ -43,6 +43,7 @@ vim.opt.backspace = { "start", "eol", "indent" }
 --split windows
 vim.opt.splitright = true --split vertical window to the right
 vim.opt.splitbelow = true --split horizontal window to the bottom
+
 local separators = {
   thick = { vert = '█', horiz = '█' },
   double = { vert = '┃', horiz = '━' },
@@ -53,9 +54,9 @@ local separators = {
 -- Apply the style
 vim.opt.fillchars:append(separators.thick)
 
--- Make it more visible
-vim.api.nvim_set_hl(0, 'WinSeparator', {
-  fg = '#444444', -- Adjust color to your theme
+-- make it more visible
+vim.api.nvim_set_hl(0, 'winseparator', {
+  fg = 'gray', -- adjust color to your theme
   bold = true
 })
 

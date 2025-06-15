@@ -19,8 +19,8 @@ keymap.set("n", "<Right>", "<nop>", { noremap = true, silent = true })
 keymap.set("n", "vag", "ggVG")
 
 -- -- move text up and down
-keymap.set({ "n", "v" }, "<a-k>", "<esc>:m .-2<cr>==gv", { noremap = true, silent = true }) -- Alt-k
-keymap.set({ "n", "v" }, "<a-j>", "<esc>:m .+1<cr>==gv", { noremap = true, silent = true }) -- Alt-j
+keymap.set({ "n", "v" }, "<a-k>", ":m '<-2<CR>gv=gv", { noremap = true, silent = true }) -- Alt-k
+keymap.set({ "n", "v" }, "<a-j>", ":m '>+1<CR>gv=gv", { noremap = true, silent = true }) -- Alt-j
 
 -- source file
 keymap.set("n", "<leader>so", "<cmd>so %<CR>", { noremap = true, silent = true, desc = "Source file" })
