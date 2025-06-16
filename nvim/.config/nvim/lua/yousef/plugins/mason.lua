@@ -52,7 +52,6 @@ return {
 		config = function()
 			require("mason-lspconfig").setup({
 				automatic_installation = true,
-				automatic_enable = false, -- Disable automatic_enable as it's deprecated
 				-- Remove automatic_enable as it's deprecated
 				ensure_installed = {
 					"bashls",

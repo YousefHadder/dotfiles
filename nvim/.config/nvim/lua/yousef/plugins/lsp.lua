@@ -201,6 +201,9 @@ return {
 			automatic_installation = false,
 			automatic_enable = {
 				"lua_ls",
+				"ts_ls",
+				"ruby_lsp",
+				"gopls",
 			},
 			handlers = {
 				function(server_name)
