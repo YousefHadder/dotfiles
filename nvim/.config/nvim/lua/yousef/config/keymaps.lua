@@ -84,14 +84,14 @@ keymap.set("v", ">", ">gv", { noremap = true, silent = true })
 -- remember yanked
 keymap.set("v", "p", '"_dp', { noremap = true, silent = true })
 
-keymap.set("i", "<C-Tab>", 'copilot#Accept("\\<C-o>\\<C-w>")', { expr = true, silent = true })
-keymap.set("i", "<A-Tab>", 'copilot#Accept("\\<C-o>\\<End>")', { expr = true, silent = true })
-keymap.set("i", "<S-Tab>", [[copilot#Accept("\<Tab>")]], {
-  silent = true,
+
+keymap.set('i', '<C-Tab>', '<Plug>(copilot-accept-word)')
+keymap.set('i', '<A-Tab>', '<Plug>(copilot-accept-line)')
+keymap.set('i', '<S-Tab>', 'copilot#Accept("\\<CR>")', {
   expr = true,
-  script = true,
-  replace_keycodes = true,
+  replace_keycodes = false
 })
+
 
 keymap.set(
   "n",

@@ -4,7 +4,6 @@ return {
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
     local bufferline = require("bufferline")
-    local colors = require("tokyonight.colors").setup()
 
     -- Move buffer to the left
     vim.keymap.set("n", "<A-h>", ":BufferLineMovePrev<CR>", { silent = true })

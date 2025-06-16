@@ -29,6 +29,8 @@ return {
 					vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 				end
 
+				map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
+
 				-- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
 				---@param client vim.lsp.Client
 				---@param method vim.lsp.protocol.Method
@@ -172,6 +174,7 @@ return {
 					},
 				},
 			},
+			ruby_lsp = {}
 		}
 
 		-- Ensure the servers and tools above are installed
