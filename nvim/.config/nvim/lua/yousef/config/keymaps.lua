@@ -23,7 +23,7 @@ keymap.set({ "n", "v" }, "<a-k>", ":m '<-2<CR>gv=gv", { noremap = true, silent =
 keymap.set({ "n", "v" }, "<a-j>", ":m '>+1<CR>gv=gv", { noremap = true, silent = true }) -- Alt-j
 
 -- source file
-keymap.set("n", "<leader>so", "<cmd>so %<CR>", { noremap = true, silent = true, desc = "Source file" })
+keymap.set("n", "<leader>so", "<cmd>so % <CR>", { noremap = true, silent = true, desc = "Source file" })
 
 -- save file
 keymap.set({ "i", "x", "n", "s" }, "<C-w>", "<cmd>w<cr><esc>", { desc = "Save File" })
@@ -84,8 +84,7 @@ keymap.set("v", ">", ">gv", { noremap = true, silent = true })
 -- remember yanked
 keymap.set("v", "p", '"_dp', { noremap = true, silent = true })
 
-
-keymap.set('i', '<C-Tab>', '<Plug>(copilot-accept-word)')
+keymap.set('i', '<C-w>', '<Plug>(copilot-accept-word)')
 keymap.set('i', '<A-Tab>', '<Plug>(copilot-accept-line)')
 keymap.set('i', '<S-Tab>', 'copilot#Accept("\\<CR>")', {
   expr = true,
