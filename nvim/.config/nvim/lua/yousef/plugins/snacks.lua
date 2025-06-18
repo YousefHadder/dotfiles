@@ -26,7 +26,6 @@ return {
 	keys = {
 		-- Top Pickers & Explorer
 		{ "<leader><space>", function() Snacks.picker.smart() end,                                   desc = "Smart Find Files" },
-		{ "<leader>,",       function() Snacks.picker.buffers() end,                                 desc = "Buffers" },
 		{ "<leader>/",       function() Snacks.picker.grep() end,                                    desc = "Grep" },
 		{ "<leader>:",       function() Snacks.picker.command_history() end,                         desc = "Command History" },
 		{ "<leader>n",       function() Snacks.picker.notifications() end,                           desc = "Notification History" },
@@ -38,7 +37,6 @@ return {
 		{ "<leader>fg",      function() Snacks.picker.git_files() end,                               desc = "Find Git Files" },
 		{ "<leader>fp",      function() Snacks.picker.projects() end,                                desc = "Projects" },
 		{ "<leader>fr",      function() Snacks.picker.recent() end,                                  desc = "Recent" },
-
 		-- git
 		{ "<leader>gb",      function() Snacks.picker.git_branches() end,                            desc = "Git Branches" },
 		{ "<leader>gl",      function() Snacks.picker.git_log() end,                                 desc = "Git Log" },

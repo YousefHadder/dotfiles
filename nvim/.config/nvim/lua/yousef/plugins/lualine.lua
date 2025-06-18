@@ -2,6 +2,14 @@ return {
 	"nvim-lualine/lualine.nvim",
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	config = function()
+		local function show_macro_recording()
+			local recording_register = vim.fn.reg_recording()
+			if recording_register == "" then
+				return ""
+			else
+				return "Recording @" .. recording_register
+			end
+		end
 		require("lualine").setup({
 			options = {
 				icons_enabled = true,
@@ -26,7 +34,15 @@ return {
 				lualine_a = { "mode" },
 				lualine_b = { "branch", "diff", "diagnostics" },
 				lualine_c = { "filename" },
-				lualine_x = { "encoding", "fileformat", "filetype" },
+				lualine_x = {
+					{
+						show_macro_recording,
+						color = { fg = "#ff9e64" }, -- Optional: highlight color for recording
+					},
+					"encoding",
+					"fileformat",
+					"filetype"
+				},
 				lualine_y = { "progress" },
 				lualine_z = { "location" },
 			},
