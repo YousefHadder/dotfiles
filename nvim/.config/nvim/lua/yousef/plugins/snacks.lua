@@ -4,7 +4,10 @@ return {
 	lazy = false,
 	opts = {
 		bigfile = { enabled = true },
-		explorer = { enabled = true },
+		explorer = {
+			enabled = true,
+			diagnostics = false,
+		},
 		indent = { enabled = true },
 		input = { enabled = true },
 		notifier = {

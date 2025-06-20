@@ -49,9 +49,9 @@ autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
 autocmd("BufWritePre", {
 	group = general_group,
 	callback = function(event)
-		local file = vim.loop.fs_realpath(event.match) or event.match
+		local file = vim.fn.fnamemodify(event.match, ':p')
 		local dir = vim.fn.fnamemodify(file, ":p:h")
-		local success, _ = vim.loop.fs_stat(dir)
+		local success, _ = vim.fn.isdirectory(dir)
 		if not success then
 			vim.fn.system({ "mkdir", "-p", dir })
 		end
