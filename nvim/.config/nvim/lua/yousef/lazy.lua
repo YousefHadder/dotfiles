@@ -13,6 +13,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 
 vim.opt.runtimepath:prepend(lazypath)
+-- _G.LazyVim = require("lazyvim.util")
 
 require("lazy").setup({
 	spec = {

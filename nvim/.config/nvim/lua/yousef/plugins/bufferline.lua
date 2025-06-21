@@ -1,86 +1,127 @@
 return {
-  "akinsho/bufferline.nvim",
-  version = "*",
-  dependencies = { "nvim-tree/nvim-web-devicons" },
-  config = function()
-    local bufferline = require("bufferline")
+  "nvim-lualine/lualine.nvim",
+  event = "VeryLazy",
+  init = function()
+    vim.g.lualine_laststatus = vim.o.laststatus
+    if vim.fn.argc(-1) > 0 then
+      -- set an empty statusline till lualine loads
+      vim.o.statusline = " "
+    else
+      -- hide the statusline on the starter page
+      vim.o.laststatus = 0
+    end
+  end,
+  opts = function()
+    -- PERF: we don't need this lualine require madness 🤷
+    local lualine_require = require("lualine_require")
+    lualine_require.require = require
 
-    -- Move buffer to the left
-    vim.keymap.set("n", "<A-h>", ":BufferLineMovePrev<CR>", { silent = true })
-    -- Move buffer to the right
-    vim.keymap.set("n", "<A-l>", ":BufferLineMoveNext<CR>", { silent = true })
-    bufferline.setup({
+    local icons = LazyVim.config.icons
+
+    vim.o.laststatus = vim.g.lualine_laststatus
+
+    local opts = {
       options = {
-        mode = "buffers", -- set to "tabs" to only show tabpages instead
-        style_preset = bufferline.style_preset.default, -- or bufferline.style_preset.minimal,
-        themable = true, -- allows highlight groups to be overriden i.e. sets highlights as default
-        numbers = "ordinal",
-        close_command = "bdelete! %d", -- can be a string | function, | false see "Mouse actions"
-        right_mouse_command = "bdelete! %d", -- can be a string | function | false, see "Mouse actions"
-        left_mouse_command = "buffer %d", -- can be a string | function, | false see "Mouse actions"
-        middle_mouse_command = nil, -- can be a string | function, | false see "Mouse actions"
-        indicator = {
-          icon = "▎", -- this should be omitted if indicator style is not 'icon'
-          style = "icon",
-        },
-        buffer_close_icon = "󰅖",
-        modified_icon = "● ",
-        close_icon = " ",
-        left_trunc_marker = " ",
-        right_trunc_marker = " ",
-        max_name_length = 18,
-        max_prefix_length = 15, -- prefix used when a buffer is de-duplicated
-        truncate_names = true,  -- whether or not tab names should be truncated
-        tab_size = 18,
-        diagnostics = "nvim_lsp",
-        diagnostics_update_in_insert = false, -- only applies to coc
-        diagnostics_update_on_event = true,   -- use nvim's diagnostic handler
-        -- The diagnostics indicator can be set to nil to keep the buffer name highlight but delete the highlighting
-        diagnostics_indicator = function(count)
-          return "(" .. count .. ")"
-        end,
-        offsets = {
+        theme = "auto",
+        globalstatus = vim.o.laststatus == 3,
+        disabled_filetypes = { statusline = { "dashboard", "alpha", "ministarter", "snacks_dashboard" } },
+      },
+      sections = {
+        lualine_a = { "mode" },
+        lualine_b = { "branch" },
+
+        lualine_c = {
+          LazyVim.lualine.root_dir(),
           {
-            filetype = "snacks-picker",
-            text = "Neo-Tree",
-            highlight = "Directory",
-            text_align = "left",
+            "diagnostics",
+            symbols = {
+              error = icons.diagnostics.Error,
+              warn = icons.diagnostics.Warn,
+              info = icons.diagnostics.Info,
+              hint = icons.diagnostics.Hint,
+            },
+          },
+          { "filetype",                   icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+          { LazyVim.lualine.pretty_path() },
+        },
+        lualine_x = {
+          Snacks.profiler.status(),
+          -- stylua: ignore
+          {
+            function() return require("noice").api.status.command.get() end,
+            cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
+            color = function() return { fg = Snacks.util.color("Statement") } end,
+          },
+          -- stylua: ignore
+          {
+            function() return require("noice").api.status.mode.get() end,
+            cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
+            color = function() return { fg = Snacks.util.color("Constant") } end,
+          },
+          -- stylua: ignore
+          {
+            function() return "  " .. require("dap").status() end,
+            cond = function() return package.loaded["dap"] and require("dap").status() ~= "" end,
+            color = function() return { fg = Snacks.util.color("Debug") } end,
+          },
+          -- stylua: ignore
+          {
+            require("lazy.status").updates,
+            cond = require("lazy.status").has_updates,
+            color = function() return { fg = Snacks.util.color("Special") } end,
           },
           {
-            filetype = "snacks_layout_box",
+            "diff",
+            symbols = {
+              added = icons.git.added,
+              modified = icons.git.modified,
+              removed = icons.git.removed,
+            },
+            source = function()
+              local gitsigns = vim.b.gitsigns_status_dict
+              if gitsigns then
+                return {
+                  added = gitsigns.added,
+                  modified = gitsigns.changed,
+                  removed = gitsigns.removed,
+                }
+              end
+            end,
           },
         },
-        color_icons = true, -- whether or not to add the filetype icon highlights
-        get_element_icon = function(element)
-          local icon, hl =
-              require("nvim-web-devicons").get_icon_by_filetype(element.filetype, { default = false })
-          return icon, hl
-        end,
-        show_buffer_icons = true, -- disable filetype icons for buffers
-        show_buffer_close_icons = true,
-        show_close_icon = true,
-        show_tab_indicators = true,
-        show_duplicate_prefix = true,    -- whether to show duplicate buffer prefix
-        duplicates_across_groups = true, -- whether to consider duplicate paths in different groups as duplicates
-        persist_buffer_sort = true,      -- whether or not custom sorted buffers should persist
-        move_wraps_at_ends = false,      -- whether or not the move command "wraps" at the first or last position
-        separator_style = "slant",
-        enforce_regular_tabs = false,
-        always_show_bufferline = true,
-        auto_toggle_bufferline = true,
-        hover = {
-          enabled = true,
-          delay = 200,
-          reveal = { "close" },
+        lualine_y = {
+          { "progress", separator = " ",                  padding = { left = 1, right = 0 } },
+          { "location", padding = { left = 0, right = 1 } },
         },
-        sort_by = function(buffer_a, buffer_b)
-          return buffer_a.id < buffer_b.id
-        end,
-        pick = {
-          alphabet = "abcdefghijklmopqrstuvwxyzABCDEFGHIJKLMOPQRSTUVWXYZ1234567890",
+        lualine_z = {
+          function()
+            return " " .. os.date("%R")
+          end,
         },
       },
+      extensions = { "neo-tree", "lazy", "fzf" },
+    }
 
-    })
+    -- do not add trouble symbols if aerial is enabled
+    -- And allow it to be overriden for some buffer types (see autocmds)
+    if vim.g.trouble_lualine and LazyVim.has("trouble.nvim") then
+      local trouble = require("trouble")
+      local symbols = trouble.statusline({
+        mode = "symbols",
+        groups = {},
+        title = false,
+        filter = { range = true },
+        format = "{kind_icon}{symbol.name:Normal}",
+        hl_group = "lualine_c_normal",
+      })
+      table.insert(opts.sections.lualine_c, {
+        symbols and symbols.get,
+        cond = function()
+          return vim.b.trouble_lualine ~= false and symbols.has()
+        end,
+      })
+    end
+
+    return opts
   end,
 }
