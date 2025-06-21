@@ -31,6 +31,7 @@ return { -- Autoformat
 	},
 	formatters_by_ft = {
 		lua = { "stylua" },
+		clang = { "clang_format" },
 		python = { "isort", "black" },
 		rust = { "rustfmt", lsp_format = "fallback" },
 		javascript = { "eslint_d", "prettierd", "prettier", stop_after_first = true },

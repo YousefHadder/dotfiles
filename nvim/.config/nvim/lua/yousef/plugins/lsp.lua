@@ -204,6 +204,8 @@ return {
 				"ts_ls",
 				"ruby_lsp",
 				"gopls",
+				"bashls",
+				"clangd",
 			},
 			handlers = {
 				function(server_name)
