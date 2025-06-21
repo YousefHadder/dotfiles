@@ -91,7 +91,6 @@ keymap.set('i', '<S-Tab>', 'copilot#Accept("\\<CR>")', {
   replace_keycodes = false
 })
 
-
 keymap.set(
   "n",
   "<leader>rw",

@@ -67,11 +67,9 @@ vim.api.nvim_set_hl(0, "VertSplit", {
 -- Apply the style
 vim.opt.fillchars:append(separators.blocks)
 
-
 vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 vim.opt.colorcolumn = "120"
-
 
 vim.cmd [[highlight ColorColumn ctermbg=236 guibg=#808080]]
 
