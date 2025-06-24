@@ -47,6 +47,10 @@ return { -- Autoformat
 		graphql = { "prettier" },
 		go = { "goimports", "gofmt" },
 		ruby = { "rubocop" },
+		sh = { "shfmt" },
+		bash = { "shfmt" },
+		zsh = { "shfmt" },
+		clang = { "clang-formatter" }
 	},
 	init = function()
 		-- If you want the formatexpr, here is the place to set it
