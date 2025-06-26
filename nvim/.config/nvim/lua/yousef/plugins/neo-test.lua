@@ -1,5 +1,6 @@
 return {
   "nvim-neotest/neotest",
+  event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     "nvim-neotest/nvim-nio",
     "nvim-lua/plenary.nvim",
