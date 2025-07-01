@@ -27,9 +27,17 @@ log() {
 }
 
 # --- Initial Setup ---
-DOTFILES_DIR="${HOME}/dotfiles"
 OS=$(uname)
 log "Detected OS: $OS"
+
+# Detect if running in a GitHub Codespace and set dotfiles directory accordingly
+if [ "${CODESPACES:-false}" = "true" ]; then
+  DOTFILES_DIR="/workspaces/.codespaces/.persistedshare/dotfiles"
+  log "Codespace environment detected."
+else
+  DOTFILES_DIR="${HOME}/dotfiles"
+  log "Standard environment detected."
+fi
 log "Dotfiles directory set to: ${DOTFILES_DIR}"
 
 # ==============================================================================
@@ -98,7 +106,7 @@ if [ ! -d "${HOME}/.oh-my-zsh" ]; then
   log "Installing oh‑my‑zsh..."
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 else
-    log "Oh My Zsh is already installed."
+  log "Oh My Zsh is already installed."
 fi
 
 # -------------------------------
@@ -159,10 +167,10 @@ fi
 # Copy scripts to home directory
 # -------------------------------
 if [ -d "${DOTFILES_DIR}/scripts" ]; then
-    log "Copying scripts directory to ${HOME}..."
-    cp -R "${DOTFILES_DIR}/scripts" "${HOME}/scripts"
+  log "Copying scripts directory to ${HOME}..."
+  cp -R "${DOTFILES_DIR}/scripts" "${HOME}/scripts"
 else
-    log "No scripts directory found. Skipping copy."
+  log "No scripts directory found. Skipping copy."
 fi
 
 # -------------------------------
@@ -192,15 +200,14 @@ for package in */; do
   log "Stowing package: $package"
   # If a .zshrc from oh-my-zsh exists, remove it before stowing our own.
   if [ "$package" = "zsh" ] && [ -f "${HOME}/.zshrc" ]; then
-      log "Removing existing .zshrc to be replaced by stowed version."
-      rm -f "${HOME}/.zshrc"
+    log "Removing existing .zshrc to be replaced by stowed version."
+    rm -f "${HOME}/.zshrc"
   fi
   stow -R -t "$HOME" "$package"
 done
 
 log "All dotfiles packages have been stowed successfully."
 log "--- Installation Phase Complete ---"
-
 
 # ==============================================================================
 # PART 3: FINALIZATION
