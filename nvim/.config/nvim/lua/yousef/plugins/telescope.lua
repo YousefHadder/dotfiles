@@ -52,7 +52,31 @@ return { -- Fuzzy Finder (files, lsp, etc)
 			--     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
 			--   },
 			-- },
-			-- pickers = {}
+			defaults = {
+				vimgrep_arguments = {
+					"rg",
+					"--color=never",
+					"--no-heading",
+					"--with-filename",
+					"--line-number",
+					"--column",
+					"--smart-case",
+					"--hidden",     -- Add this to include hidden files
+					"--glob", "!.git/*", -- Exclude .git directory
+				},
+			},
+			pickers = {
+				find_files = {
+					hidden = true, -- Show hidden files
+					-- or use find_command
+					find_command = { "fd", "--type", "f", "--hidden", "--exclude", ".git" },
+				},
+				live_grep = {
+					additional_args = function()
+						return { "--hidden" }
+					end,
+				},
+			},
 			extensions = {
 				["ui-select"] = {
 					require("telescope.themes").get_dropdown(),
