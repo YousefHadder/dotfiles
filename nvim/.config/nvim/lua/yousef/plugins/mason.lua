@@ -2,7 +2,15 @@ return {
 	-- Mason core - must load first
 	{
 		"williamboman/mason.nvim",
-		build = ":MasonUpdate", -- Move build command here
+		lazy = true,
+		cmd = {
+			"Mason",
+			"MasonInstall",
+			"MasonUninstall",
+			"MasonUninstallAll",
+			"MasonLog"
+		},
+		build = ":MasonUpdate",
 		config = function()
 			require("mason").setup()
 		end,
@@ -12,6 +20,7 @@ return {
 	{
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		dependencies = { "williamboman/mason.nvim" },
+		event = "VeryLazy", -- Defer tool installation
 		config = function()
 			local mason_tool_installer = require("mason-tool-installer")
 			mason_tool_installer.setup({
@@ -37,6 +46,7 @@ return {
 					"yaml-language-server",
 				},
 				debounce_hours = 96,
+				auto_update = false, -- Disable auto-updates for faster startup
 			})
 		end,
 	},
@@ -52,7 +62,7 @@ return {
 		config = function()
 			require("mason-lspconfig").setup({
 				automatic_installation = true,
-				-- Remove automatic_enable as it's deprecated
+				automatic_enable = true, -- Fix diagnostic warning
 				ensure_installed = {
 					"bashls",
 					"cssls",
@@ -78,6 +88,40 @@ return {
 	-- Mason DAP
 	{
 		"jay-babu/mason-nvim-dap.nvim",
+		lazy = true,
+		cmd = { "DapContinue", "DapToggleBreakpoint" },
+		keys = {
+			{ "<F5>",              function() require("dap").continue() end,           desc = "Continue" },
+			{ "<F10>",             function() require("dap").step_over() end,          desc = "Step over" },
+			{ "<F11>",             function() require("dap").step_into() end,          desc = "Step into" },
+			{ "<F12>",             function() require("dap").step_out() end,           desc = "Step out" },
+			{ "<leader><space>5",  function() require("dap").continue() end,           desc = "Continue" },
+			{ "<leader><space>0",  function() require("dap").step_over() end,          desc = "Step over" },
+			{ "<leader><space>1",  function() require("dap").step_into() end,          desc = "Step into" },
+			{ "<leader><space>2",  function() require("dap").step_out() end,           desc = "Step out" },
+			{ "<leader><space>b",  function() require("dap").toggle_breakpoint() end,  desc = "Toggle breakpoint" },
+			{ "<leader><space>B",  function() require("dap").set_breakpoint() end,     desc = "Breakpoint" },
+			{ "<leader><space>pr", function() require("dap").repl.open() end,          desc = "Open REPL" },
+			{ "<leader><space>pl", function() require("dap").run_last() end,           desc = "Run last" },
+			{ "<leader><space>ph", function() require("dap.ui.widgets").hover() end,   mode = { "n", "v" },       desc = "Hover widget" },
+			{ "<leader><space>pp", function() require("dap.ui.widgets").preview() end, mode = { "n", "v" },       desc = "Preview widget" },
+			{
+				"<leader><space>pf",
+				function()
+					local widgets = require("dap.ui.widgets")
+					widgets.centered_float(widgets.frames)
+				end,
+				desc = "Widget frames"
+			},
+			{
+				"<leader><space>ps",
+				function()
+					local widgets = require("dap.ui.widgets")
+					widgets.centered_float(widgets.scopes)
+				end,
+				desc = "Centre scopes"
+			},
+		},
 		dependencies = {
 			"williamboman/mason.nvim",
 			"mfussenegger/nvim-dap",
@@ -90,6 +134,7 @@ return {
 				ensure_installed = {
 					"delve",
 				},
+				automatic_installation = true, -- Fix diagnostic warning
 			})
 			require("dap-go").setup()
 			require("dapui").setup()
@@ -110,60 +155,6 @@ return {
 			dap.listeners.before.event_exited.dapui_config = function()
 				dapui.close()
 			end
-
-			-- Function key bindings
-			vim.keymap.set("n", "<F5>", function()
-				require("dap").continue()
-			end)
-			vim.keymap.set("n", "<F10>", function()
-				require("dap").step_over()
-			end)
-			vim.keymap.set("n", "<F11>", function()
-				require("dap").step_into()
-			end)
-			vim.keymap.set("n", "<F12>", function()
-				require("dap").step_out()
-			end)
-
-			-- Leader key bindings
-			vim.keymap.set("n", "<leader><space>5", function()
-				require("dap").continue()
-			end, { desc = "Continue" })
-			vim.keymap.set("n", "<leader><space>0", function()
-				require("dap").step_over()
-			end, { desc = "Step over" })
-			vim.keymap.set("n", "<leader><space>1", function()
-				require("dap").step_into()
-			end, { desc = "Step into" })
-			vim.keymap.set("n", "<leader><space>2", function()
-				require("dap").step_out()
-			end, { desc = "Step out" })
-			vim.keymap.set("n", "<Leader><space>b", function()
-				require("dap").toggle_breakpoint()
-			end, { desc = "Toggle breakpoint" })
-			vim.keymap.set("n", "<Leader><space>B", function()
-				require("dap").set_breakpoint()
-			end, { desc = "Breakpoint" })
-			vim.keymap.set("n", "<Leader><space>pr", function()
-				require("dap").repl.open()
-			end, { desc = "Open REPL" })
-			vim.keymap.set("n", "<Leader><space>pl", function()
-				require("dap").run_last()
-			end, { desc = "Run last" })
-			vim.keymap.set({ "n", "v" }, "<Leader><space>ph", function()
-				require("dap.ui.widgets").hover()
-			end, { desc = "Hover widget" })
-			vim.keymap.set({ "n", "v" }, "<Leader><space>pp", function()
-				require("dap.ui.widgets").preview()
-			end, { desc = "Preview widget" })
-			vim.keymap.set("n", "<Leader><space>pf", function()
-				local widgets = require("dap.ui.widgets")
-				widgets.centered_float(widgets.frames)
-			end, { desc = "Widget frames" })
-			vim.keymap.set("n", "<Leader><space>ps", function()
-				local widgets = require("dap.ui.widgets")
-				widgets.centered_float(widgets.scopes)
-			end, { desc = "Centre scopes" })
 		end,
 	},
 }
