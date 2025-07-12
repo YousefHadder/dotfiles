@@ -16,7 +16,7 @@ return {
 				show_folds = false,
 				question_header = "  Yousef ",
 				answer_header = "  Copilot ",
-				model = "claude-sonnet-4"
+				model = "claude-sonnet-4",
 			})
 		end,
 		keys = {
