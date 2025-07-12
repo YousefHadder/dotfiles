@@ -25,8 +25,9 @@ opt.listchars = { tab = "→ ", trail = "·", nbsp = "␣" }
 
 -- Split options
 opt.splitbelow = true -- Open horizontal splits below
-opt.splitright = true -- Open vertical splits to the right
+opt.splitright = true -- Open vertical splits to the righqt
 
+opt.laststatus = 2
 -- Search options
 opt.ignorecase = true    -- Ignore case in search
 opt.smartcase = true     -- Case sensitive if uppercase present
