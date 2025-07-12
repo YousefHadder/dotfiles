@@ -2,6 +2,9 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- Debug: Print that options are loading
+print("Loading options.lua...")
+
 -- General options
 local opt = vim.opt
 opt.mouse = "a"               -- Enable mouse support
@@ -25,9 +28,8 @@ opt.listchars = { tab = "→ ", trail = "·", nbsp = "␣" }
 
 -- Split options
 opt.splitbelow = true -- Open horizontal splits below
-opt.splitright = true -- Open vertical splits to the righqt
+opt.splitright = true -- Open vertical splits to the right
 
-opt.laststatus = 2
 -- Search options
 opt.ignorecase = true    -- Ignore case in search
 opt.smartcase = true     -- Case sensitive if uppercase present
@@ -51,14 +53,19 @@ opt.pumheight = 10 -- Popup menu height
 opt.updatetime = 50  -- Faster completion
 opt.timeoutlen = 300 -- Faster key sequence completion
 
--- Folding options
-opt.foldmethod = "expr"     -- Use Treesitter for folding
-opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-opt.foldlevel = 99          -- Start with all folds open
-opt.foldlevelstart = 99
-vim.o.foldenable = true     -- Enable folding by default
-vim.o.foldmethod = "manual" -- Default fold method
-vim.o.foldcolumn = "0"
+-- Folding options (defer to ensure Treesitter is available)
+vim.defer_fn(function()
+  if vim.treesitter.foldexpr then
+    vim.opt.foldmethod = "expr"
+    vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+  else
+    vim.opt.foldmethod = "indent"
+  end
+  vim.opt.foldlevel = 99
+  vim.opt.foldlevelstart = 99
+  vim.opt.foldenable = true
+  vim.opt.foldcolumn = "0"
+end, 100)
 
 -- Backspace options
 opt.backspace = { "start", "eol", "indent" }
@@ -72,13 +79,21 @@ local separators = {
 }
 vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#808080", bg = "#808080", bold = true })
 vim.api.nvim_set_hl(0, "VertSplit", { fg = "#808080", bg = "#808080", bold = true })
-opt.fillchars:append(separators.blocks)
+
+-- Use vim.defer_fn to set fillchars after startup
+vim.defer_fn(function()
+  vim.opt.fillchars:append(separators.blocks)
+end, 100)
 
 -- Clipboard options
-vim.schedule(function()
-  vim.o.clipboard = 'unnamedplus'
-end)
+opt.clipboard = "unnamedplus" -- Use system clipboard
 
 -- Miscellaneous options
 opt.isfname:append("@-@")
-vim.cmd [[highlight ColorColumn ctermbg=236 guibg=#808080]]
+
+-- Defer ColorColumn highlight to ensure it's set after colorscheme
+vim.defer_fn(function()
+  vim.cmd([[highlight ColorColumn ctermbg=236 guibg=#808080]])
+end, 100)
+
+print("Options.lua loaded successfully!")
