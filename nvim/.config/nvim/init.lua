@@ -24,6 +24,7 @@ opt.swapfile = false          -- Disable swap files
 opt.backup = false            -- Disable backup files
 opt.undofile = true           -- Enable persistent undo
 opt.undodir = vim.fn.stdpath("data") .. "/undo"
+opt.whichwrap = "b,s,h,l,<,>,[,]" -- Allow cursor to wrap around lines
 
 -- UI
 opt.number = true         -- Show line numbers
@@ -72,6 +73,10 @@ opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 opt.foldlevel = 99 -- Start with all folds open
 opt.foldlevelstart = 99
 
+-- Backspace options
+opt.backspace = { "start", "eol", "indent" }
+
+
 -- ============================================================================
 -- COLORSCHEME
 -- ============================================================================
@@ -80,7 +85,43 @@ opt.foldlevelstart = 99
 opt.termguicolors = true
 vim.cmd.colorscheme("slate")
 
--- List of available colorschemes
+-- Transparent background
+vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+
+-- Make other UI elements transparent
+vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
+vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "none" })
+vim.api.nvim_set_hl(0, "LineNr", { bg = "none" })
+vim.api.nvim_set_hl(0, "CursorLineNr", { bg = "none" })
+
+-- Ensure cursor line is visible but subtle
+vim.api.nvim_set_hl(0, "CursorLine", { bg = "#2a2a2a" })
+
+-- Status line appearance
+vim.api.nvim_set_hl(0, "StatusLine", { bg = "#303030", fg = "#ffffff" })
+vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "#202020", fg = "#808080" })
+
+-- Visual selection
+vim.api.nvim_set_hl(0, "Visual", { bg = "#404040" })
+
+-- Search highlighting
+vim.api.nvim_set_hl(0, "Search", { bg = "#4a4a4a", fg = "#ffffff" })
+vim.api.nvim_set_hl(0, "IncSearch", { bg = "#5a5a5a", fg = "#ffffff" })
+
+-- Popup menu
+vim.api.nvim_set_hl(0, "Pmenu", { bg = "#303030", fg = "#ffffff" })
+vim.api.nvim_set_hl(0, "PmenuSel", { bg = "#505050", fg = "#ffffff" })
+
+-- Comments color (blue with italic)
+vim.api.nvim_set_hl(0, "Comment", { fg = "#7aa2f7", italic = true })
+
+-- Line numbers with different colors for above/below
+vim.api.nvim_set_hl(0, "LineNrAbove", { fg = "#5a8e7b", bg = "none" })     -- Green tint for lines above
+vim.api.nvim_set_hl(0, "LineNrBelow", { fg = "#8e5a7b", bg = "none" })     -- Purple tint for lines below
+vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ff9e64", bg = "none", bold = true })  -- Orange for current line
+
 -- ============================================================================
 -- KEYMAPS
 -- ============================================================================
@@ -94,7 +135,7 @@ keymap({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 keymap("i", "jk", "<ESC>", { noremap = true, desc = "Exit insert mode with jk" })
 
 -- Source file
-keymap("n", "<leader>r", "<cmd> so % <CR>", { noremap = true, desc = "Exit insert mode with jk" })
+keymap("n", "<leader>r", "<cmd> so % <CR>", { noremap = true, desc = "reload config" })
 
 -- Better up/down movement
 keymap({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
@@ -576,132 +617,132 @@ keymap("i", "<C-Space>", "<C-x><C-o>", { desc = "Trigger completion" })
 keymap("i", "<C-n>", "<C-n>", { desc = "Next completion" })
 keymap("i", "<C-p>", "<C-p>", { desc = "Previous completion" })
 
--- ============================================================================
--- FILE EXPLORER (NETRW) CONFIGURATION
--- ============================================================================
-
--- Netrw settings for tree-like behavior
-vim.g.netrw_banner = 0                                 -- Hide banner
-vim.g.netrw_liststyle = 3                              -- Tree view
-vim.g.netrw_browse_split = 0                           -- Open in same window
-vim.g.netrw_altv = 1                                   -- Open splits to the right
-vim.g.netrw_winsize = 25                               -- Set width to 25%
-vim.g.netrw_keepdir = 0                                -- Keep current directory synced with browsing
-vim.g.netrw_localcopydircmd = 'cp -r'                  -- Copy directories recursively
-vim.g.netrw_list_hide = [[.*\.pyc$,.*\.pyo$,.*\.git$]] -- Hide certain files
-
--- Netrw tree-like navigation keymaps
-local function setup_netrw_maps()
-  local netrw_group = vim.api.nvim_create_augroup("NetrwMaps", { clear = true })
-
-  vim.api.nvim_create_autocmd("FileType", {
-    group = netrw_group,
-    pattern = "netrw",
-    callback = function()
-      local buf = vim.api.nvim_get_current_buf()
-      local opts = { buffer = buf, silent = true, nowait = true }
-
-      -- Tree navigation
-      vim.keymap.set("n", "h", function()
-        -- Go up one directory (parent)
-        vim.cmd("normal! -")
-      end, vim.tbl_extend("force", opts, { desc = "Go up directory" }))
-
-      vim.keymap.set("n", "l", function()
-        -- Enter directory or open file
-        vim.cmd("normal! \r")
-      end, vim.tbl_extend("force", opts, { desc = "Open directory/file" }))
-
-      vim.keymap.set("n", ".", function()
-        -- Set current directory as root
-        local line = vim.api.nvim_get_current_line()
-        if line:match("/$") then
-          -- If on a directory, change to it first
-          vim.cmd("normal! \r")
-        end
-        -- Set current directory as root
-        vim.cmd("Explore .")
-      end, vim.tbl_extend("force", opts, { desc = "Set as root directory" }))
-
-      -- Additional useful netrw mappings
-      vim.keymap.set("n", "H", function()
-        -- Toggle hidden files
-        vim.cmd("normal! a")
-      end, vim.tbl_extend("force", opts, { desc = "Toggle hidden files" }))
-
-      vim.keymap.set("n", "R", function()
-        -- Refresh directory
-        vim.cmd("edit .")
-      end, vim.tbl_extend("force", opts, { desc = "Refresh directory" }))
-
-      vim.keymap.set("n", "?", function()
-        -- Show netrw help
-        print("Netrw Tree Navigation:")
-        print("======================")
-        print("h - Go up directory")
-        print("l - Open directory/file")
-        print(". - Set current as root")
-        print("H - Toggle hidden files")
-        print("R - Refresh directory")
-        print("q - Close netrw")
-        print("")
-        print("Default netrw commands still work:")
-        print("d - Create directory")
-        print("% - Create file")
-        print("D - Delete file/directory")
-        print("r - Rename file/directory")
-        print("p - Preview file")
-        print("v - Open in vertical split")
-        print("o - Open in horizontal split")
-        print("t - Open in new tab")
-      end, vim.tbl_extend("force", opts, { desc = "Show netrw help" }))
-
-      vim.keymap.set("n", "q", function()
-        -- Close netrw
-        vim.cmd("close")
-      end, vim.tbl_extend("force", opts, { desc = "Close netrw" }))
-
-      -- File operations
-      vim.keymap.set("n", "n", function()
-        -- Create new file
-        vim.ui.input({ prompt = "New file name: " }, function(name)
-          if name and name ~= "" then
-            vim.cmd("edit " .. name)
-          end
-        end)
-      end, vim.tbl_extend("force", opts, { desc = "Create new file" }))
-
-      vim.keymap.set("n", "N", function()
-        -- Create new directory
-        vim.ui.input({ prompt = "New directory name: " }, function(name)
-          if name and name ~= "" then
-            vim.fn.mkdir(name)
-            vim.cmd("edit .")
-          end
-        end)
-      end, vim.tbl_extend("force", opts, { desc = "Create new directory" }))
-
-      -- Split operations
-      vim.keymap.set("n", "s", function()
-        -- Open in horizontal split
-        vim.cmd("normal! o")
-      end, vim.tbl_extend("force", opts, { desc = "Open in horizontal split" }))
-
-      vim.keymap.set("n", "v", function()
-        -- Open in vertical split
-        vim.cmd("normal! v")
-      end, vim.tbl_extend("force", opts, { desc = "Open in vertical split" }))
-
-      vim.keymap.set("n", "t", function()
-        -- Open in new tab
-        vim.cmd("normal! t")
-      end, vim.tbl_extend("force", opts, { desc = "Open in new tab" }))
-    end,
-  })
-end
-
--- Initialize netrw keymaps
-setup_netrw_maps()
+-- -- ============================================================================
+-- -- FILE EXPLORER (NETRW) CONFIGURATION
+-- -- ============================================================================
+--
+-- -- Netrw settings for tree-like behavior
+-- vim.g.netrw_banner = 0                                 -- Hide banner
+-- vim.g.netrw_liststyle = 3                              -- Tree view
+-- vim.g.netrw_browse_split = 0                           -- Open in same window
+-- vim.g.netrw_altv = 1                                   -- Open splits to the right
+-- vim.g.netrw_winsize = 25                               -- Set width to 25%
+-- vim.g.netrw_keepdir = 0                                -- Keep current directory synced with browsing
+-- vim.g.netrw_localcopydircmd = 'cp -r'                  -- Copy directories recursively
+-- vim.g.netrw_list_hide = [[.*\.pyc$,.*\.pyo$,.*\.git$]] -- Hide certain files
+--
+-- -- Netrw tree-like navigation keymaps
+-- local function setup_netrw_maps()
+--   local netrw_group = vim.api.nvim_create_augroup("NetrwMaps", { clear = true })
+--
+--   vim.api.nvim_create_autocmd("FileType", {
+--     group = netrw_group,
+--     pattern = "netrw",
+--     callback = function()
+--       local buf = vim.api.nvim_get_current_buf()
+--       local opts = { buffer = buf, silent = true, nowait = true }
+--
+--       -- Tree navigation
+--       vim.keymap.set("n", "h", function()
+--         -- Go up one directory (parent)
+--         vim.cmd("normal! -")
+--       end, vim.tbl_extend("force", opts, { desc = "Go up directory" }))
+--
+--       vim.keymap.set("n", "l", function()
+--         -- Enter directory or open file
+--         vim.cmd("normal! \r")
+--       end, vim.tbl_extend("force", opts, { desc = "Open directory/file" }))
+--
+--       vim.keymap.set("n", ".", function()
+--         -- Set current directory as root
+--         local line = vim.api.nvim_get_current_line()
+--         if line:match("/$") then
+--           -- If on a directory, change to it first
+--           vim.cmd("normal! \r")
+--         end
+--         -- Set current directory as root
+--         vim.cmd("Explore .")
+--       end, vim.tbl_extend("force", opts, { desc = "Set as root directory" }))
+--
+--       -- Additional useful netrw mappings
+--       vim.keymap.set("n", "H", function()
+--         -- Toggle hidden files
+--         vim.cmd("normal! a")
+--       end, vim.tbl_extend("force", opts, { desc = "Toggle hidden files" }))
+--
+--       vim.keymap.set("n", "R", function()
+--         -- Refresh directory
+--         vim.cmd("edit .")
+--       end, vim.tbl_extend("force", opts, { desc = "Refresh directory" }))
+--
+--       vim.keymap.set("n", "?", function()
+--         -- Show netrw help
+--         print("Netrw Tree Navigation:")
+--         print("======================")
+--         print("h - Go up directory")
+--         print("l - Open directory/file")
+--         print(". - Set current as root")
+--         print("H - Toggle hidden files")
+--         print("R - Refresh directory")
+--         print("q - Close netrw")
+--         print("")
+--         print("Default netrw commands still work:")
+--         print("d - Create directory")
+--         print("% - Create file")
+--         print("D - Delete file/directory")
+--         print("r - Rename file/directory")
+--         print("p - Preview file")
+--         print("v - Open in vertical split")
+--         print("o - Open in horizontal split")
+--         print("t - Open in new tab")
+--       end, vim.tbl_extend("force", opts, { desc = "Show netrw help" }))
+--
+--       vim.keymap.set("n", "q", function()
+--         -- Close netrw
+--         vim.cmd("close")
+--       end, vim.tbl_extend("force", opts, { desc = "Close netrw" }))
+--
+--       -- File operations
+--       vim.keymap.set("n", "n", function()
+--         -- Create new file
+--         vim.ui.input({ prompt = "New file name: " }, function(name)
+--           if name and name ~= "" then
+--             vim.cmd("edit " .. name)
+--           end
+--         end)
+--       end, vim.tbl_extend("force", opts, { desc = "Create new file" }))
+--
+--       vim.keymap.set("n", "N", function()
+--         -- Create new directory
+--         vim.ui.input({ prompt = "New directory name: " }, function(name)
+--           if name and name ~= "" then
+--             vim.fn.mkdir(name)
+--             vim.cmd("edit .")
+--           end
+--         end)
+--       end, vim.tbl_extend("force", opts, { desc = "Create new directory" }))
+--
+--       -- Split operations
+--       vim.keymap.set("n", "s", function()
+--         -- Open in horizontal split
+--         vim.cmd("normal! o")
+--       end, vim.tbl_extend("force", opts, { desc = "Open in horizontal split" }))
+--
+--       vim.keymap.set("n", "v", function()
+--         -- Open in vertical split
+--         vim.cmd("normal! v")
+--       end, vim.tbl_extend("force", opts, { desc = "Open in vertical split" }))
+--
+--       vim.keymap.set("n", "t", function()
+--         -- Open in new tab
+--         vim.cmd("normal! t")
+--       end, vim.tbl_extend("force", opts, { desc = "Open in new tab" }))
+--     end,
+--   })
+-- end
+--
+-- -- Initialize netrw keymaps
+-- setup_netrw_maps()
 
 -- ============================================================================
 -- LEADER KEY VISUAL FEEDBACK
@@ -754,7 +795,7 @@ end
 
 keymap("n", "<leader>sf", search_files, { desc = "Search files" })
 keymap("n", "<leader>sb", search_buffers, { desc = "Search buffers" })
-keymap("n", "<leader>sg", "<cmd>vimgrep // **/*<Left><Left><Left><Left><Left><Left>", { desc = "Search with grep" })
+keymap("n", "<leader>sg", "<cmd>vimgrep // **/*<Left><Left><Left><Left><Left><Left><CR>", { desc = "Search with grep" })
 
 -- LSP shortcuts
 keymap("n", "<leader>li", "<cmd>LspInfo<CR>", { desc = "LSP info" })
@@ -778,590 +819,590 @@ keymap("n", "<leader>cs", "<cmd>ColorSet ", { desc = "Set colorscheme" })
 -- Help keymap (shows available leader keys)
 keymap("n", "<leader>?", "<cmd>LeaderMaps<CR>", { desc = "Show available leader keymaps" })
 
--- ============================================================================
--- QUICKFIX AND LOCATION LIST
--- ============================================================================
-
-keymap("n", "[q", "<cmd>cprevious<CR>", { desc = "Previous quickfix" })
-keymap("n", "]q", "<cmd>cnext<CR>", { desc = "Next quickfix" })
-keymap("n", "<leader>qo", "<cmd>copen<CR>", { desc = "Open quickfix list" })
-keymap("n", "<leader>qc", "<cmd>cclose<CR>", { desc = "Close quickfix list" })
-
-keymap("n", "[l", "<cmd>lprevious<CR>", { desc = "Previous location" })
-keymap("n", "]l", "<cmd>lnext<CR>", { desc = "Next location" })
-keymap("n", "<leader>lo", "<cmd>lopen<CR>", { desc = "Open location list" })
-keymap("n", "<leader>lc", "<cmd>lclose<CR>", { desc = "Close location list" })
-
--- ============================================================================
--- AUTOCMDS
--- ============================================================================
-
-local augroup = vim.api.nvim_create_augroup
-local autocmd = vim.api.nvim_create_autocmd
-
--- General settings
-local general = augroup("General", { clear = true })
-
--- Highlight yanked text
-autocmd("TextYankPost", {
-  group = general,
-  desc = "Highlight yanked text",
-  callback = function()
-    vim.highlight.on_yank({ higroup = "IncSearch", timeout = 200 })
-  end,
-})
-
--- Remove trailing whitespace
-autocmd("BufWritePre", {
-  group = general,
-  desc = "Remove trailing whitespace",
-  callback = function()
-    local save_cursor = vim.fn.getpos(".")
-    vim.cmd([[%s/\s\+$//e]])
-    vim.fn.setpos(".", save_cursor)
-  end,
-})
-
--- Auto-resize splits when window is resized
-autocmd("VimResized", {
-  group = general,
-  desc = "Auto-resize splits",
-  command = "wincmd =",
-})
-
--- Close quickfix with q
-autocmd("FileType", {
-  group = general,
-  pattern = { "qf", "help", "man", "lspinfo" },
-  callback = function()
-    vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = true, silent = true })
-  end,
-})
-
--- Terminal settings
-local terminal = augroup("Terminal", { clear = true })
-
-autocmd("TermOpen", {
-  group = terminal,
-  desc = "Terminal settings",
-  callback = function()
-    vim.opt_local.number = false
-    vim.opt_local.relativenumber = false
-    vim.opt_local.signcolumn = "no"
-  end,
-})
-
--- File type specific settings
-local filetype = augroup("FileType", { clear = true })
-
--- Go
-autocmd("FileType", {
-  group = filetype,
-  pattern = "go",
-  callback = function()
-    vim.bo.expandtab = false
-    vim.bo.tabstop = 4
-    vim.bo.shiftwidth = 4
-  end,
-})
-
--- Python
-autocmd("FileType", {
-  group = filetype,
-  pattern = "python",
-  callback = function()
-    vim.bo.expandtab = true
-    vim.bo.tabstop = 4
-    vim.bo.shiftwidth = 4
-    vim.bo.softtabstop = 4
-  end,
-})
-
--- Markdown
-autocmd("FileType", {
-  group = filetype,
-  pattern = "markdown",
-  callback = function()
-    vim.wo.wrap = true
-    vim.wo.linebreak = true
-    vim.bo.textwidth = 80
-  end,
-})
-
--- YAML
-autocmd("FileType", {
-  group = filetype,
-  pattern = { "yaml", "yml" },
-  callback = function()
-    vim.bo.expandtab = true
-    vim.bo.tabstop = 2
-    vim.bo.shiftwidth = 2
-    vim.bo.softtabstop = 2
-  end,
-})
-
--- JSON
-autocmd("FileType", {
-  group = filetype,
-  pattern = "json",
-  callback = function()
-    vim.bo.expandtab = true
-    vim.bo.tabstop = 2
-    vim.bo.shiftwidth = 2
-    vim.bo.softtabstop = 2
-  end,
-})
-
--- Ruby
-autocmd("FileType", {
-  group = filetype,
-  pattern = "ruby",
-  callback = function()
-    vim.bo.expandtab = true
-    vim.bo.tabstop = 2
-    vim.bo.shiftwidth = 2
-    vim.bo.softtabstop = 2
-  end,
-})
-
--- JavaScript/TypeScript
-autocmd("FileType", {
-  group = filetype,
-  pattern = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
-  callback = function()
-    vim.bo.expandtab = true
-    vim.bo.tabstop = 2
-    vim.bo.shiftwidth = 2
-    vim.bo.softtabstop = 2
-  end,
-})
-
--- HTML/CSS
-autocmd("FileType", {
-  group = filetype,
-  pattern = { "html", "css", "scss", "less" },
-  callback = function()
-    vim.bo.expandtab = true
-    vim.bo.tabstop = 2
-    vim.bo.shiftwidth = 2
-    vim.bo.softtabstop = 2
-  end,
-})
-
--- Shell scripts
-autocmd("FileType", {
-  group = filetype,
-  pattern = { "sh", "bash", "zsh" },
-  callback = function()
-    vim.bo.expandtab = true
-    vim.bo.tabstop = 2
-    vim.bo.shiftwidth = 2
-    vim.bo.softtabstop = 2
-  end,
-})
-
--- ============================================================================
--- STATUSLINE
--- ============================================================================
-
-local function get_lsp_clients()
-  local clients = vim.lsp.get_clients({ bufnr = 0 })
-  if #clients == 0 then
-    return ""
-  end
-
-  local names = {}
-  for _, client in ipairs(clients) do
-    table.insert(names, client.name)
-  end
-
-  return " [" .. table.concat(names, ", ") .. "]"
-end
-
-local function get_diagnostics()
-  local diagnostics = vim.diagnostic.get(0)
-  local counts = { 0, 0, 0, 0 }
-
-  for _, diagnostic in ipairs(diagnostics) do
-    counts[diagnostic.severity] = counts[diagnostic.severity] + 1
-  end
-
-  local result = ""
-  if counts[1] > 0 then result = result .. " E:" .. counts[1] end
-  if counts[2] > 0 then result = result .. " W:" .. counts[2] end
-  if counts[3] > 0 then result = result .. " I:" .. counts[3] end
-  if counts[4] > 0 then result = result .. " H:" .. counts[4] end
-
-  return result
-end
-
--- Simple statusline
-vim.o.statusline = table.concat({
-  " %f",                        -- File path
-  " %m",                        -- Modified flag
-  " %r",                        -- Readonly flag
-  "%=",                         -- Right align
-  "%{v:lua.get_diagnostics()}", -- Diagnostics
-  "%{v:lua.get_lsp_clients()}", -- LSP clients
-  " %l:%c ",                    -- Line:column
-  " %p%% ",                     -- Percentage through file
-})
-
--- Make functions global so statusline can access them
-_G.get_diagnostics = get_diagnostics
-_G.get_lsp_clients = get_lsp_clients
-
--- ============================================================================
--- COMMANDS
--- ============================================================================
-
--- Useful commands
-vim.api.nvim_create_user_command("Config", "edit " .. vim.fn.stdpath("config") .. "/init.lua", { desc = "Edit config" })
-vim.api.nvim_create_user_command("Reload", "source " .. vim.fn.stdpath("config") .. "/init.lua",
-  { desc = "Reload config" })
-
--- LSP commands
-vim.api.nvim_create_user_command("LspRestart", function()
-  vim.lsp.stop_client(vim.lsp.get_clients())
-  vim.defer_fn(function()
-    vim.cmd("edit")
-  end, 500)
-end, { desc = "Restart LSP" })
-
-vim.api.nvim_create_user_command("LspInfo", function()
-  local clients = vim.lsp.get_clients({ bufnr = 0 })
-  if #clients == 0 then
-    print("No LSP clients attached to current buffer")
-    return
-  end
-
-  for _, client in ipairs(clients) do
-    print("Client: " .. client.name)
-    print("Root dir: " .. (client.config.root_dir or "unknown"))
-  end
-end, { desc = "Show LSP info" })
-
-vim.api.nvim_create_user_command("LspAvailable", function()
-  print("Checking available LSP servers...")
-  print("=====================================")
-
-  for server_name, config in pairs(servers) do
-    local cmd = config.cmd
-    if cmd and cmd[1] then
-      local available = vim.fn.executable(cmd[1]) == 1
-      local status = available and "✓ Available" or "✗ Not found"
-      local filetypes = config.filetypes and table.concat(config.filetypes, ", ") or "unknown"
-
-      print(string.format("%-15s: %s", server_name, status))
-      print(string.format("  Filetypes: %s", filetypes))
-      if not available then
-        print(string.format("  Command: %s", cmd[1]))
-      end
-      print("")
-    end
-  end
-
-  print("To install missing servers, see installation instructions.")
-end, { desc = "Check available LSP servers" })
-
-vim.api.nvim_create_user_command("LspCurrent", function()
-  local filetype = vim.bo.filetype
-  print("Current filetype: " .. filetype)
-  print("Available LSP servers for this filetype:")
-  print("=======================================")
-
-  local found = false
-  for server_name, config in pairs(servers) do
-    if config.filetypes then
-      for _, ft in ipairs(config.filetypes) do
-        if ft == filetype then
-          local cmd = config.cmd
-          if cmd and cmd[1] then
-            local available = vim.fn.executable(cmd[1]) == 1
-            local status = available and "✓ Available" or "✗ Not found"
-            print(string.format("  %-15s: %s", server_name, status))
-            found = true
-            break
-          end
-        end
-      end
-    end
-  end
-
-  if not found then
-    print("  No LSP servers configured for filetype: " .. filetype)
-  end
-end, { desc = "Check LSP servers for current filetype" })
-
--- Utility command to check providers
-vim.api.nvim_create_user_command("ProvidersEnable", function()
-  print("Re-enabling providers...")
-  vim.g.loaded_perl_provider = nil
-  vim.g.loaded_ruby_provider = nil
-  vim.g.loaded_python3_provider = nil
-  print("Providers enabled. Restart Neovim for changes to take effect.")
-  print("Make sure to install: pip install neovim, gem install neovim")
-end, { desc = "Re-enable disabled providers" })
-
--- Debug command for autocommand issues
-vim.api.nvim_create_user_command("DebugAutocmds", function()
-  print("Clearing all autocommands and reloading config...")
-  vim.cmd("autocmd!")
-  vim.cmd("source " .. vim.fn.stdpath("config") .. "/init.lua")
-end, { desc = "Clear autocommands and reload config" })
-
--- Netrw help command
-vim.api.nvim_create_user_command("NetrwHelp", function()
-  print("Netrw Tree Navigation Commands:")
-  print("===============================")
-  print("Basic Navigation:")
-  print("  h - Go up directory (parent)")
-  print("  l - Open directory or file")
-  print("  . - Set current directory as root")
-  print("  q - Close netrw window")
-  print("  ? - Show this help")
-  print("")
-  print("View Options:")
-  print("  H - Toggle hidden files")
-  print("  R - Refresh directory listing")
-  print("  i - Cycle through view types")
-  print("")
-  print("File Operations:")
-  print("  n - Create new file")
-  print("  N - Create new directory")
-  print("  % - Create new file (native)")
-  print("  d - Create directory (native)")
-  print("  D - Delete file/directory")
-  print("  r - Rename file/directory")
-  print("  p - Preview file")
-  print("")
-  print("Split Operations:")
-  print("  s - Open in horizontal split")
-  print("  v - Open in vertical split")
-  print("  t - Open in new tab")
-  print("  o - Open in horizontal split (native)")
-  print("")
-  print("Quick Access:")
-  print("  <leader>e  - Open netrw in current window")
-  print("  <leader>E  - Open netrw in horizontal split")
-  print("  <leader>ee - Open netrw in vertical split")
-end, { desc = "Show netrw help and keybindings" })
-
--- Timeout configuration commands
-vim.api.nvim_create_user_command("TimeoutSet", function(opts)
-  local timeout = tonumber(opts.args)
-  if timeout then
-    vim.opt.timeoutlen = timeout
-    print("Timeout set to " .. timeout .. "ms")
-    if timeout >= 3000 then
-      print("💡 Long timeout - great for learning keymaps!")
-    elseif timeout >= 1000 then
-      print("⚡ Balanced timeout - good for most users")
-    else
-      print("🚀 Fast timeout - for experienced users")
-    end
-  else
-    print("Current timeout: " .. vim.opt.timeoutlen:get() .. "ms")
-    print("Usage: :TimeoutSet <milliseconds>")
-    print("")
-    print("Presets:")
-    print("  :TimeoutSet 500   - Fast (experienced users)")
-    print("  :TimeoutSet 1000  - Balanced (recommended)")
-    print("  :TimeoutSet 2000  - Comfortable")
-    print("  :TimeoutSet 5000  - Learning mode")
-    print("  :TimeoutSet 0     - No timeout (wait forever)")
-  end
-end, {
-  desc = "Set leader key timeout",
-  nargs = "?",
-  complete = function()
-    return { "0", "500", "1000", "2000", "3000", "5000" }
-  end
-})
-
--- Show available leader keymaps
-vim.api.nvim_create_user_command("LeaderMaps", function()
-  print("Available <leader> keymaps:")
-  print("==========================")
-  print("Files & Search:")
-  print("  <leader>e  - File explorer")
-  print("  <leader>E  - File explorer (split)")
-  print("  <leader>sf - Search files")
-  print("  <leader>sb - Search buffers")
-  print("  <leader>sg - Search with grep")
-  print("")
-  print("LSP:")
-  print("  <leader>rn - Rename symbol")
-  print("  <leader>ca - Code action")
-  print("  <leader>f  - Format buffer")
-  print("  <leader>li - LSP info")
-  print("  <leader>la - Available LSP servers")
-  print("  <leader>lc - LSP for current filetype")
-  print("  <leader>lr - Restart LSP")
-  print("")
-  print("Workspace:")
-  print("  <leader>wa - Add workspace folder")
-  print("  <leader>wr - Remove workspace folder")
-  print("  <leader>wl - List workspace folders")
-  print("")
-  print("Buffers & Tabs:")
-  print("  <leader>bd - Delete buffer")
-  print("  <leader>tn - New tab")
-  print("  <leader>tc - Close tab")
-  print("")
-  print("Terminal:")
-  print("  <leader>tt - Open terminal")
-  print("  <leader>ts - Terminal (split)")
-  print("  <leader>tv - Terminal (vertical)")
-  print("")
-  print("Quick Actions:")
-  print("  <leader>w  - Save file")
-  print("  <leader>q  - Quit")
-  print("  <leader>Q  - Quit all")
-  print("")
-  print("Diagnostics:")
-  print("  <leader>d  - Open diagnostic float")
-  print("  <leader>dl - Add diagnostics to location list")
-  print("")
-  print("Utilities:")
-  print("  <leader>uc - Check health")
-  print("  <leader>up - Enable providers")
-  print("  <leader>ud - Debug autocommands")
-  print("")
-  print("Language-specific (when available):")
-  print("  <leader>rt - Run tests")
-  print("  <leader>rr - Run program")
-  print("  <leader>rs - Run start (JS/TS)")
-end, { desc = "Show available leader keymaps" })
-
--- Format command
-vim.api.nvim_create_user_command("Format", function()
-  vim.lsp.buf.format({ async = true })
-end, { desc = "Format buffer" })
-
--- Language-specific commands
-vim.api.nvim_create_user_command("GoTest", function()
-  vim.cmd("terminal go test ./...")
-end, { desc = "Run Go tests" })
-
-vim.api.nvim_create_user_command("GoRun", function()
-  vim.cmd("terminal go run .")
-end, { desc = "Run Go program" })
-
-vim.api.nvim_create_user_command("CargoTest", function()
-  vim.cmd("terminal cargo test")
-end, { desc = "Run Cargo tests" })
-
-vim.api.nvim_create_user_command("CargoRun", function()
-  vim.cmd("terminal cargo run")
-end, { desc = "Run Cargo program" })
-
-vim.api.nvim_create_user_command("NpmTest", function()
-  vim.cmd("terminal npm test")
-end, { desc = "Run npm tests" })
-
-vim.api.nvim_create_user_command("NpmStart", function()
-  vim.cmd("terminal npm start")
-end, { desc = "Run npm start" })
-
-vim.api.nvim_create_user_command("PythonRun", function()
-  local file = vim.fn.expand("%")
-  vim.cmd("terminal python3 " .. file)
-end, { desc = "Run Python file" })
-
-vim.api.nvim_create_user_command("RubyRun", function()
-  local file = vim.fn.expand("%")
-  vim.cmd("terminal ruby " .. file)
-end, { desc = "Run Ruby file" })
-
--- Language-specific keymaps (safe autocmd setup)
-local lang_keymaps_group = vim.api.nvim_create_augroup("LangKeymaps", { clear = true })
-
-autocmd("FileType", {
-  group = lang_keymaps_group,
-  pattern = "go",
-  callback = function()
-    keymap("n", "<leader>rt", "<cmd>GoTest<CR>", { buffer = true, desc = "Run Go tests" })
-    keymap("n", "<leader>rr", "<cmd>GoRun<CR>", { buffer = true, desc = "Run Go program" })
-  end,
-})
-
-autocmd("FileType", {
-  group = lang_keymaps_group,
-  pattern = "rust",
-  callback = function()
-    keymap("n", "<leader>rt", "<cmd>CargoTest<CR>", { buffer = true, desc = "Run Cargo tests" })
-    keymap("n", "<leader>rr", "<cmd>CargoRun<CR>", { buffer = true, desc = "Run Cargo program" })
-  end,
-})
-
-autocmd("FileType", {
-  group = lang_keymaps_group,
-  pattern = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
-  callback = function()
-    keymap("n", "<leader>rt", "<cmd>NpmTest<CR>", { buffer = true, desc = "Run npm tests" })
-    keymap("n", "<leader>rs", "<cmd>NpmStart<CR>", { buffer = true, desc = "Run npm start" })
-  end,
-})
-
-autocmd("FileType", {
-  group = lang_keymaps_group,
-  pattern = "python",
-  callback = function()
-    keymap("n", "<leader>rr", "<cmd>PythonRun<CR>", { buffer = true, desc = "Run Python file" })
-  end,
-})
-
-autocmd("FileType", {
-  group = lang_keymaps_group,
-  pattern = "ruby",
-  callback = function()
-    keymap("n", "<leader>rr", "<cmd>RubyRun<CR>", { buffer = true, desc = "Run Ruby file" })
-  end,
-})
-
-print("Neovim configuration loaded successfully!")
-
--- ============================================================================
--- SAFE STARTUP
--- ============================================================================
-
--- Defer autocommand setup to prevent conflicts
-vim.defer_fn(function()
-  setup_completion()
-end, 10)
-
--- ============================================================================
--- ADDITIONAL NOTES
--- ============================================================================
-
--- LEADER KEY BEHAVIOR:
--- After pressing <Space> (leader), Neovim waits for the next key.
--- Current timeout: 1000ms (1 second) - adjust with :TimeoutSet
+-- -- ============================================================================
+-- -- QUICKFIX AND LOCATION LIST
+-- -- ============================================================================
 --
--- Quick reference: Press <leader>? to see all available keymaps
--- Configure timeout: Use :TimeoutSet <milliseconds>
+-- keymap("n", "[q", "<cmd>cprevious<CR>", { desc = "Previous quickfix" })
+-- keymap("n", "]q", "<cmd>cnext<CR>", { desc = "Next quickfix" })
+-- keymap("n", "<leader>qo", "<cmd>copen<CR>", { desc = "Open quickfix list" })
+-- keymap("n", "<leader>qc", "<cmd>cclose<CR>", { desc = "Close quickfix list" })
 --
--- COLORSCHEME:
--- Random colorscheme selected on startup from: default, desert, evening,
--- koehler, murphy, pablo, ron, slate
--- Use <leader>cr to randomize, <leader>cl to list, <leader>cs to set specific
+-- keymap("n", "[l", "<cmd>lprevious<CR>", { desc = "Previous location" })
+-- keymap("n", "]l", "<cmd>lnext<CR>", { desc = "Next location" })
+-- keymap("n", "<leader>lo", "<cmd>lopen<CR>", { desc = "Open location list" })
+-- keymap("n", "<leader>lc", "<cmd>lclose<CR>", { desc = "Close location list" })
 --
--- If you see tmux warnings in :checkhealth, add this to your ~/.tmux.conf:
---   set-option -g focus-events on
---   set -g default-terminal "tmux-256color"
+-- -- ============================================================================
+-- -- AUTOCMDS
+-- -- ============================================================================
 --
--- If you need Python/Ruby/Perl providers, install:
---   pip install neovim
---   gem install neovim
---   cpan Neovim::Ext
--- Then remove the corresponding vim.g.loaded_*_provider = 0 lines above
-
--- ============================================================================
--- TROUBLESHOOTING
--- ============================================================================
-
--- If you get "Cannot define autocommands for ALL events" error:
--- 1. Check for conflicting vimrc files: ~/.vimrc, ~/.vim/
--- 2. Try: :autocmd! to clear all autocommands
--- 3. Restart Neovim completely
+-- local augroup = vim.api.nvim_create_augroup
+-- local autocmd = vim.api.nvim_create_autocmd
+--
+-- -- General settings
+-- local general = augroup("General", { clear = true })
+--
+-- -- Highlight yanked text
+-- autocmd("TextYankPost", {
+--   group = general,
+--   desc = "Highlight yanked text",
+--   callback = function()
+--     vim.highlight.on_yank({ higroup = "IncSearch", timeout = 200 })
+--   end,
+-- })
+--
+-- -- Remove trailing whitespace
+-- autocmd("BufWritePre", {
+--   group = general,
+--   desc = "Remove trailing whitespace",
+--   callback = function()
+--     local save_cursor = vim.fn.getpos(".")
+--     vim.cmd([[%s/\s\+$//e]])
+--     vim.fn.setpos(".", save_cursor)
+--   end,
+-- })
+--
+-- -- Auto-resize splits when window is resized
+-- autocmd("VimResized", {
+--   group = general,
+--   desc = "Auto-resize splits",
+--   command = "wincmd =",
+-- })
+--
+-- -- Close quickfix with q
+-- autocmd("FileType", {
+--   group = general,
+--   pattern = { "qf", "help", "man", "lspinfo" },
+--   callback = function()
+--     vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = true, silent = true })
+--   end,
+-- })
+--
+-- -- Terminal settings
+-- local terminal = augroup("Terminal", { clear = true })
+--
+-- autocmd("TermOpen", {
+--   group = terminal,
+--   desc = "Terminal settings",
+--   callback = function()
+--     vim.opt_local.number = false
+--     vim.opt_local.relativenumber = false
+--     vim.opt_local.signcolumn = "no"
+--   end,
+-- })
+--
+-- -- File type specific settings
+-- local filetype = augroup("FileType", { clear = true })
+--
+-- -- Go
+-- autocmd("FileType", {
+--   group = filetype,
+--   pattern = "go",
+--   callback = function()
+--     vim.bo.expandtab = false
+--     vim.bo.tabstop = 4
+--     vim.bo.shiftwidth = 4
+--   end,
+-- })
+--
+-- -- Python
+-- autocmd("FileType", {
+--   group = filetype,
+--   pattern = "python",
+--   callback = function()
+--     vim.bo.expandtab = true
+--     vim.bo.tabstop = 4
+--     vim.bo.shiftwidth = 4
+--     vim.bo.softtabstop = 4
+--   end,
+-- })
+--
+-- -- Markdown
+-- autocmd("FileType", {
+--   group = filetype,
+--   pattern = "markdown",
+--   callback = function()
+--     vim.wo.wrap = true
+--     vim.wo.linebreak = true
+--     vim.bo.textwidth = 80
+--   end,
+-- })
+--
+-- -- YAML
+-- autocmd("FileType", {
+--   group = filetype,
+--   pattern = { "yaml", "yml" },
+--   callback = function()
+--     vim.bo.expandtab = true
+--     vim.bo.tabstop = 2
+--     vim.bo.shiftwidth = 2
+--     vim.bo.softtabstop = 2
+--   end,
+-- })
+--
+-- -- JSON
+-- autocmd("FileType", {
+--   group = filetype,
+--   pattern = "json",
+--   callback = function()
+--     vim.bo.expandtab = true
+--     vim.bo.tabstop = 2
+--     vim.bo.shiftwidth = 2
+--     vim.bo.softtabstop = 2
+--   end,
+-- })
+--
+-- -- Ruby
+-- autocmd("FileType", {
+--   group = filetype,
+--   pattern = "ruby",
+--   callback = function()
+--     vim.bo.expandtab = true
+--     vim.bo.tabstop = 2
+--     vim.bo.shiftwidth = 2
+--     vim.bo.softtabstop = 2
+--   end,
+-- })
+--
+-- -- JavaScript/TypeScript
+-- autocmd("FileType", {
+--   group = filetype,
+--   pattern = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
+--   callback = function()
+--     vim.bo.expandtab = true
+--     vim.bo.tabstop = 2
+--     vim.bo.shiftwidth = 2
+--     vim.bo.softtabstop = 2
+--   end,
+-- })
+--
+-- -- HTML/CSS
+-- autocmd("FileType", {
+--   group = filetype,
+--   pattern = { "html", "css", "scss", "less" },
+--   callback = function()
+--     vim.bo.expandtab = true
+--     vim.bo.tabstop = 2
+--     vim.bo.shiftwidth = 2
+--     vim.bo.softtabstop = 2
+--   end,
+-- })
+--
+-- -- Shell scripts
+-- autocmd("FileType", {
+--   group = filetype,
+--   pattern = { "sh", "bash", "zsh" },
+--   callback = function()
+--     vim.bo.expandtab = true
+--     vim.bo.tabstop = 2
+--     vim.bo.shiftwidth = 2
+--     vim.bo.softtabstop = 2
+--   end,
+-- })
+--
+-- -- ============================================================================
+-- -- STATUSLINE
+-- -- ============================================================================
+--
+-- local function get_lsp_clients()
+--   local clients = vim.lsp.get_clients({ bufnr = 0 })
+--   if #clients == 0 then
+--     return ""
+--   end
+--
+--   local names = {}
+--   for _, client in ipairs(clients) do
+--     table.insert(names, client.name)
+--   end
+--
+--   return " [" .. table.concat(names, ", ") .. "]"
+-- end
+--
+-- local function get_diagnostics()
+--   local diagnostics = vim.diagnostic.get(0)
+--   local counts = { 0, 0, 0, 0 }
+--
+--   for _, diagnostic in ipairs(diagnostics) do
+--     counts[diagnostic.severity] = counts[diagnostic.severity] + 1
+--   end
+--
+--   local result = ""
+--   if counts[1] > 0 then result = result .. " E:" .. counts[1] end
+--   if counts[2] > 0 then result = result .. " W:" .. counts[2] end
+--   if counts[3] > 0 then result = result .. " I:" .. counts[3] end
+--   if counts[4] > 0 then result = result .. " H:" .. counts[4] end
+--
+--   return result
+-- end
+--
+-- -- Simple statusline
+-- vim.o.statusline = table.concat({
+--   " %f",                        -- File path
+--   " %m",                        -- Modified flag
+--   " %r",                        -- Readonly flag
+--   "%=",                         -- Right align
+--   "%{v:lua.get_diagnostics()}", -- Diagnostics
+--   "%{v:lua.get_lsp_clients()}", -- LSP clients
+--   " %l:%c ",                    -- Line:column
+--   " %p%% ",                     -- Percentage through file
+-- })
+--
+-- -- Make functions global so statusline can access them
+-- _G.get_diagnostics = get_diagnostics
+-- _G.get_lsp_clients = get_lsp_clients
+--
+-- -- ============================================================================
+-- -- COMMANDS
+-- -- ============================================================================
+--
+-- -- Useful commands
+-- vim.api.nvim_create_user_command("Config", "edit " .. vim.fn.stdpath("config") .. "/init.lua", { desc = "Edit config" })
+-- vim.api.nvim_create_user_command("Reload", "source " .. vim.fn.stdpath("config") .. "/init.lua",
+--   { desc = "Reload config" })
+--
+-- -- LSP commands
+-- vim.api.nvim_create_user_command("LspRestart", function()
+--   vim.lsp.stop_client(vim.lsp.get_clients())
+--   vim.defer_fn(function()
+--     vim.cmd("edit")
+--   end, 500)
+-- end, { desc = "Restart LSP" })
+--
+-- vim.api.nvim_create_user_command("LspInfo", function()
+--   local clients = vim.lsp.get_clients({ bufnr = 0 })
+--   if #clients == 0 then
+--     print("No LSP clients attached to current buffer")
+--     return
+--   end
+--
+--   for _, client in ipairs(clients) do
+--     print("Client: " .. client.name)
+--     print("Root dir: " .. (client.config.root_dir or "unknown"))
+--   end
+-- end, { desc = "Show LSP info" })
+--
+-- vim.api.nvim_create_user_command("LspAvailable", function()
+--   print("Checking available LSP servers...")
+--   print("=====================================")
+--
+--   for server_name, config in pairs(servers) do
+--     local cmd = config.cmd
+--     if cmd and cmd[1] then
+--       local available = vim.fn.executable(cmd[1]) == 1
+--       local status = available and "✓ Available" or "✗ Not found"
+--       local filetypes = config.filetypes and table.concat(config.filetypes, ", ") or "unknown"
+--
+--       print(string.format("%-15s: %s", server_name, status))
+--       print(string.format("  Filetypes: %s", filetypes))
+--       if not available then
+--         print(string.format("  Command: %s", cmd[1]))
+--       end
+--       print("")
+--     end
+--   end
+--
+--   print("To install missing servers, see installation instructions.")
+-- end, { desc = "Check available LSP servers" })
+--
+-- vim.api.nvim_create_user_command("LspCurrent", function()
+--   local filetype = vim.bo.filetype
+--   print("Current filetype: " .. filetype)
+--   print("Available LSP servers for this filetype:")
+--   print("=======================================")
+--
+--   local found = false
+--   for server_name, config in pairs(servers) do
+--     if config.filetypes then
+--       for _, ft in ipairs(config.filetypes) do
+--         if ft == filetype then
+--           local cmd = config.cmd
+--           if cmd and cmd[1] then
+--             local available = vim.fn.executable(cmd[1]) == 1
+--             local status = available and "✓ Available" or "✗ Not found"
+--             print(string.format("  %-15s: %s", server_name, status))
+--             found = true
+--             break
+--           end
+--         end
+--       end
+--     end
+--   end
+--
+--   if not found then
+--     print("  No LSP servers configured for filetype: " .. filetype)
+--   end
+-- end, { desc = "Check LSP servers for current filetype" })
+--
+-- -- Utility command to check providers
+-- vim.api.nvim_create_user_command("ProvidersEnable", function()
+--   print("Re-enabling providers...")
+--   vim.g.loaded_perl_provider = nil
+--   vim.g.loaded_ruby_provider = nil
+--   vim.g.loaded_python3_provider = nil
+--   print("Providers enabled. Restart Neovim for changes to take effect.")
+--   print("Make sure to install: pip install neovim, gem install neovim")
+-- end, { desc = "Re-enable disabled providers" })
+--
+-- -- Debug command for autocommand issues
+-- vim.api.nvim_create_user_command("DebugAutocmds", function()
+--   print("Clearing all autocommands and reloading config...")
+--   vim.cmd("autocmd!")
+--   vim.cmd("source " .. vim.fn.stdpath("config") .. "/init.lua")
+-- end, { desc = "Clear autocommands and reload config" })
+--
+-- -- Netrw help command
+-- vim.api.nvim_create_user_command("NetrwHelp", function()
+--   print("Netrw Tree Navigation Commands:")
+--   print("===============================")
+--   print("Basic Navigation:")
+--   print("  h - Go up directory (parent)")
+--   print("  l - Open directory or file")
+--   print("  . - Set current directory as root")
+--   print("  q - Close netrw window")
+--   print("  ? - Show this help")
+--   print("")
+--   print("View Options:")
+--   print("  H - Toggle hidden files")
+--   print("  R - Refresh directory listing")
+--   print("  i - Cycle through view types")
+--   print("")
+--   print("File Operations:")
+--   print("  n - Create new file")
+--   print("  N - Create new directory")
+--   print("  % - Create new file (native)")
+--   print("  d - Create directory (native)")
+--   print("  D - Delete file/directory")
+--   print("  r - Rename file/directory")
+--   print("  p - Preview file")
+--   print("")
+--   print("Split Operations:")
+--   print("  s - Open in horizontal split")
+--   print("  v - Open in vertical split")
+--   print("  t - Open in new tab")
+--   print("  o - Open in horizontal split (native)")
+--   print("")
+--   print("Quick Access:")
+--   print("  <leader>e  - Open netrw in current window")
+--   print("  <leader>E  - Open netrw in horizontal split")
+--   print("  <leader>ee - Open netrw in vertical split")
+-- end, { desc = "Show netrw help and keybindings" })
+--
+-- -- Timeout configuration commands
+-- vim.api.nvim_create_user_command("TimeoutSet", function(opts)
+--   local timeout = tonumber(opts.args)
+--   if timeout then
+--     vim.opt.timeoutlen = timeout
+--     print("Timeout set to " .. timeout .. "ms")
+--     if timeout >= 3000 then
+--       print("💡 Long timeout - great for learning keymaps!")
+--     elseif timeout >= 1000 then
+--       print("⚡ Balanced timeout - good for most users")
+--     else
+--       print("🚀 Fast timeout - for experienced users")
+--     end
+--   else
+--     print("Current timeout: " .. vim.opt.timeoutlen:get() .. "ms")
+--     print("Usage: :TimeoutSet <milliseconds>")
+--     print("")
+--     print("Presets:")
+--     print("  :TimeoutSet 500   - Fast (experienced users)")
+--     print("  :TimeoutSet 1000  - Balanced (recommended)")
+--     print("  :TimeoutSet 2000  - Comfortable")
+--     print("  :TimeoutSet 5000  - Learning mode")
+--     print("  :TimeoutSet 0     - No timeout (wait forever)")
+--   end
+-- end, {
+--   desc = "Set leader key timeout",
+--   nargs = "?",
+--   complete = function()
+--     return { "0", "500", "1000", "2000", "3000", "5000" }
+--   end
+-- })
+--
+-- -- Show available leader keymaps
+-- vim.api.nvim_create_user_command("LeaderMaps", function()
+--   print("Available <leader> keymaps:")
+--   print("==========================")
+--   print("Files & Search:")
+--   print("  <leader>e  - File explorer")
+--   print("  <leader>E  - File explorer (split)")
+--   print("  <leader>sf - Search files")
+--   print("  <leader>sb - Search buffers")
+--   print("  <leader>sg - Search with grep")
+--   print("")
+--   print("LSP:")
+--   print("  <leader>rn - Rename symbol")
+--   print("  <leader>ca - Code action")
+--   print("  <leader>f  - Format buffer")
+--   print("  <leader>li - LSP info")
+--   print("  <leader>la - Available LSP servers")
+--   print("  <leader>lc - LSP for current filetype")
+--   print("  <leader>lr - Restart LSP")
+--   print("")
+--   print("Workspace:")
+--   print("  <leader>wa - Add workspace folder")
+--   print("  <leader>wr - Remove workspace folder")
+--   print("  <leader>wl - List workspace folders")
+--   print("")
+--   print("Buffers & Tabs:")
+--   print("  <leader>bd - Delete buffer")
+--   print("  <leader>tn - New tab")
+--   print("  <leader>tc - Close tab")
+--   print("")
+--   print("Terminal:")
+--   print("  <leader>tt - Open terminal")
+--   print("  <leader>ts - Terminal (split)")
+--   print("  <leader>tv - Terminal (vertical)")
+--   print("")
+--   print("Quick Actions:")
+--   print("  <leader>w  - Save file")
+--   print("  <leader>q  - Quit")
+--   print("  <leader>Q  - Quit all")
+--   print("")
+--   print("Diagnostics:")
+--   print("  <leader>d  - Open diagnostic float")
+--   print("  <leader>dl - Add diagnostics to location list")
+--   print("")
+--   print("Utilities:")
+--   print("  <leader>uc - Check health")
+--   print("  <leader>up - Enable providers")
+--   print("  <leader>ud - Debug autocommands")
+--   print("")
+--   print("Language-specific (when available):")
+--   print("  <leader>rt - Run tests")
+--   print("  <leader>rr - Run program")
+--   print("  <leader>rs - Run start (JS/TS)")
+-- end, { desc = "Show available leader keymaps" })
+--
+-- -- Format command
+-- vim.api.nvim_create_user_command("Format", function()
+--   vim.lsp.buf.format({ async = true })
+-- end, { desc = "Format buffer" })
+--
+-- -- Language-specific commands
+-- vim.api.nvim_create_user_command("GoTest", function()
+--   vim.cmd("terminal go test ./...")
+-- end, { desc = "Run Go tests" })
+--
+-- vim.api.nvim_create_user_command("GoRun", function()
+--   vim.cmd("terminal go run .")
+-- end, { desc = "Run Go program" })
+--
+-- vim.api.nvim_create_user_command("CargoTest", function()
+--   vim.cmd("terminal cargo test")
+-- end, { desc = "Run Cargo tests" })
+--
+-- vim.api.nvim_create_user_command("CargoRun", function()
+--   vim.cmd("terminal cargo run")
+-- end, { desc = "Run Cargo program" })
+--
+-- vim.api.nvim_create_user_command("NpmTest", function()
+--   vim.cmd("terminal npm test")
+-- end, { desc = "Run npm tests" })
+--
+-- vim.api.nvim_create_user_command("NpmStart", function()
+--   vim.cmd("terminal npm start")
+-- end, { desc = "Run npm start" })
+--
+-- vim.api.nvim_create_user_command("PythonRun", function()
+--   local file = vim.fn.expand("%")
+--   vim.cmd("terminal python3 " .. file)
+-- end, { desc = "Run Python file" })
+--
+-- vim.api.nvim_create_user_command("RubyRun", function()
+--   local file = vim.fn.expand("%")
+--   vim.cmd("terminal ruby " .. file)
+-- end, { desc = "Run Ruby file" })
+--
+-- -- Language-specific keymaps (safe autocmd setup)
+-- local lang_keymaps_group = vim.api.nvim_create_augroup("LangKeymaps", { clear = true })
+--
+-- autocmd("FileType", {
+--   group = lang_keymaps_group,
+--   pattern = "go",
+--   callback = function()
+--     keymap("n", "<leader>rt", "<cmd>GoTest<CR>", { buffer = true, desc = "Run Go tests" })
+--     keymap("n", "<leader>rr", "<cmd>GoRun<CR>", { buffer = true, desc = "Run Go program" })
+--   end,
+-- })
+--
+-- autocmd("FileType", {
+--   group = lang_keymaps_group,
+--   pattern = "rust",
+--   callback = function()
+--     keymap("n", "<leader>rt", "<cmd>CargoTest<CR>", { buffer = true, desc = "Run Cargo tests" })
+--     keymap("n", "<leader>rr", "<cmd>CargoRun<CR>", { buffer = true, desc = "Run Cargo program" })
+--   end,
+-- })
+--
+-- autocmd("FileType", {
+--   group = lang_keymaps_group,
+--   pattern = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
+--   callback = function()
+--     keymap("n", "<leader>rt", "<cmd>NpmTest<CR>", { buffer = true, desc = "Run npm tests" })
+--     keymap("n", "<leader>rs", "<cmd>NpmStart<CR>", { buffer = true, desc = "Run npm start" })
+--   end,
+-- })
+--
+-- autocmd("FileType", {
+--   group = lang_keymaps_group,
+--   pattern = "python",
+--   callback = function()
+--     keymap("n", "<leader>rr", "<cmd>PythonRun<CR>", { buffer = true, desc = "Run Python file" })
+--   end,
+-- })
+--
+-- autocmd("FileType", {
+--   group = lang_keymaps_group,
+--   pattern = "ruby",
+--   callback = function()
+--     keymap("n", "<leader>rr", "<cmd>RubyRun<CR>", { buffer = true, desc = "Run Ruby file" })
+--   end,
+-- })
+--
+-- print("Neovim configuration loaded successfully!")
+--
+-- -- ============================================================================
+-- -- SAFE STARTUP
+-- -- ============================================================================
+--
+-- -- Defer autocommand setup to prevent conflicts
+-- vim.defer_fn(function()
+--   setup_completion()
+-- end, 10)
+--
+-- -- ============================================================================
+-- -- ADDITIONAL NOTES
+-- -- ============================================================================
+--
+-- -- LEADER KEY BEHAVIOR:
+-- -- After pressing <Space> (leader), Neovim waits for the next key.
+-- -- Current timeout: 1000ms (1 second) - adjust with :TimeoutSet
+-- --
+-- -- Quick reference: Press <leader>? to see all available keymaps
+-- -- Configure timeout: Use :TimeoutSet <milliseconds>
+-- --
+-- -- COLORSCHEME:
+-- -- Random colorscheme selected on startup from: default, desert, evening,
+-- -- koehler, murphy, pablo, ron, slate
+-- -- Use <leader>cr to randomize, <leader>cl to list, <leader>cs to set specific
+-- --
+-- -- If you see tmux warnings in :checkhealth, add this to your ~/.tmux.conf:
+-- --   set-option -g focus-events on
+-- --   set -g default-terminal "tmux-256color"
+-- --
+-- -- If you need Python/Ruby/Perl providers, install:
+-- --   pip install neovim
+-- --   gem install neovim
+-- --   cpan Neovim::Ext
+-- -- Then remove the corresponding vim.g.loaded_*_provider = 0 lines above
+--
+-- -- ============================================================================
+-- -- TROUBLESHOOTING
+-- -- ============================================================================
+--
+-- -- If you get "Cannot define autocommands for ALL events" error:
+-- -- 1. Check for conflicting vimrc files: ~/.vimrc, ~/.vim/
+-- -- 2. Try: :autocmd! to clear all autocommands
+-- -- 3. Restart Neovim completely
