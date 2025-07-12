@@ -2,9 +2,6 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- Debug: Print that options are loading
-print("Loading options.lua...")
-
 -- General options
 local opt = vim.opt
 opt.mouse = "a"               -- Enable mouse support
@@ -95,5 +92,3 @@ opt.isfname:append("@-@")
 vim.defer_fn(function()
   vim.cmd([[highlight ColorColumn ctermbg=236 guibg=#808080]])
 end, 100)
-
-print("Options.lua loaded successfully!")
