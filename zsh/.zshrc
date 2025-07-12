@@ -77,9 +77,6 @@ eval $(thefuck --alias fk)
 # rbenv
 eval "$(rbenv init -)"
 
-# Mise
-eval "$(mise activate zsh)"
-eval "$(~/.local/bin/mise activate)"
 
 # Zsh Plugins
 source $BREW_HOME/share/zsh-autosuggestions/zsh-autosuggestions.zsh
