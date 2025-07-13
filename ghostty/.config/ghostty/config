@@ -1,6 +1,6 @@
 # appearance
 theme = Aardvark Blue
-# background-opacity = 0.55
+background-opacity = 0.75
 background-blur-radius = 20
 font-family = VictorMono NFM
 font-size = 15

@@ -19,14 +19,14 @@ keymap.set("n", "<Right>", "<nop>", { noremap = true, silent = true })
 keymap.set("n", "vag", "ggVG")
 
 -- -- move text up and down
-keymap.set({ "n", "v" }, "K", ":m '<-2<CR>gv=gv", { noremap = true, silent = true }) -- Alt-k
-keymap.set({ "n", "v" }, "J", ":m '>+1<CR>gv=gv", { noremap = true, silent = true }) -- Alt-j
+keymap.set({ "n", "v" }, "<a-k>", ":m '<-2<CR>gv=gv", { noremap = true, silent = true }) -- Alt-k
+keymap.set({ "n", "v" }, "<a-j>", ":m '>+1<CR>gv=gv", { noremap = true, silent = true }) -- Alt-j
 
 -- source file
 keymap.set("n", "<leader>so", "<cmd> so % <CR>", { noremap = true, silent = true, desc = "Source file" })
 
 -- save file
-keymap.set({ "i", "x", "n", "s" }, "<C-w>", "<cmd>w<cr><esc>", { desc = "Save File" })
+keymap.set({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save File" })
 
 -- save file without auto-formatting
 keymap.set("n", "<leader>sn", "<cmd>noautocmd w <CR>", { noremap = true, silent = true })
@@ -85,7 +85,7 @@ keymap.set("v", ">", ">gv", { noremap = true, silent = true })
 keymap.set("v", "p", '"_dp', { noremap = true, silent = true })
 
 keymap.set('i', '<C-w>', '<Plug>(copilot-accept-word)')
-keymap.set('i', '<A-Tab>', '<Plug>(copilot-accept-line)')
+keymap.set('i', '<C-l>', '<Plug>(copilot-accept-line)')
 keymap.set('i', '<S-Tab>', 'copilot#Accept("\\<CR>")', {
   expr = true,
   replace_keycodes = false
@@ -103,3 +103,15 @@ keymap.set("n", "<leader>fp", function()
   vim.fn.setreg("+", filePath)                         -- Copy the file path to the clipboard register
   print("File path copied to clipboard: " .. filePath) -- Optional: print message to confirm
 end, { desc = "Copy file path to clipboard" })
+
+local function clean_lsp_mappings()
+  -- Remove custom LSP mappings that conflict with defaults
+  pcall(vim.keymap.del, 'n', 'gd')
+  pcall(vim.keymap.del, 'n', 'gD')
+  pcall(vim.keymap.del, 'n', 'gr')
+  pcall(vim.keymap.del, 'n', 'gI')
+  pcall(vim.keymap.del, 'n', 'gy')
+end
+
+-- Call this after your LSP setup
+clean_lsp_mappings()
