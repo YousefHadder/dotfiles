@@ -45,10 +45,10 @@ keymap("v", "p", '"_dp', { noremap = true, silent = true })
 keymap("n", "x", '"_x', { noremap = true, silent = true })
 
 -- Window navigation
-keymap("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
-keymap("n", "<C-j>", "<C-w>j", { desc = "Go to lower window" })
-keymap("n", "<C-k>", "<C-w>k", { desc = "Go to upper window" })
-keymap("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
+keymap({ "v", "n" }, "<C-h>", "<C-w>h", { desc = "Go to left window" })
+keymap({ "v", "n" }, "<C-j>", "<C-w>j", { desc = "Go to lower window" })
+keymap({ "v", "n" }, "<C-k>", "<C-w>k", { desc = "Go to upper window" })
+keymap({ "v", "n" }, "<C-l>", "<C-w>l", { desc = "Go to right window" })
 
 -- Resize with arrows
 keymap("n", "<Up>", ":resize -2<CR>", { noremap = true, silent = true })
