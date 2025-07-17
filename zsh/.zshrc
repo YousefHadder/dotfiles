@@ -38,10 +38,19 @@ alias nvim-kickstart='NVIM_APPNAME="nvim-kickstart" nvim'
 
 # Aliases
 alias cd=z
-alias ls="eza --no-filesize --grid --color=always --icons=always --no-user"
-alias l="eza -l --icons --git -a"
-alias lt="eza --tree --level=2 --long --icons --git"
-alias ltree="eza --tree --level=2 --icons --git"
+alias l="eza --icons=always"
+alias ls="eza --icons=always"
+alias ll="eza -lg --icons=always"
+alias la="eza -lag --icons=always"
+alias lt="eza -lTg --icons=always"
+alias lt2="eza -lTg --level=2 --icons=always"
+alias lt3="eza -lTg --level=3 --icons=always"
+alias lt4="eza -lTg --level=4 --icons=always"
+alias lta="eza -lTag --icons=always"
+alias lta2="eza -lTag --level=2 --icons=always"
+alias lta3="eza -lTag --level=3 --icons=always"
+alias lta4="eza -lTag --level=4 --icons=always"
+
 alias lg="lazygit"
 alias sourcezsh="omz reload && exec zsh"
 
@@ -102,6 +111,18 @@ function y() {
 		builtin cd -- "$cwd"
 	fi
 	rm -f -- "$tmp"
+}
+
+function lstree() {
+    local depth=${1:-2}
+    local dir=${2:-.}
+
+    echo "📁 Contents of $(pwd)/$dir"
+    echo "===================="
+    ls -la "$dir"
+    echo -e "\n🌳 Tree structure (depth $depth)"
+    echo "===================="
+    tree -L "$depth" "$dir"
 }
 
 # Generated for envman. Do not edit.
