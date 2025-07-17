@@ -2,18 +2,6 @@
 
 A carefully curated collection of configuration files and scripts for a streamlined development environment across macOS and Linux systems.
 
-## 📋 Table of Contents
-
-- [Overview](#overview)
-- [What's Included](#whats-included)
-- [Quick Start](#quick-start)
-- [Repository Structure](#repository-structure)
-- [Installation Guide](#installation-guide)
-- [Configuration Details](#configuration-details)
-- [Customization](#customization)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-
 ## 🎯 Overview
 
 This dotfiles repository contains my personal development environment configuration, optimized for productivity and efficiency. It includes configurations for modern terminal tools, editors, version control, and development utilities.
