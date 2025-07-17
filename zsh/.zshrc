@@ -38,6 +38,7 @@ alias nvim-kickstart='NVIM_APPNAME="nvim-kickstart" nvim'
 
 # Aliases
 alias cd=z
+
 alias l="eza --icons=always"
 alias ls="eza --icons=always"
 alias ll="eza -lg --icons=always"
@@ -52,6 +53,7 @@ alias lta3="eza -lTag --level=3 --icons=always"
 alias lta4="eza -lTag --level=4 --icons=always"
 
 alias lg="lazygit"
+
 alias sourcezsh="omz reload && exec zsh"
 
 # NVM

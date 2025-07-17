@@ -38,7 +38,7 @@ return {
 				hl.DiagnosticFloatingUnnecessary = { fg = visible, bg = "NONE" }
 				hl.DiagnosticUnderlineUnnecessary = { undercurl = true, sp = visible }
 				hl.LspInlayHint = {
-					fg = "Yellow", -- your orange fg
+					fg = "Yellow",  -- your orange fg
 					bg = c.bg_highlight, -- subtle highlighted background
 					italic = true,
 				}

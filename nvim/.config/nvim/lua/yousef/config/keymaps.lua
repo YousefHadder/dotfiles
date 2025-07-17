@@ -95,6 +95,13 @@ keymap("n", "<leader>wa", "<cmd>write<CR>", { desc = "Save file" })
 keymap("n", "<leader>q", "<cmd>quit<CR>", { desc = "Quit" })
 keymap("n", "<leader>Q", "<cmd>qall<CR>", { desc = "Quit all" })
 
+keymap('i', '<C-w>', '<Plug>(copilot-accept-word)')
+keymap('i', '<C-l>', '<Plug>(copilot-accept-line)')
+keymap('i', '<S-Tab>', 'copilot#Accept("\\<CR>")', {
+  expr = true,
+  replace_keycodes = false
+})
+
 keymap(
   "n",
   "<leader>rw",
