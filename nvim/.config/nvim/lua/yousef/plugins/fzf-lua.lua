@@ -27,12 +27,6 @@ return {
 			},
 			keymap = {
 				builtin = {
-					["<F1>"] = "toggle-help",
-					["<F2>"] = "toggle-fullscreen",
-					["<F3>"] = "toggle-preview-wrap",
-					["<F4>"] = "toggle-preview",
-					["<F5>"] = "toggle-preview-ccw",
-					["<F6>"] = "toggle-preview-cw",
 					["<S-down>"] = "preview-page-down",
 					["<S-up>"] = "preview-page-up",
 					["<S-left>"] = "preview-page-reset",
@@ -52,14 +46,10 @@ return {
 				},
 			},
 			previewers = {
-				cat = {
-					cmd = "cat",
-					args = "--number",
-				},
 				bat = {
 					cmd = "bat",
 					args = "--style=numbers,changes --color always",
-					theme = "Coldark-Dark",
+					theme = "base16",
 				},
 				head = {
 					cmd = "head",
@@ -193,4 +183,3 @@ return {
 		set_keymap("<leader>la", fzf.lsp_code_actions, "[L]SP code [A]ctions")
 	end,
 }
-

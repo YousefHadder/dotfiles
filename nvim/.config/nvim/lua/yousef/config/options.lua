@@ -76,8 +76,8 @@ local separators = {
   bold = { vert = '║', horiz = '═' },
   blocks = { vert = '▌', horiz = '▄' },
 }
-vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#808080", bg = "#808080", bold = true })
-vim.api.nvim_set_hl(0, "VertSplit", { fg = "#808080", bg = "#808080", bold = true })
+vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#5a5a5a", bg = "#5a5a5a", bold = true })
+vim.api.nvim_set_hl(0, "VertSplit", { fg = "#5a5a5a", bg = "#5a5a5a", bold = true })
 
 -- Use vim.defer_fn to set fillchars after startup
 vim.defer_fn(function()
@@ -89,5 +89,5 @@ opt.isfname:append("@-@")
 
 -- Defer ColorColumn highlight to ensure it's set after colorscheme
 vim.defer_fn(function()
-  vim.cmd([[highlight ColorColumn ctermbg=236 guibg=#808080]])
+  vim.cmd([[highlight ColorColumn ctermbg=236 guibg=#3a3a3a]])
 end, 100)

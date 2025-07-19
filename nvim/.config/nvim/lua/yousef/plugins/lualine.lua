@@ -12,17 +12,19 @@ return {
 			end
 		end
 		local colors = {
-			blue   = '#80a0ff',
-			cyan   = '#79dac8',
-			black  = '#080808',
-			white  = '#c6c6c6',
-			red    = '#ff5189',
-			violet = '#d183e8',
-			grey   = '#303030',
+			blue   = '#87afd7',
+			cyan   = '#87d7d7',
+			black  = '#0f0f0f',
+			white  = '#d0d0d0',
+			red    = '#d78787',
+			violet = '#d787d7',
+			grey   = '#2e2e2e',
+			green  = '#87af87',
+			yellow = '#d7d787',
 		}
-		local bubbles_theme = {
+		local slate_theme = {
 			normal = {
-				a = { fg = colors.black, bg = colors.violet },
+				a = { fg = colors.black, bg = colors.green },
 				b = { fg = colors.white, bg = colors.grey },
 				c = { fg = colors.white, bg = colors.black },
 			},
@@ -40,7 +42,7 @@ return {
 		require("lualine").setup({
 			options = {
 				icons_enabled = true,
-				theme = bubbles_theme,
+				theme = slate_theme,
 				component_separators = '',
 				section_separators = { left = '', right = '' },
 				disabled_filetypes = {
@@ -69,7 +71,7 @@ return {
 				lualine_x = {
 					{
 						show_macro_recording,
-						color = { fg = "#ff9e64" }, -- Optional: highlight color for recording
+						color = { fg = "#d7d787" }, -- Optional: highlight color for recording
 					},
 					"encoding",
 					"fileformat",
