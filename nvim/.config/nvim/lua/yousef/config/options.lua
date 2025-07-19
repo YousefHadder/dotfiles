@@ -5,6 +5,7 @@ vim.g.copilot_no_tab_map = true
 
 -- General options
 local opt = vim.opt
+
 opt.mouse = "a"               -- Enable mouse support
 opt.clipboard = "unnamedplus" -- Use system clipboard
 opt.swapfile = false          -- Disable swap files
@@ -82,9 +83,6 @@ vim.api.nvim_set_hl(0, "VertSplit", { fg = "#808080", bg = "#808080", bold = tru
 vim.defer_fn(function()
   vim.opt.fillchars:append(separators.blocks)
 end, 100)
-
--- Clipboard options
-opt.clipboard = "unnamedplus" -- Use system clipboard
 
 -- Miscellaneous options
 opt.isfname:append("@-@")
