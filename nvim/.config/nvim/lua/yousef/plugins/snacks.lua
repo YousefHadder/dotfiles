@@ -10,6 +10,29 @@ return {
 		},
 		indent = { enabled = true },
 		input = { enabled = true },
+		lazygit = {
+			enabled = true,
+			config = {
+				gui = {
+					theme = {
+						lightTheme = false,
+						activeBorderColor = { "#ff966c", "bold" },
+						inactiveBorderColor = { "#589ed7" },
+						selectedLineBgColor = { "#2d3f76" },
+						cherryPickedCommitBgColor = { "#c099ff" },
+						cherryPickedCommitFgColor = { "#82aaff" },
+						unstagedChangesColor = { "#c53b53" },
+						defaultFgColor = { "#c8d3f5" },
+						searchingActiveBorderColor = { "#ff966c", "bold" },
+						optionsTextColor = { "#82aaff" },
+						selectedRangeBgColor = { "#2d3f76" },
+						inactiveViewSelectedLineBgColor = { "#292e42" },
+						markedBaseCommitFgColor = { "#82aaff" },
+						markedBaseCommitBgColor = { "#ffc777" },
+					}
+				}
+			}
+		},
 		notifier = {
 			enabled = true,
 			timeout = 3000,

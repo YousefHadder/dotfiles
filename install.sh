@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Set environment variables for non-interactive operation
+export DEBIAN_FRONTEND=noninteractive
+export HOMEBREW_NO_INSTALL_CLEANUP=1
+export HOMEBREW_NO_ANALYTICS=1
+
 # ==============================================================================
 # CONSOLIDATED DOTFILES INSTALLER
 #
@@ -52,13 +57,23 @@ log "--- Starting Bootstrap Phase ---"
 if [ "$OS" == "Darwin" ]; then
   log "Running macOS specific commands..."
   log "Updating macOS..."
-  sudo softwareupdate -i -a
+  sudo softwareupdate -i -a --agree-to-license
 
   log "Checking for Xcode Command Line Tools..."
   # This will prompt for installation if not already installed.
   # In a non-interactive environment, this might need pre-configuration.
   # For GitHub Codespaces, these tools are usually available.
-  xcode-select --install >/dev/null 2>&1 || log "Xcode Command Line Tools already installed."
+  if ! xcode-select -p >/dev/null 2>&1; then
+    log "Installing Xcode Command Line Tools..."
+    touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+    PROD=$(softwareupdate -l | grep "\*.*Command Line" | head -n 1 | awk -F"*" '{print $2}' | sed -e 's/^ *//' | tr -d '\n')
+    if [ -n "$PROD" ]; then
+      softwareupdate -i "$PROD" --verbose
+    fi
+    rm /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+  else
+    log "Xcode Command Line Tools already installed."
+  fi
 elif [ "$OS" == "Linux" ]; then
   log "Running Linux specific commands..."
   if command -v apt-get >/dev/null 2>&1; then
@@ -115,6 +130,10 @@ fi
 if [ "$(basename "$SHELL")" != "zsh" ]; then
   log "zsh is not the default shell. Changing the default shell to zsh..."
   if command -v zsh >/dev/null 2>&1; then
+    # Add zsh to /etc/shells if not already present
+    if ! grep -q "$(command -v zsh)" /etc/shells; then
+      echo "$(command -v zsh)" | sudo tee -a /etc/shells >/dev/null
+    fi
     sudo chsh -s "$(command -v zsh)" "$USER"
     log "Default shell has been changed to zsh. The script will continue."
   else
