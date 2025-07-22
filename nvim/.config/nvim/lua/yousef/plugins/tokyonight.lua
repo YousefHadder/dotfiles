@@ -32,7 +32,7 @@ return {
 				bright_cyan = "#afffff",
 				comment = "#6c6c6c",
 				selection = "#3a3a3a",
-				border = "#5a5a5a",
+				border = "#87afd7",
 			}
 
 			-- Custom highlight overrides for slate theme
