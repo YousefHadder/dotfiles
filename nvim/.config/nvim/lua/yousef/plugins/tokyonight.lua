@@ -10,7 +10,7 @@ return {
 		priority = 1000,
 		config = function()
 			vim.cmd([[colorscheme slate]])
-			
+
 			-- Slate colorscheme enhancements
 			local slate_colors = {
 				bg = "#0f0f0f",
@@ -44,27 +44,27 @@ return {
 				Visual = { bg = slate_colors.selection },
 				Search = { fg = slate_colors.black, bg = slate_colors.yellow },
 				IncSearch = { fg = slate_colors.black, bg = slate_colors.bright_yellow },
-				
+
 				-- Diagnostic colors
 				DiagnosticError = { fg = slate_colors.red },
 				DiagnosticWarn = { fg = slate_colors.yellow },
 				DiagnosticInfo = { fg = slate_colors.blue },
 				DiagnosticHint = { fg = slate_colors.cyan },
-				
+
 				-- LSP highlights
 				LspInlayHint = { fg = slate_colors.comment, italic = true },
 				InlayHint = { fg = slate_colors.comment, italic = true },
-				
+
 				-- Floating windows
 				NormalFloat = { fg = slate_colors.fg, bg = "NONE" },
 				FloatBorder = { fg = slate_colors.border, bg = "NONE" },
-				
+
 				-- Popup menu
 				Pmenu = { fg = slate_colors.fg, bg = "NONE" },
 				PmenuSel = { fg = slate_colors.black, bg = slate_colors.blue },
 				PmenuSbar = { bg = slate_colors.bright_black },
 				PmenuThumb = { bg = slate_colors.white },
-				
+
 				-- Neo-tree highlights
 				NeoTreeNormal = { fg = slate_colors.fg, bg = "NONE" },
 				NeoTreeNormalNC = { fg = slate_colors.fg, bg = "NONE" },
@@ -77,7 +77,7 @@ return {
 				NeoTreeGitModified = { fg = slate_colors.yellow },
 				NeoTreeGitDeleted = { fg = slate_colors.red },
 				NeoTreeGitIgnored = { fg = slate_colors.comment },
-				
+
 				-- Bufferline highlights (transparent)
 				BufferLineFill = { bg = "NONE" },
 				BufferLineBackground = { fg = slate_colors.comment, bg = "NONE" },
@@ -93,7 +93,7 @@ return {
 				BufferLineIndicatorSelected = { fg = slate_colors.blue, bg = slate_colors.selection },
 				BufferLineModified = { fg = slate_colors.yellow, bg = "NONE" },
 				BufferLineModifiedSelected = { fg = slate_colors.yellow, bg = slate_colors.selection },
-				
+
 				-- Telescope highlights
 				TelescopeNormal = { fg = slate_colors.fg, bg = "NONE" },
 				TelescopeBorder = { fg = slate_colors.border, bg = "NONE" },
@@ -105,6 +105,9 @@ return {
 				TelescopeSelection = { fg = slate_colors.white, bg = slate_colors.selection },
 				TelescopeSelectionCaret = { fg = slate_colors.blue },
 				TelescopeMatching = { fg = slate_colors.yellow, bold = true },
+
+				ErrorMsg = { fg = slate_colors.red },
+
 			}
 
 			for group, opts in pairs(highlights) do

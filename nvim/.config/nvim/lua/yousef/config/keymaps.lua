@@ -89,6 +89,12 @@ keymap('n', '<leader>md', '<C-w>J', { desc = 'Move split down' })
 keymap('n', '<leader>mu', '<C-w>K', { desc = 'Move split up' })
 keymap('n', '<leader>mr', '<C-w>L', { desc = 'Move split right' })
 
+keymap("n", "C-h", ":TmuxNavigateLeft<CR>")
+keymap("n", "C-j", ":TmuxNavigateDown<CR>")
+keymap("n", "C-k", ":TmuxNavigateUp<CR>")
+keymap("n", "C-l", ":TmuxNavigateRight<CR>")
+
+
 -- ======================================================
 -- Buffer and Tab Management
 -- ======================================================
