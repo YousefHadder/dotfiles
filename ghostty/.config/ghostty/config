@@ -22,7 +22,9 @@ palette = 12=#afd7ff
 palette = 13=#ffafff
 palette = 14=#afffff
 palette = 15=#ffffff
-background-opacity = 0.85
+
+
+background-opacity = 0.25
 background-blur-radius = 10
 font-family = VictorMono NFM
 font-size = 15
@@ -30,7 +32,7 @@ cursor-style = underline
 cursor-style-blink = false
 cursor-invert-fg-bg = true
 mouse-hide-while-typing = true
-
+term = "xterm-256color"
 # macOS-specific settings
 config-default-files = true
 macos-titlebar-style = tabs

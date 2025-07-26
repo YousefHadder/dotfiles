@@ -2,7 +2,8 @@
 -- Date: 2025-07-26
 
 -- Load colorscheme first
-require('colors.slate').setup()
+-- require('colors.slate').setup()
+vim.cmd.colorscheme("slate")
 
 -- Load configuration modules
 require('config.options')
@@ -16,4 +17,3 @@ require('core.treesitter').setup()
 require('core.statusline').setup()
 require('core.lsp').setup()
 require('core.formatting').setup()
-
