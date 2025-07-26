@@ -22,8 +22,11 @@ palette = 12=#afd7ff
 palette = 13=#ffafff
 palette = 14=#afffff
 palette = 15=#ffffff
+
 background-opacity = 0.85
 background-blur-radius = 10
+term = "xterm-256color"
+
 font-family = VictorMono NFM
 font-size = 15
 cursor-style = underline
