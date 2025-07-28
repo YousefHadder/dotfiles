@@ -54,6 +54,7 @@ alias lta4="eza -lTag --level=4 --icons=always"
 alias lg="lazygit"
 
 alias sourcezsh="omz reload && exec zsh"
+alias sourcetmux="tmux source-file ~/.tmux.conf"
 
 # NVM
 [ -s "$BREW_HOME/opt/nvm/nvm.sh" ] && \. "$BREW_HOME/opt/nvm/nvm.sh"
