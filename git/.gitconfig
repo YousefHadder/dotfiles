@@ -33,9 +33,9 @@
 	email = yousefhadder@github.com
 [credential]
 	interactive = true
-	helper = 
 	helper = /usr/local/bin/git-credential-manager
 [credential "https://dev.azure.com"]
 	useHttpPath = true
 [alias]
 	cf = "!f() { git clone https://github.com/$1/$2; }; f"
+	co = "checkout"

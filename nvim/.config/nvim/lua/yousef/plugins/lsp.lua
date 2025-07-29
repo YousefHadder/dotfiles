@@ -3,61 +3,34 @@ return {
 	"neovim/nvim-lspconfig",
 	event = "VeryLazy",
 	dependencies = {
-		-- Mason dependencies - setup handled in mason.lua
-		"mason-org/mason.nvim",
-		"mason-org/mason-lspconfig.nvim",
+		-- Mason dependencies
+		"williamboman/mason.nvim",
+		"williamboman/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 
-		-- Useful status updates for LSP.
-		{ "j-hui/fidget.nvim",    opts = {} },
+		-- Useful status updates for LSP
+		{ "j-hui/fidget.nvim", opts = {} },
 
-		-- Allows extra capabilities provided by blink.cmp
+		-- Completion engine
 		"saghen/blink.cmp",
 	},
 	config = function()
+		-- LSP Attach autocmd for buffer-local keymaps and features
 		vim.api.nvim_create_autocmd("LspAttach", {
-			group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
+			group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
 			callback = function(event)
-				-- NOTE: Remember that Lua is a real programming language, and as such it is possible
-				-- to define small helper and utility functions so you don't have to repeat yourself.
-				--
-				-- In this case, we create a function that lets us more easily define mappings specific
-				-- for LSP related items. It sets the mode, buffer and description for us each time.
 				local map = function(keys, func, desc, mode)
 					mode = mode or "n"
 					vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 				end
 
-				map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
 
-				-- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
-				---@param client vim.lsp.Client
-				---@param method vim.lsp.protocol.Method
-				---@param bufnr? integer some lsp support methods only in specific files
-				---@return boolean
-				local function client_supports_method(client, method, bufnr)
-					if vim.fn.has("nvim-0.11") == 1 then
-						return client:supports_method(method, bufnr)
-					else
-						return client.supports_method(method, { bufnr = bufnr })
-					end
-				end
-
-				-- The following two autocommands are used to highlight references of the
-				-- word under your cursor when your cursor rests there for a little while.
-				--    See `:help CursorHold` for information about when this is executed
-				--
-				-- When you move your cursor, the highlights will be cleared (the second autocommand).
 				local client = vim.lsp.get_client_by_id(event.data.client_id)
-				if
-						client
-						and client_supports_method(
-							client,
-							vim.lsp.protocol.Methods.textDocument_documentHighlight,
-							event.buf
-						)
-				then
-					local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+				if not client then return end
+
+				-- Document highlighting
+				if client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+					local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
 					vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 						buffer = event.buf,
 						group = highlight_augroup,
@@ -71,76 +44,101 @@ return {
 					})
 
 					vim.api.nvim_create_autocmd("LspDetach", {
-						group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
-						callback = function(event2)
+						group = vim.api.nvim_create_augroup("lsp-detach", { clear = true }),
+						callback = function(detach_event)
 							vim.lsp.buf.clear_references()
-							vim.api.nvim_clear_autocmds({ group = "kickstart-lsp-highlight", buffer = event2.buf })
+							vim.api.nvim_clear_autocmds({ group = "lsp-highlight", buffer = detach_event.buf })
 						end,
 					})
 				end
 
-				-- The following code creates a keymap to toggle inlay hints in your
-				-- code, if the language server you are using supports them
-				--
-				-- This may be unwanted, since they displace some of your code
-				if
-						client
-						and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf)
-				then
+				-- Inlay hints toggle
+				if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
 					map("<leader>th", function()
 						vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
 					end, "[T]oggle Inlay [H]ints")
 				end
+
+				-- Format on save (optional)
+				if client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting) then
+					vim.api.nvim_create_autocmd("BufWritePre", {
+						buffer = event.buf,
+						callback = function()
+							vim.lsp.buf.format({ bufnr = event.buf })
+						end,
+					})
+				end
 			end,
 		})
 
-		-- Diagnostic Config
-		-- See :help vim.diagnostic.Opts
+		-- Enhanced diagnostic configuration
 		vim.diagnostic.config({
 			severity_sort = true,
-			float = { border = "rounded", source = "if_many" },
-			underline = { severity = vim.diagnostic.severity.ERROR },
-			signs = vim.g.have_nerd_font and {
-				text = {
-					[vim.diagnostic.severity.ERROR] = "󰅚 ",
-					[vim.diagnostic.severity.WARN] = "󰀪 ",
-					[vim.diagnostic.severity.INFO] = "󰋽 ",
-					[vim.diagnostic.severity.HINT] = "󰌶 ",
-				},
-			} or {},
-			virtual_lines = { current_line = true },
+			update_in_insert = false,
+			underline = {
+				severity = { min = vim.diagnostic.severity.WARN }
+			},
 			virtual_text = {
+				severity = { min = vim.diagnostic.severity.WARN },
 				source = "if_many",
 				spacing = 2,
-				format = function(diagnostic)
-					local diagnostic_message = {
-						[vim.diagnostic.severity.ERROR] = diagnostic.message,
-						[vim.diagnostic.severity.WARN] = diagnostic.message,
-						[vim.diagnostic.severity.INFO] = diagnostic.message,
-						[vim.diagnostic.severity.HINT] = diagnostic.message,
+				prefix = function(diagnostic)
+					local icons = {
+						[vim.diagnostic.severity.ERROR] = "󰅚",
+						[vim.diagnostic.severity.WARN] = "󰀪",
+						[vim.diagnostic.severity.INFO] = "󰋽",
+						[vim.diagnostic.severity.HINT] = "󰌶",
 					}
-					return diagnostic_message[diagnostic.severity]
+					return icons[diagnostic.severity] or "●"
 				end,
+			},
+			float = {
+				border = "rounded",
+				source = "if_many",
+				header = "",
+				prefix = "",
+				format = function(diagnostic)
+					return string.format("%s (%s): %s",
+						diagnostic.source or "LSP",
+						diagnostic.code or "no code",
+						diagnostic.message
+					)
+				end,
+			},
+			signs = {
+				text = {
+					[vim.diagnostic.severity.ERROR] = "󰅚",
+					[vim.diagnostic.severity.WARN] = "󰀪",
+					[vim.diagnostic.severity.INFO] = "󰋽",
+					[vim.diagnostic.severity.HINT] = "󰌶",
+				},
 			},
 		})
 
-		-- LSP servers and clients are able to communicate to each other what features they support.
-		--  By default, Neovim doesn't support everything that is in the LSP specification.
-		--  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
-		--  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
+		-- Get blink.cmp capabilities
 		local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-		-- Enable the following language servers
-		--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
-		--
-		--  Add any additional override configuration in the following tables. Available keys are:
-		--  - cmd (table): Override the default command used to start the server
-		--  - filetypes (table): Override the default list of associated filetypes for the server
-		--  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
-		--  - settings (table): Override the default settings passed when initializing the server.
-		--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+		-- Enhanced server configurations
 		local servers = {
-			clangd = {},
+			-- C/C++
+			clangd = {
+				cmd = {
+					"clangd",
+					"--background-index",
+					"--clang-tidy",
+					"--header-insertion=iwyu",
+					"--completion-style=detailed",
+					"--function-arg-placeholders",
+					"--fallback-style=llvm",
+				},
+				init_options = {
+					usePlaceholders = true,
+					completeUnimported = true,
+					clangdFileStatus = true,
+				},
+			},
+
+			-- Go
 			gopls = {
 				settings = {
 					gopls = {
@@ -151,18 +149,31 @@ return {
 							unusedparams = true,
 							fieldalignment = true,
 							shadow = true,
+							useany = true,
 						},
 						codelenses = {
 							test = true,
 							tidy = true,
 							upgrade_dependency = true,
+							generate = true,
 						},
 						completeUnimported = true,
-						directoryFilters = { "-vendor" },
+						directoryFilters = { "-vendor", "-node_modules" },
 						buildFlags = { "-tags=integration" },
+						hints = {
+							assignVariableTypes = true,
+							compositeLiteralFields = true,
+							compositeLiteralTypes = true,
+							constantValues = true,
+							functionTypeParameters = true,
+							parameterNames = true,
+							rangeVariableTypes = true,
+						},
 					},
 				},
 			},
+
+			-- TypeScript/JavaScript
 			ts_ls = {
 				filetypes = {
 					"javascript",
@@ -171,7 +182,6 @@ return {
 					"typescriptreact",
 					"vue",
 					"json",
-					"googlescript"
 				},
 				settings = {
 					typescript = {
@@ -184,6 +194,14 @@ return {
 							includeInlayFunctionLikeReturnTypeHints = true,
 							includeInlayEnumMemberValueHints = true,
 						},
+						preferences = {
+							disableSuggestions = false,
+							quotePreference = "auto",
+							includeCompletionsForModuleExports = true,
+							includeCompletionsForImportStatements = true,
+							includeCompletionsWithSnippetText = true,
+							includeAutomaticOptionalChainCompletions = true,
+						},
 					},
 					javascript = {
 						inlayHints = {
@@ -195,61 +213,134 @@ return {
 							includeInlayFunctionLikeReturnTypeHints = true,
 							includeInlayEnumMemberValueHints = true,
 						},
-					},
-				},
-			},
-			lua_ls = {
-				settings = {
-					Lua = {
-						completion = {
-							callSnippet = "Replace",
+						preferences = {
+							disableSuggestions = false,
+							quotePreference = "auto",
+							includeCompletionsForModuleExports = true,
+							includeCompletionsForImportStatements = true,
+							includeCompletionsWithSnippetText = true,
+							includeCompletionsWithInsertText = true,
 						},
 					},
 				},
 			},
-			ruby_lsp = {}
+
+			-- Lua
+			lua_ls = {
+				settings = {
+					Lua = {
+						runtime = { version = "LuaJIT" },
+						workspace = {
+							checkThirdParty = false,
+							library = {
+								"${3rd}/luv/library",
+								unpack(vim.api.nvim_get_runtime_file("", true)),
+							},
+						},
+						completion = {
+							callSnippet = "Replace",
+							postfix = ".",
+							showWord = "Fallback",
+							workspaceWord = true,
+						},
+						diagnostics = {
+							disable = { "missing-fields" },
+							globals = { "vim" },
+						},
+						hint = {
+							enable = true,
+							arrayIndex = "Disable",
+							await = true,
+							paramName = "Disable",
+							paramType = true,
+							semicolon = "Disable",
+							setType = false,
+						},
+						format = {
+							enable = false, -- Use stylua instead
+						},
+						telemetry = { enable = false },
+					},
+				},
+			},
+
+			-- Ruby
+			ruby_lsp = {
+				init_options = {
+					formatter = "auto",
+					linters = { "rubocop" },
+				},
+			},
+
+			-- Bash
+			bashls = {
+				filetypes = { "sh", "bash", "zsh" },
+			},
+
+			-- Python
+			pyright = {
+				settings = {
+					python = {
+						analysis = {
+							autoSearchPaths = true,
+							useLibraryCodeForTypes = true,
+							diagnosticMode = "workspace",
+						},
+					},
+				},
+			},
 		}
 
-		-- Ensure the servers and tools above are installed
-		--
-		-- To check the current status of installed tools and/or manually install
-		-- other tools, you can run
-		--    :Mason
-		--
-		-- You can press `g?` for help in this menu.
-		--
-		-- `mason` had to be setup earlier: to configure its options see the
-		-- `dependencies` table for `nvim-lspconfig` above.
-		--
-		-- You can add other tools here that you want Mason to install
-		-- for you, so that they are available from within Neovim.
-		local ensure_installed = vim.tbl_keys(servers or {})
+		-- Mason tool installer setup
+		local ensure_installed = vim.tbl_keys(servers)
 		vim.list_extend(ensure_installed, {
-			"stylua", -- Used to format Lua code
-		})
-		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+			-- Formatters
+			"stylua",
+			"prettier",
+			"black",
+			"gofumpt",
+			"rubocop",
 
+			-- Linters
+			"eslint_d",
+			"shellcheck",
+			"golangci-lint",
+		})
+
+		require("mason-tool-installer").setup({
+			ensure_installed = ensure_installed,
+			auto_update = true,
+			run_on_start = true,
+		})
+
+		-- Mason LSP setup with enhanced handlers
 		require("mason-lspconfig").setup({
-			ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-			automatic_installation = false,
-			automatic_enable = {
-				"lua_ls",
-				"ts_ls",
-				"ruby_lsp",
-				"gopls",
-				"bashls",
-				"clangd",
-			},
+			ensure_installed = vim.tbl_keys(servers),
+			automatic_installation = true,
 			handlers = {
+				-- Default handler
 				function(server_name)
 					local server = servers[server_name] or {}
-					-- This handles overriding only values explicitly passed
-					-- by the server configuration above. Useful when disabling
-					-- certain features of an LSP (for example, turning off formatting for ts_ls)
 					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
 					require("lspconfig")[server_name].setup(server)
 				end,
+
+				-- Disable tsserver if using ts_ls
+				["tsserver"] = function() end,
 			},
 		})
+
+		-- Global LSP settings
+		vim.lsp.set_log_level("WARN")
+
+		-- Improve LSP performance
+		local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+		function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+			opts = opts or {}
+			opts.border = opts.border or "rounded"
+			opts.max_width = opts.max_width or 80
+			opts.max_height = opts.max_height or 20
+			return orig_util_open_floating_preview(contents, syntax, opts, ...)
+		end
 	end,
 }
