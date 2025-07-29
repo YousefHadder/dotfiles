@@ -2,35 +2,35 @@
 # NOTE: can combined with tmTheme (sublime colorshceme file) for preview code highlight
 # syntect_theme = "path/to/tmTheme"
 
-cwd = { fg = "#828bb8", italic = true }
+cwd = { fg = "#ebebf4", italic = true }
 
 # Hovered
-hovered         = { bg = "#2f334d" }
-preview_hovered = { bg = "#2f334d" }
+hovered         = { bg = "#557799" }
+preview_hovered = { bg = "#557799" }
 
 # Find
-find_keyword  = { fg = "#1e2030", bg = "#ff966c", bold = true }
-find_position = { fg = "#0db9d7", bg = "#203346", bold = true }
+find_keyword  = { fg = "#19191f", bg = "#ffcc99", bold = true }
+find_position = { fg = "#89A7B1", bg = "#515166", bold = true }
 
 # Marker
-marker_copied   = { fg = "#4fd6be", bg = "#4fd6be" }
-marker_cut      = { fg = "#ff757f", bg = "#ff757f" }
-marker_marked   = { fg = "#c099ff", bg = "#c099ff" }
-marker_selected = { fg = "#82aaff", bg = "#82aaff" }
+marker_copied   = { fg = "#337700", bg = "#337700" }
+marker_cut      = { fg = "#cc4455", bg = "#cc4455" }
+marker_marked   = { fg = "#ffccff", bg = "#ffccff" }
+marker_selected = { fg = "#9eb2d9", bg = "#9eb2d9" }
 
 # Tab
-tab_active   = { fg = "#c8d3f5", bg = "#2f334d" }
-tab_inactive = { fg = "#3b4261", bg = "#222436" }
+tab_active   = { fg = "#ebebf4", bg = "#557799" }
+tab_inactive = { fg = "#515166", bg = "#19191f" }
 tab_width    = 1
 
 # Count
-count_copied   = { fg = "#c8d3f5", bg = "#41a6b5" }
-count_cut      = { fg = "#c8d3f5", bg = "#c53b53" }
-count_selected = { fg = "#c8d3f5", bg = "#3e68d7" }
+count_copied   = { fg = "#ebebf4", bg = "#337700" }
+count_cut      = { fg = "#ebebf4", bg = "#cc4455" }
+count_selected = { fg = "#ebebf4", bg = "#566981" }
 
 # Border
 border_symbol = "│"
-border_style  = { fg = "#589ed7" }
+border_style  = { fg = "#89A7B1" }
 
 [mode]
 normal_main = { fg = "#1b1d2b", bg = "#82aaff", bold = true }

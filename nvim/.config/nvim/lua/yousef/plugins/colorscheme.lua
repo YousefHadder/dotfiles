@@ -11,28 +11,28 @@ return {
 		config = function()
 			vim.cmd([[colorscheme slate]])
 
-			-- Slate colorscheme enhancements
+			-- Slate colorscheme enhancements - matching slate.vim
 			local slate_colors = {
-				bg = "#0f0f0f",
-				fg = "#d0d0d0",
+				bg = "#19191f",
+				fg = "#ebebf4",
 				black = "#2e2e2e",
-				red = "#d78787",
+				red = "#cc4455",
 				green = "#87af87",
-				yellow = "#d7d787",
-				blue = "#87afd7",
-				magenta = "#d787d7",
-				cyan = "#87d7d7",
+				yellow = "#ffcc99",
+				blue = "#566981",
+				magenta = "#ffccff",
+				cyan = "#89A7B1",
 				white = "#ffffff",
-				bright_black = "#666666",
-				bright_red = "#ffafaf",
-				bright_green = "#afd7af",
-				bright_yellow = "#ffffaf",
-				bright_blue = "#afd7ff",
-				bright_magenta = "#ffaff",
-				bright_cyan = "#afffff",
-				comment = "#6c6c6c",
-				selection = "#3a3a3a",
-				border = "#87afd7",
+				bright_black = "#515166",
+				bright_red = "#cc4455",
+				bright_green = "#337700",
+				bright_yellow = "#ffeecc",
+				bright_blue = "#9eb2d9",
+				bright_magenta = "#ffccff",
+				bright_cyan = "#bbddff",
+				comment = "#515166",
+				selection = "#557799",
+				border = "#89A7B1",
 			}
 
 			-- Custom highlight overrides for slate theme

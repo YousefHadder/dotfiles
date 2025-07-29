@@ -79,10 +79,10 @@ export FZF_CTRL_R_OPTS="
 export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
 export FZF_DEFAULT_OPTS="--style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' --height 50% --layout=default --border --color=hl:#2dd4bf --layout=default --border --color=hl:#2dd4bf"
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
-  --color=fg:#d0d0d0,fg+:#d0d0d0,bg:#0f0f0f,bg+:#2e2e2e
-  --color=hl:#87afd7,hl+:#afd7ff,info:#d7d787,marker:#87af87
-  --color=prompt:#d787d7,spinner:#87d7d7,pointer:#87d7d7,header:#666666
-  --color=border:#87afd7,separator:#666666,label:#d0d0d0,query:#d0d0d0
+  --color=fg:#ebebf4,fg+:#ebebf4,bg:#19191f,bg+:#557799
+  --color=hl:#89A7B1,hl+:#9eb2d9,info:#ffcc99,marker:#337700
+  --color=prompt:#cc4455,spinner:#89A7B1,pointer:#89A7B1,header:#515166
+  --color=border:#89A7B1,separator:#515166,label:#ebebf4,query:#ebebf4
   --border="rounded" --border-label="" --preview-window="border-rounded" --prompt="> "
   --marker=">" --pointer="◆" --separator="─" --scrollbar="│"'
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always -n --line-range :500 {}'"

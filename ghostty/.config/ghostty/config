@@ -1,26 +1,26 @@
 # appearance
 # theme = Aardvark Blue
 
-# Slate colorscheme (matching Neovim)
-background = 0f0f0f
-foreground = d0d0d0
+# Slate colorscheme (matching slate.vim)
+background = 19191f
+foreground = ebebf4
 
-# Terminal colors
-palette = 0=#2e2e2e
-palette = 1=#d78787
-palette = 2=#87af87
-palette = 3=#d7d787
-palette = 4=#87afd7
-palette = 5=#d787d7
-palette = 6=#87d7d7
-palette = 7=#ffffff
-palette = 8=#666666
-palette = 9=#ffafaf
-palette = 10=#afd7af
-palette = 11=#ffffaf
-palette = 12=#afd7ff
-palette = 13=#ffafff
-palette = 14=#afffff
+# Terminal colors (based on slate.vim)
+palette = 0=#19191f
+palette = 1=#cc4455
+palette = 2=#337700
+palette = 3=#ffcc99
+palette = 4=#566981
+palette = 5=#ffccff
+palette = 6=#89A7B1
+palette = 7=#ebebf4
+palette = 8=#515166
+palette = 9=#cc4455
+palette = 10=#337700
+palette = 11=#ffeecc
+palette = 12=#9eb2d9
+palette = 13=#ffccff
+palette = 14=#bbddff
 palette = 15=#ffffff
 
 background-opacity = 0.85
