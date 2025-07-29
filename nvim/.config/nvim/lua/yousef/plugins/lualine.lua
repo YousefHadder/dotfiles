@@ -3,6 +3,7 @@ return {
 	event = "VeryLazy",
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	config = function()
+		vim.opt.laststatus = 2
 		local function show_macro_recording()
 			local recording_register = vim.fn.reg_recording()
 			if recording_register == "" then
@@ -36,7 +37,7 @@ return {
 			inactive = {
 				a = { fg = colors.white, bg = colors.black },
 				b = { fg = colors.white, bg = colors.black },
-				c = { fg = colors.white },
+				c = { fg = colors.white, bg = colors.black },
 			},
 		}
 		require("lualine").setup({
@@ -81,12 +82,17 @@ return {
 				lualine_z = { "location" },
 			},
 			inactive_sections = {
-				lualine_a = {},
-				lualine_b = {},
-				lualine_c = { "filename" },
-				lualine_x = { "location" },
-				lualine_y = {},
-				lualine_z = {},
+				lualine_a = { "mode" },
+				lualine_b = { "branch" },
+				lualine_c = {
+					{
+						"filename",
+						path = 1,
+					}
+				},
+				lualine_x = { "filetype" },
+				lualine_y = { "progress" },
+				lualine_z = { "location" },
 			},
 			tabline = {},
 			winbar = {},
