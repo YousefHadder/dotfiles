@@ -108,6 +108,9 @@ return {
 
 				ErrorMsg = { fg = slate_colors.red },
 
+				-- Matching parentheses/brackets - subtle background to keep cursor visible
+				MatchParen = { bg = slate_colors.bright_black, fg = slate_colors.white },
+
 			}
 
 			for group, opts in pairs(highlights) do

@@ -11,7 +11,7 @@ if not vim.loop.fs_stat(lazypath) then
 		"--branch=stable",
 		lazypath,
 	})
-	
+
 	if not success then
 		vim.notify("Failed to clone lazy.nvim", vim.log.levels.ERROR)
 		return
