@@ -24,6 +24,7 @@ return {
 					vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 				end
 
+				map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 
 				local client = vim.lsp.get_client_by_id(event.data.client_id)
 				if not client then return end
