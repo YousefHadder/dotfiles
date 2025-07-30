@@ -2,5 +2,4 @@
 --ignore=DS_Store
 --ignore=Brewfile
 --ignore=install.sh
---ignore=scripts
- 
+
