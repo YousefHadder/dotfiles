@@ -252,9 +252,6 @@ return {
 		},
 
 		-- Add cmdline configuration as a separate section
-		cmdline = {
-			sources = {},
-		},
 		snippets = {
 			expand = function(snippet) vim.snippet.expand(snippet) end,
 			active = function(filter)
