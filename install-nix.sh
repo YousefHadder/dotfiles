@@ -105,9 +105,9 @@ fi
 
 # Replace placeholder username with actual username in config files
 log "Updating configuration files with username: $USERNAME"
-sed -i.bak "s/builtins\.getEnv \"USER\"/\"$USERNAME\"/g" flake.nix
-sed -i.bak "s/builtins\.getEnv \"USER\"/\"$USERNAME\"/g" home.nix
-sed -i.bak "s/builtins\.getEnv \"HOME\"/\"$HOME\"/g" home.nix
+sed -i.bak 's/builtins\.getEnv "USER"/"'"$USERNAME"'"/g' flake.nix
+sed -i.bak 's/builtins\.getEnv "USER"/"'"$USERNAME"'"/g' home.nix
+sed -i.bak 's|builtins\.getEnv "HOME"|"'"$HOME"'"|g' home.nix
 
 # Apply the home-manager configuration
 log "Applying home-manager configuration: $HM_CONFIG"
