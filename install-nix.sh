@@ -103,12 +103,29 @@ else
   log "home-manager is already available"
 fi
 
+# Replace placeholder username with actual username in config files
+log "Updating configuration files with username: $USERNAME"
+sed -i.bak "s/builtins\.getEnv \"USER\"/\"$USERNAME\"/g" flake.nix
+sed -i.bak "s/builtins\.getEnv \"USER\"/\"$USERNAME\"/g" home.nix
+sed -i.bak "s/builtins\.getEnv \"HOME\"/\"$HOME\"/g" home.nix
+
 # Apply the home-manager configuration
 log "Applying home-manager configuration: $HM_CONFIG"
 if nix run home-manager/master -- switch --flake ".#$HM_CONFIG"; then
   success "Home-manager configuration applied successfully"
+  
+  # Restore original files after successful application
+  log "Restoring original configuration files"
+  mv flake.nix.bak flake.nix 2>/dev/null || true
+  mv home.nix.bak home.nix 2>/dev/null || true
 else
   error "Failed to apply home-manager configuration"
+  
+  # Restore original files on failure
+  log "Restoring original configuration files due to failure"
+  mv flake.nix.bak flake.nix 2>/dev/null || true
+  mv home.nix.bak home.nix 2>/dev/null || true
+  
   warn "You may need to resolve conflicts manually"
   exit 1
 fi
