@@ -18,28 +18,25 @@
       pkgs = nixpkgs.legacyPackages.${system};
       darwinPkgs = nixpkgs.legacyPackages.${darwinSystem};
       x86DarwinPkgs = nixpkgs.legacyPackages.${x86DarwinSystem};
+      
+      # Get username from environment variable or default to "user"
+      username = builtins.getEnv "USER";
+      
+      mkHomeConfiguration = system: pkgs: {
+        pkgs = pkgs;
+        modules = [ ./home.nix ];
+        extraSpecialArgs = { inherit system; };
+      };
     in {
       homeConfigurations = {
         # Linux configuration
-        "yousef@linux" = home-manager.lib.homeManagerConfiguration {
-          pkgs = pkgs;
-          modules = [ ./home.nix ];
-          extraSpecialArgs = { inherit system; };
-        };
+        "${username}@linux" = home-manager.lib.homeManagerConfiguration (mkHomeConfiguration system pkgs);
         
         # macOS Apple Silicon configuration
-        "yousef@darwin" = home-manager.lib.homeManagerConfiguration {
-          pkgs = darwinPkgs;
-          modules = [ ./home.nix ];
-          extraSpecialArgs = { system = darwinSystem; };
-        };
+        "${username}@darwin" = home-manager.lib.homeManagerConfiguration (mkHomeConfiguration darwinSystem darwinPkgs);
         
         # macOS Intel configuration
-        "yousef@darwin-x86" = home-manager.lib.homeManagerConfiguration {
-          pkgs = x86DarwinPkgs;
-          modules = [ ./home.nix ];
-          extraSpecialArgs = { system = x86DarwinSystem; };
-        };
+        "${username}@darwin-x86" = home-manager.lib.homeManagerConfiguration (mkHomeConfiguration x86DarwinSystem x86DarwinPkgs);
       };
     };
 }

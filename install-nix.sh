@@ -31,17 +31,20 @@ ARCH=$(uname -m)
 log "Detected OS: $OS"
 log "Detected Architecture: $ARCH"
 
+# Get current username
+USERNAME=$(whoami)
+
 # Determine the correct home-manager configuration
 if [ "$OS" = "Darwin" ]; then
   if [ "$ARCH" = "arm64" ]; then
-    HM_CONFIG="yousef@darwin"
+    HM_CONFIG="${USERNAME}@darwin"
     log "Using macOS Apple Silicon configuration"
   else
-    HM_CONFIG="yousef@darwin-x86"
+    HM_CONFIG="${USERNAME}@darwin-x86"
     log "Using macOS Intel configuration"
   fi
 elif [ "$OS" = "Linux" ]; then
-  HM_CONFIG="yousef@linux"
+  HM_CONFIG="${USERNAME}@linux"
   log "Using Linux configuration"
 else
   error "Unsupported operating system: $OS"
