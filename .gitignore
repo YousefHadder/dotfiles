@@ -1,2 +1,8 @@
 nvim/.config/nvim2
 .DS_Store
+
+# Nix-related files
+result
+result-*
+.direnv/
+flake.lock

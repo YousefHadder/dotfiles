@@ -11,6 +11,290 @@ return {
     -- Move buffer to the right
     vim.keymap.set("n", "<A-l>", ":BufferLineMoveNext<CR>", { silent = true })
     bufferline.setup({
+      highlights = {
+        -- Base colors from slate.vim
+        fill = {
+          fg = '#666666', -- Line numbers color from slate.vim
+          bg = '#262626', -- Background from slate.vim
+        },
+        background = {
+          fg = '#666666', -- Comment color from slate.vim
+          bg = '#333333', -- TabLine bg from slate.vim line 43
+        },
+        tab = {
+          fg = '#666666', -- Comment color from slate.vim
+          bg = '#333333', -- TabLine bg from slate.vim
+        },
+        tab_selected = {
+          fg = '#ffffff', -- Normal fg from slate.vim
+          bg = '#666666', -- StatusLine bg from slate.vim
+        },
+        tab_separator = {
+          fg = '#262626', -- Background from slate.vim
+          bg = '#333333', -- TabLine bg from slate.vim
+        },
+        tab_separator_selected = {
+          fg = '#262626', -- Background from slate.vim
+          bg = '#666666', -- StatusLine bg from slate.vim
+          sp = '#666666',
+          underline = false,
+        },
+        tab_close = {
+          fg = '#ff8787', -- TabLineFill from slate.vim line 44
+          bg = '#333333',
+        },
+        close_button = {
+          fg = '#ff8787', -- Identifier color from slate.vim
+          bg = '#333333',
+        },
+        close_button_visible = {
+          fg = '#ff8787',
+          bg = '#333333',
+        },
+        close_button_selected = {
+          fg = '#ff8787', -- StatusLine fg from slate.vim
+          bg = '#666666',
+        },
+        buffer_visible = {
+          fg = '#ffffff', -- Comment color from slate.vim
+          bg = '#333333',
+        },
+        buffer_selected = {
+          fg = '#ffffff', -- Normal fg from slate.vim
+          bg = '#666666', -- StatusLine bg from slate.vim
+          bold = true,
+          italic = false,
+        },
+        numbers = {
+          fg = '#666666',
+          bg = '#333333',
+        },
+        numbers_visible = {
+          fg = '#666666',
+          bg = '#333333',
+        },
+        numbers_selected = {
+          fg = '#ffffff', -- StatusLine fg from slate.vim
+          bg = '#666666',
+          bold = true,
+          italic = false,
+        },
+        diagnostic = {
+          fg = '#666666',
+          bg = '#333333',
+        },
+        diagnostic_visible = {
+          fg = '#666666',
+          bg = '#333333',
+        },
+        diagnostic_selected = {
+          fg = '#000000',
+          bg = '#666666',
+          bold = true,
+          italic = false,
+        },
+        hint = {
+          fg = '#00cdcd', -- darkcyan from slate.vim
+          sp = '#00cdcd',
+          bg = '#333333',
+        },
+        hint_visible = {
+          fg = '#00cdcd',
+          bg = '#333333',
+        },
+        hint_selected = {
+          fg = '#00cdcd',
+          bg = '#666666',
+          sp = '#00cdcd',
+          bold = true,
+          italic = false,
+        },
+        hint_diagnostic = {
+          fg = '#00cdcd',
+          sp = '#00cdcd',
+          bg = '#333333',
+        },
+        hint_diagnostic_visible = {
+          fg = '#00cdcd',
+          bg = '#333333',
+        },
+        hint_diagnostic_selected = {
+          fg = '#00cdcd',
+          bg = '#666666',
+          sp = '#00cdcd',
+          bold = true,
+          italic = false,
+        },
+        info = {
+          fg = '#5f87d7', -- Statement/Type color from slate.vim
+          sp = '#5f87d7',
+          bg = '#333333',
+        },
+        info_visible = {
+          fg = '#5f87d7',
+          bg = '#333333',
+        },
+        info_selected = {
+          fg = '#5f87d7',
+          bg = '#666666',
+          sp = '#5f87d7',
+          bold = true,
+          italic = false,
+        },
+        info_diagnostic = {
+          fg = '#5f87d7',
+          sp = '#5f87d7',
+          bg = '#333333',
+        },
+        info_diagnostic_visible = {
+          fg = '#5f87d7',
+          bg = '#333333',
+        },
+        info_diagnostic_selected = {
+          fg = '#5f87d7',
+          bg = '#666666',
+          sp = '#5f87d7',
+          bold = true,
+          italic = false,
+        },
+        warning = {
+          fg = '#ff8787', -- WarningMsg from slate.vim line 63
+          sp = '#ff8787',
+          bg = '#333333',
+        },
+        warning_visible = {
+          fg = '#ff8787',
+          bg = '#333333',
+        },
+        warning_selected = {
+          fg = '#ff8787',
+          bg = '#666666',
+          sp = '#ff8787',
+          bold = true,
+          italic = false,
+        },
+        warning_diagnostic = {
+          fg = '#ff8787',
+          sp = '#ff8787',
+          bg = '#333333',
+        },
+        warning_diagnostic_visible = {
+          fg = '#ff8787',
+          bg = '#333333',
+        },
+        warning_diagnostic_selected = {
+          fg = '#ff8787',
+          bg = '#666666',
+          sp = '#ff8787',
+          bold = true,
+          italic = false,
+        },
+        error = {
+          fg = '#ff0000', -- Error color from slate.vim
+          bg = '#333333',
+          sp = '#ff0000',
+        },
+        error_visible = {
+          fg = '#ff0000',
+          bg = '#333333',
+        },
+        error_selected = {
+          fg = '#ff0000',
+          bg = '#666666',
+          sp = '#ff0000',
+          bold = true,
+          italic = false,
+        },
+        error_diagnostic = {
+          fg = '#ff0000',
+          bg = '#333333',
+          sp = '#ff0000',
+        },
+        error_diagnostic_visible = {
+          fg = '#ff0000',
+          bg = '#333333',
+        },
+        error_diagnostic_selected = {
+          fg = '#ff0000',
+          bg = '#666666',
+          sp = '#ff0000',
+          bold = true,
+          italic = false,
+        },
+        modified = {
+          fg = '#00ff00', -- Structure color from slate.vim
+          bg = '#333333',
+        },
+        modified_visible = {
+          fg = '#00ff00',
+          bg = '#333333',
+        },
+        modified_selected = {
+          fg = '#00ff00',
+          bg = '#666666',
+        },
+        duplicate_selected = {
+          fg = '#ffffff',
+          bg = '#666666',
+          italic = true,
+        },
+        duplicate_visible = {
+          fg = '#666666',
+          bg = '#333333',
+          italic = true,
+        },
+        duplicate = {
+          fg = '#666666',
+          bg = '#333333',
+          italic = true,
+        },
+        separator_selected = {
+          fg = '#262626',
+          bg = '#666666',
+        },
+        separator_visible = {
+          fg = '#262626',
+          bg = '#333333',
+        },
+        separator = {
+          fg = '#262626',
+          bg = '#333333',
+        },
+        indicator_visible = {
+          fg = '#666666',
+          bg = '#333333',
+        },
+        indicator_selected = {
+          fg = '#000000',
+          bg = '#666666',
+        },
+        pick_selected = {
+          fg = '#ffd700', -- Define color from slate.vim
+          bg = '#666666',
+          bold = true,
+          italic = false,
+        },
+        pick_visible = {
+          fg = '#ffd700',
+          bg = '#333333',
+          bold = true,
+          italic = false,
+        },
+        pick = {
+          fg = '#ffd700',
+          bg = '#333333',
+          bold = true,
+          italic = false,
+        },
+        offset_separator = {
+          fg = '#262626',
+          bg = '#333333',
+        },
+        trunc_marker = {
+          fg = '#666666',
+          bg = '#333333',
+        }
+      },
       options = {
         mode = "buffers", -- set to "tabs" to only show tabpages instead
         style_preset = bufferline.style_preset.default, -- or bufferline.style_preset.minimal,
@@ -26,9 +310,9 @@ return {
         },
         buffer_close_icon = "󰅖",
         modified_icon = "● ",
-        close_icon = " ",
-        left_trunc_marker = " ",
-        right_trunc_marker = " ",
+        close_icon = " ",
+        left_trunc_marker = " ",
+        right_trunc_marker = " ",
         max_name_length = 18,
         max_prefix_length = 15, -- prefix used when a buffer is de-duplicated
         truncate_names = true,  -- whether or not tab names should be truncated
@@ -43,7 +327,7 @@ return {
         offsets = {
           {
             filetype = "snacks-picker",
-            text = "Neo-Tree",
+            text = "Explorer",
             highlight = "Directory",
             text_align = "left",
           },

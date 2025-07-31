@@ -13,31 +13,31 @@ return {
 			end
 		end
 		local colors = {
-			blue   = '#87afd7',
-			cyan   = '#87d7d7',
-			black  = '#0f0f0f',
-			white  = '#d0d0d0',
-			red    = '#d78787',
-			violet = '#d787d7',
-			grey   = '#2e2e2e',
-			green  = '#87af87',
-			yellow = '#d7d787',
+			blue   = '#5f87d7', -- Statement/Type color from slate.vim line 83/86
+			cyan   = '#00cdcd', -- darkcyan from slate.vim line 19
+			black  = '#000000', -- StatusLine fg from slate.vim line 31
+			white  = '#ffffff', -- Normal fg from slate.vim line 29
+			red    = '#ff0000', -- Error color from slate.vim line 19
+			violet = '#cd00cd', -- darkmagenta from slate.vim line 19
+			grey   = '#333333', -- CursorLine bg from slate.vim line 52
+			green  = '#00ff00', -- Structure color from slate.vim line 89
+			yellow = '#ffd700', -- Define color from slate.vim line 88
 		}
 		local slate_theme = {
 			normal = {
-				a = { fg = colors.black, bg = colors.green },
+				a = { fg = colors.black, bg = '#afaf87' }, -- StatusLine colors from slate.vim line 31
 				b = { fg = colors.white, bg = colors.grey },
-				c = { fg = colors.white, bg = colors.black },
+				c = { fg = colors.white, bg = '#262626' }, -- Normal bg from slate.vim line 29
 			},
 
 			insert = { a = { fg = colors.black, bg = colors.blue } },
-			visual = { a = { fg = colors.black, bg = colors.cyan } },
-			replace = { a = { fg = colors.black, bg = colors.red } },
+			visual = { a = { fg = colors.black, bg = '#87d7ff' } }, -- String color from slate.vim line 79
+			replace = { a = { fg = colors.black, bg = '#ff8787' } }, -- Identifier color from slate.vim line 80
 
 			inactive = {
-				a = { fg = colors.white, bg = colors.black },
-				b = { fg = colors.white, bg = colors.black },
-				c = { fg = colors.white, bg = colors.black },
+				a = { fg = '#666666', bg = '#262626' }, -- Comment fg, Normal bg from slate.vim
+				b = { fg = '#666666', bg = '#262626' },
+				c = { fg = '#666666', bg = '#262626' },
 			},
 		}
 		require("lualine").setup({
@@ -72,7 +72,7 @@ return {
 				lualine_x = {
 					{
 						show_macro_recording,
-						color = { fg = "#d7d787" }, -- Optional: highlight color for recording
+						color = { fg = "#ffd700" }, -- Define color from slate.vim line 88
 					},
 					"encoding",
 					"fileformat",
