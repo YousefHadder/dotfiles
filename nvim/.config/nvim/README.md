@@ -1,4 +1,4 @@
-# Yousef's Neovim Configuration
+# Neovim Configuration
 
 A comprehensive, modern Neovim configuration focused on software development with AI integration, custom theming, and an extensive plugin ecosystem.
 
