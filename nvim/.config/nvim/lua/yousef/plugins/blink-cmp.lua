@@ -18,34 +18,9 @@ return {
 			preset = "default",
 			["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
 			["<C-e>"] = { "hide", "fallback" },
-			["<CR>"] = { "accept", "fallback" },
-
-			["<Tab>"] = {
-				function(cmp)
-					if cmp.snippet_active() then
-						return cmp.snippet_forward()
-					else
-						return cmp.select_next()
-					end
-				end,
-				"fallback"
-			},
-			["<S-Tab>"] = {
-				function(cmp)
-					if cmp.snippet_active() then
-						return cmp.snippet_backward()
-					else
-						return cmp.select_prev()
-					end
-				end,
-				"fallback"
-			},
-
+			["<S-Tab>"] = { "accept", "fallback" },
 			["<Up>"] = { "select_prev", "fallback" },
 			["<Down>"] = { "select_next", "fallback" },
-			["<C-p>"] = { "select_prev", "fallback" },
-			["<C-n>"] = { "select_next", "fallback" },
-
 			["<C-u>"] = { "scroll_documentation_up", "fallback" },
 			["<C-d>"] = { "scroll_documentation_down", "fallback" },
 		},
@@ -167,27 +142,6 @@ return {
 				},
 			},
 
-			-- Controls the signature help window
-			-- signature = {
-			-- 	enabled = true,
-			-- 	trigger = {
-			-- 		blocked_trigger_characters = {},
-			-- 		blocked_retrigger_characters = {},
-			-- 		show_on_insert_on_trigger_character = true,
-			-- 	},
-			-- 	window = {
-			-- 		min_width = 1,
-			-- 		max_width = 100,
-			-- 		max_height = 10,
-			-- 		border = "rounded",
-			-- 		winblend = 0,
-			-- 		winhighlight = "Normal:BlinkCmpSignatureHelp,FloatBorder:BlinkCmpSignatureHelpBorder",
-			-- 		scrollbar = false,
-			-- 		direction_priority = { "n", "s" },
-			-- 		treesitter_highlighting = true,
-			-- 	},
-			-- },
-
 			-- Controls the ghost text when selecting a completion item
 			ghost_text = {
 				enabled = true,
@@ -268,34 +222,14 @@ return {
 		-- Setup blink.cmp with opts
 		require("blink.cmp").setup(opts)
 
-		-- Set up slate-themed colors for blink-cmp matching slate.vim
-		-- local slate_colors = {
-		-- 	bg = "#262626",      -- Normal bg from slate.vim line 29
-		-- 	fg = "#ffffff",      -- Normal fg from slate.vim line 29
-		-- 	black = "#000000",   -- StatusLine fg from slate.vim line 31
-		-- 	blue = "#5f87d7",    -- Statement color from slate.vim line 83
-		-- 	border = "#666666",  -- Comment color from slate.vim line 78
-		-- 	selection = "#d7d787", -- PmenuSel bg from slate.vim line 37
-		-- 	pmenu_bg = "#4a4a4a", -- Pmenu bg from slate.vim line 36
-		-- 	white = "#ffffff",
-		-- }
-		-- -- Blink-cmp highlight groups matching slate.vim exactly
-		-- vim.api.nvim_set_hl(0, "BlinkCmpMenu", { fg = slate_colors.fg, bg = slate_colors.pmenu_bg })
-		-- vim.api.nvim_set_hl(0, "BlinkCmpMenuBorder", { fg = slate_colors.border, bg = slate_colors.pmenu_bg })
-		-- vim.api.nvim_set_hl(0, "BlinkCmpMenuSelection", { fg = "#262626", bg = slate_colors.selection }) -- PmenuSel from slate.vim line 37
-		-- vim.api.nvim_set_hl(0, "BlinkCmpDoc", { fg = slate_colors.fg, bg = slate_colors.pmenu_bg })
-		-- vim.api.nvim_set_hl(0, "BlinkCmpDocBorder", { fg = slate_colors.border, bg = slate_colors.pmenu_bg })
-		-- vim.api.nvim_set_hl(0, "BlinkCmpSignatureHelp", { fg = slate_colors.fg, bg = slate_colors.pmenu_bg })
-		-- vim.api.nvim_set_hl(0, "BlinkCmpSignatureHelpBorder", { fg = slate_colors.border, bg = slate_colors.pmenu_bg })
-
 		-- Optional: Set up additional keymaps for snippet navigation outside of completion
 		vim.keymap.set({ "i", "s" }, "<C-j>", function()
 			if vim.snippet.active({ direction = 1 }) then
 				vim.snippet.jump(1)
 			end
 		end, { desc = "Jump to next snippet placeholder" })
-
-		vim.keymap.set({ "i", "s" }, "<C-k>", function()
+		vim.keymap.
+				vim.keymap.set({ "i", "s" }, "<C-k>", function()
 			if vim.snippet.active({ direction = -1 }) then
 				vim.snippet.jump(-1)
 			end

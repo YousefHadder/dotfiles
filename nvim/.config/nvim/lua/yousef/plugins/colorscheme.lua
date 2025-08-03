@@ -97,7 +97,6 @@ return {
       Structure = { fg = slate_colors.structure },
 
       -- Additional UI elements
-      MatchParen = { fg = slate_colors.black, bg = "#ffd700" },                      -- From line 66
       Todo = { fg = slate_colors.red, bg = slate_colors.yellow },                    -- From line 69
       Error = { fg = slate_colors.red, bg = slate_colors.white, reverse = true },    -- From line 60
       ErrorMsg = { fg = slate_colors.red, bg = slate_colors.black, reverse = true }, -- From line 61

@@ -11,6 +11,7 @@ local terminal_group = augroup("TerminalSettings", { clear = true })
 local git_group = augroup("GitSettings", { clear = true })
 local cursor_group = augroup("CursorSettings", { clear = true })
 local ft_detect_group = augroup("FiletypeDetection", { clear = true })
+local matchparen_group = augroup("MatchParenSettings", { clear = true })
 
 -- ======================================================
 -- General Quality of Life
@@ -254,11 +255,30 @@ autocmd("BufReadPre", {
 	end,
 })
 
+-- ======================================================
+-- MatchParen Settings
+-- ======================================================
+
+-- Disable MatchParen highlighting in insert mode
+autocmd("InsertEnter", {
+	group = matchparen_group,
+	callback = function()
+		vim.api.nvim_set_hl(0, "MatchParen", {})
+	end,
+})
+
+autocmd("InsertLeave", {
+	group = matchparen_group,
+	callback = function()
+		vim.api.nvim_set_hl(0, "MatchParen", { fg = "#000000", bg = "#ffd700" })
+	end,
+})
+
 -- Hide diagnostic virtual text when virtual lines are enabled
 local og_virt_text
 local og_virt_line
-vim.api.nvim_create_autocmd({ 'CursorMoved', 'DiagnosticChanged' }, {
-	group = vim.api.nvim_create_augroup('diagnostic_only_virtlines', {}),
+autocmd({ "CursorMoved", "DiagnosticChanged" }, {
+	group = augroup("DiagnosticVirtualLines", { clear = true }),
 	callback = function()
 		if og_virt_line == nil then
 			og_virt_line = vim.diagnostic.config().virtual_lines
@@ -284,7 +304,7 @@ vim.api.nvim_create_autocmd({ 'CursorMoved', 'DiagnosticChanged' }, {
 		else
 			vim.diagnostic.config({ virtual_text = false })
 		end
-	end
+	end,
 })
 
 -- Return the module

@@ -24,7 +24,6 @@ opt.sidescrolloff = 8     -- Keep 8 columns left/right of cursor
 opt.colorcolumn = "120"   -- Show column at 120 characters
 opt.list = true           -- Show whitespace characters
 opt.listchars = { tab = "→ ", trail = "·", nbsp = "␣" }
-
 -- Split options
 opt.splitbelow = true -- Open horizontal splits below
 opt.splitright = true -- Open vertical splits to the right
