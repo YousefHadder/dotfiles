@@ -18,7 +18,7 @@ return {
 			preset = "default",
 			["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
 			["<C-e>"] = { "hide", "fallback" },
-			["<S-Tab>"] = { "accept", "fallback" },
+			["<CR>"] = { "accept", "fallback" },
 			["<Up>"] = { "select_prev", "fallback" },
 			["<Down>"] = { "select_next", "fallback" },
 			["<C-u>"] = { "scroll_documentation_up", "fallback" },
@@ -228,8 +228,7 @@ return {
 				vim.snippet.jump(1)
 			end
 		end, { desc = "Jump to next snippet placeholder" })
-		vim.keymap.
-				vim.keymap.set({ "i", "s" }, "<C-k>", function()
+		vim.keymap.set({ "i", "s" }, "<C-k>", function()
 			if vim.snippet.active({ direction = -1 }) then
 				vim.snippet.jump(-1)
 			end
