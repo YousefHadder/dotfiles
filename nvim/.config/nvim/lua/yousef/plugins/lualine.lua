@@ -25,13 +25,13 @@ return {
 		}
 		local slate_theme = {
 			normal = {
-				a = { fg = colors.black, bg = '#afaf87' }, -- StatusLine colors from slate.vim line 31
+				a = { fg = colors.black, bg = '#afaf87' },             -- StatusLine colors from slate.vim line 31
 				b = { fg = colors.white, bg = colors.grey },
-				c = { fg = colors.white, bg = '#262626' }, -- Normal bg from slate.vim line 29
+				c = { fg = colors.white, bg = '#262626' },             -- Normal bg from slate.vim line 29
 			},
-
+			command = { a = { fg = colors.black, bg = colors.green } }, -- darkcyan from slate.vim line 19
 			insert = { a = { fg = colors.black, bg = colors.blue } },
-			visual = { a = { fg = colors.black, bg = '#87d7ff' } }, -- String color from slate.vim line 79
+			visual = { a = { fg = colors.black, bg = '#87d7ff' } },  -- String color from slate.vim line 79
 			replace = { a = { fg = colors.black, bg = '#ff8787' } }, -- Identifier color from slate.vim line 80
 
 			inactive = {

@@ -42,11 +42,6 @@ return {
 			button.opts.hl = "AlphaButtons"
 			button.opts.hl_shortcut = "AlphaShortcut"
 		end
-		-- Set custom highlight groups for slate theme matching slate.vim
-		vim.api.nvim_set_hl(0, "AlphaHeader", { fg = "#5f87d7", bold = true })    -- Statement color from slate.vim line 83
-		vim.api.nvim_set_hl(0, "AlphaButtons", { fg = "#ffffff" })                -- Normal fg from slate.vim line 29
-		vim.api.nvim_set_hl(0, "AlphaShortcut", { fg = "#ffd700", bold = true })  -- Define color from slate.vim line 88
-		vim.api.nvim_set_hl(0, "AlphaFooter", { fg = "#666666", italic = true })  -- Comment color from slate.vim line 78
 
 		dashboard.section.header.opts.hl = "AlphaHeader"
 		dashboard.section.buttons.opts.hl = "AlphaButtons"

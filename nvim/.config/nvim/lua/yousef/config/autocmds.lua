@@ -306,6 +306,20 @@ autocmd({ "CursorMoved", "DiagnosticChanged" }, {
 		end
 	end,
 })
+-- Enable true color support
+vim.opt.termguicolors = true
 
+-- Set colorscheme
+vim.cmd('colorscheme slate')
+
+-- Make transparent
+vim.cmd([[
+    hi Normal guibg=NONE ctermbg=NONE
+    hi EndOfBuffer guibg=NONE ctermbg=NONE
+    hi SignColumn guibg=NONE ctermbg=NONE
+    hi NormalFloat guibg=NONE ctermbg=NONE
+    hi Pmenu guibg=NONE ctermbg=NONE
+    hi FloatBorder guifg=#ffffff guibg=NONE ctermbg=NONE
+]])
 -- Return the module
 return {}
