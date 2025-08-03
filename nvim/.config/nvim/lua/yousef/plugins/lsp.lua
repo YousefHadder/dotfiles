@@ -79,6 +79,7 @@ return {
 			underline = {
 				severity = { min = vim.diagnostic.severity.WARN }
 			},
+			virtual_lines = { current_line = true },
 			virtual_text = {
 				severity = { min = vim.diagnostic.severity.WARN },
 				source = "if_many",

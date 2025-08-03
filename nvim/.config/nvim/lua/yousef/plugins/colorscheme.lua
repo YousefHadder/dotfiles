@@ -54,7 +54,7 @@ return {
       inc_search_bg = "#00ff00",  -- From line 68
       line_nr = "#666666",        -- From line 59
       pmenu = "NONE",             -- From line 36
-      pmenu_sel = "#262626",      -- From line 37
+      pmenu_sel = "#00ff00",      -- From line 37
       pmenu_sel_bg = "#d7d787",   -- From line 37
       status_line = "#000000",    -- From line 31
       status_line_bg = "#afaf87", -- From line 31

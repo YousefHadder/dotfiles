@@ -80,8 +80,8 @@ keymap("n", "<Left>", ":vertical resize -2<CR>", { noremap = true, silent = true
 keymap("n", "<Right>", ":vertical resize +2<CR>", { noremap = true, silent = true })
 
 -- Split creation
-keymap("n", "<leader>|", "<cmd>vsplit<CR>", { noremap = true, silent = true, desc = "Vertical split" })
-keymap("n", "<leader>-", "<cmd>split<CR>", { noremap = true, silent = true, desc = "Horizontal split" })
+keymap("n", "<leader>|", "<cmd>vsplit <C-w>= <CR>", { noremap = true, silent = true, desc = "Vertical split" })
+keymap("n", "<leader>-", "<cmd>split <C-w>=<CR>", { noremap = true, silent = true, desc = "Horizontal split" })
 
 -- Move splits
 keymap('n', '<leader>ml', '<C-w>H', { desc = 'Move split left' })

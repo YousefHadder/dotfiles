@@ -32,7 +32,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Editor Configuration
 export EDITOR='nvim'
-alias vim=nvim
+alias n=nvim
 alias nvim-kickstart='NVIM_APPNAME="nvim-kickstart" nvim'
 
 # Aliases
