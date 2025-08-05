@@ -32,7 +32,7 @@ return {
         { "[", group = "prev", icon = { icon = "󰒮 ", color = "blue" } },
         { "]", group = "next", icon = { icon = "󰒭 ", color = "blue" } },
         { "g", group = "goto", icon = { icon = "󰉁 ", color = "blue" } },
-        { "gs", group = "surround", icon = { icon = "󰅪 ", color = "yellow" } },
+        { "ys", group = "surround", icon = { icon = "󰅪 ", color = "yellow" } },
         { "z", group = "fold", icon = { icon = "󰘖 ", color = "cyan" } },
         {
           "<leader>b",

@@ -1,7 +1,6 @@
 return {
 	"saghen/blink.cmp",
 	dependencies = {
-		-- Snippet engine
 		"rafamadriz/friendly-snippets",
 	},
 	version = "*",
@@ -26,15 +25,9 @@ return {
 		},
 
 		appearance = {
-			-- Sets the fallback highlight groups to nvim-cmp's highlight groups
-			-- Useful for when your theme doesn't support blink.cmp
-			-- Will be removed in a future release
 			use_nvim_cmp_as_default = false,
-			-- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-			-- Adjusts spacing and ensures icons are aligned
 			nerd_font_variant = "mono",
 
-			-- Blink does not expose its default kind icons so you must copy them all (or set use_nvim_cmp_as_default)
 			kind_icons = {
 				Text = "󰉿",
 				Method = "󰆧",
