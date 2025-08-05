@@ -14,6 +14,14 @@ return {
 			chat_autocomplete = true,
 			show_help = false,
 			show_folds = false,
+			window = {
+				layout = 'vertical',
+				width = 80,     -- Fixed width in columns
+				height = 20,    -- Fixed height in rows
+				border = 'rounded', -- 'single', 'double', 'rounded', 'solid'
+				title = '🤖 AI Assistant',
+				zindex = 100,   -- Ensure window stays on top
+			},
 			headers = {
 				user = "  Yousef ",
 				assistant = "  Copilot ",
@@ -22,7 +30,18 @@ return {
 		})
 	end,
 	keys = {
-		{ "<leader>aa", "<cmd>CopilotChatToggle<cr>",       desc = "Toggle Copilot Chat" },
+		{
+			"<leader>aa",
+			function()
+				require("CopilotChat").toggle({
+					selection = function(source)
+						return require("CopilotChat.select").visual(source) or
+								require("CopilotChat.select").buffer(source)
+					end,
+				})
+			end,
+			desc = "Toggle Copilot Chat with buffer context"
+		},
 		{ "<leader>ae", "<cmd>CopilotChatExplain<cr>",      desc = "CopilotChat - Explain code" },
 		{ "<leader>ar", "<cmd>CopilotChatReview<cr>",       desc = "CopilotChat - Review code" },
 		{ "<leader>af", "<cmd>CopilotChatFix<cr>",          desc = "CopilotChat - Fix" },

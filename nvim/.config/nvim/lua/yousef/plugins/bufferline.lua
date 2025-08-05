@@ -10,6 +10,7 @@ return {
     vim.keymap.set("n", "<A-h>", ":BufferLineMovePrev<CR>", { silent = true })
     -- Move buffer to the right
     vim.keymap.set("n", "<A-l>", ":BufferLineMoveNext<CR>", { silent = true })
+    vim.keymap.set("n", "gb", ":BufferLinePick<CR>", { silent = true })
     bufferline.setup({
       highlights = {
         -- Base colors from slate.vim
