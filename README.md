@@ -43,7 +43,7 @@ This dotfiles repository contains my personal development environment configurat
 - **Zoxide**: Smart directory jumping (`cd` replacement)
 - **Tree-sitter**: Advanced syntax highlighting
 - **fd**: Fast alternative to `find`
-- **thefuck**: Command correction tool
+- **pay-respects**: Command correction tool
 - **yq**: YAML/JSON processor
 
 ### Package Management
@@ -170,7 +170,7 @@ The Brewfile includes these essential packages:
 - **Development**: `node`, `nvm`, `lua`, `luajit`, `luarocks`, `prettier`, `make`
 - **Terminal**: `tmux`, `neovim`, `starship`, `tree-sitter`
 - **Git Tools**: `lazygit`
-- **Navigation**: `yazi`, `zoxide`, `thefuck`
+- **Navigation**: `yazi`, `zoxide`, `pay-respects`
 - **Shell**: `zsh-autosuggestions`, `zsh-syntax-highlighting`
 
 ### Manual Installation (Alternative)
@@ -201,7 +201,7 @@ If you prefer manual control:
 
 ### Zsh Configuration
 - **Oh My Zsh**: Framework with Git and rbenv plugins
-- **Modern Aliases**: 
+- **Modern Aliases**:
   - `ls` → `eza --icons=always` with variants (`ll`, `la`, `lt`)
   - `cd` → `z` (zoxide smart jumping)
   - `vim` → `nvim`
@@ -210,7 +210,7 @@ If you prefer manual control:
 
 ### Neovim Setup (Comprehensive Development Environment)
 - **Plugin Manager**: Lazy.nvim for fast, lazy-loaded plugins
-- **LSP Integration**: 
+- **LSP Integration**:
   - Mason for LSP server management
   - Full language support with nvim-lspconfig
   - Intelligent completion with blink.cmp
@@ -235,7 +235,7 @@ If you prefer manual control:
 ### Tmux Setup
 - **Theme**: Catppuccin Mocha with custom styling
 - **Plugin Manager**: TPM with automatic installation
-- **Key Plugins**: 
+- **Key Plugins**:
   - Vim navigation integration (christoomey/vim-tmux-navigator)
   - System monitoring (CPU, battery, memory)
   - Enhanced copy/paste with tmux-yank

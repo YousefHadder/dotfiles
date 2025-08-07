@@ -28,7 +28,7 @@ background-opacity = 0.85
 background-blur-radius = 10
 term = "xterm-256color"
 
-font-family = VictorMono NFM
+font-family = Hack Nerd Font Mono Regular
 font-size = 15
 cursor-style = underline
 cursor-style-blink = false

@@ -321,5 +321,30 @@ vim.cmd([[
     hi Pmenu guibg=NONE ctermbg=NONE
     hi FloatBorder guifg=#ffffff guibg=NONE ctermbg=NONE
 ]])
+
+
+vim.api.nvim_create_user_command("LoadSessionFilesOnly", function()
+	require("persistence").load()
+
+	vim.defer_fn(function()
+		-- Close all non-file buffers
+		for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+			if vim.api.nvim_buf_is_valid(buf) then
+				local name = vim.api.nvim_buf_get_name(buf)
+				local buftype = vim.bo[buf].buftype
+
+				-- Keep only normal buffers with readable files
+				local is_file = name ~= ""
+						and buftype == "" -- normal buffer type
+						and vim.fn.filereadable(name) == 1
+
+				if not is_file then
+					pcall(vim.api.nvim_buf_delete, buf, { force = true })
+				end
+			end
+		end
+	end, 100) -- Small delay to ensure session is fully loaded
+end, {})
+
 -- Return the module
 return {}

@@ -93,9 +93,8 @@ source ~/scripts/fzf-git.sh
 # Zoxide
 eval "$(zoxide init zsh)"
 
-# TheFuck
-eval $(thefuck --alias)
-eval $(thefuck --alias fk)
+# pay-respects
+eval "$(pay-respects zsh --alias)"
 
 # rbenv
 eval "$(rbenv init -)"

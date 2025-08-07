@@ -54,7 +54,6 @@ return {
 		{ "<leader><space>", function() Snacks.picker.smart() end,                                   desc = "Smart Find Files" },
 		{ "<leader>/",       function() Snacks.picker.grep() end,                                    desc = "Grep" },
 		{ "<leader>:",       function() Snacks.picker.command_history() end,                         desc = "Command History" },
-		{ "<leader>n",       function() Snacks.picker.notifications() end,                           desc = "Notification History" },
 		{ "<leader>e",       function() Snacks.explorer({ hidden = true }) end,                      desc = "File Explorer" },
 		-- find
 		{ "<leader>fb",      function() Snacks.picker.buffers() end,                                 desc = "Buffers" },
@@ -80,8 +79,6 @@ return {
 		{ '<leader>s"',      function() Snacks.picker.registers() end,                               desc = "Registers" },
 		{ '<leader>s/',      function() Snacks.picker.search_history() end,                          desc = "Search History" },
 		{ "<leader>sa",      function() Snacks.picker.autocmds() end,                                desc = "Autocmds" },
-		{ "<leader>sb",      function() Snacks.picker.lines() end,                                   desc = "Buffer Lines" },
-		{ "<leader>sc",      function() Snacks.picker.command_history() end,                         desc = "Command History" },
 		{ "<leader>sC",      function() Snacks.picker.commands() end,                                desc = "Commands" },
 		{ "<leader>sd",      function() Snacks.picker.diagnostics() end,                             desc = "Diagnostics" },
 		{ "<leader>sD",      function() Snacks.picker.diagnostics_buffer() end,                      desc = "Buffer Diagnostics" },
