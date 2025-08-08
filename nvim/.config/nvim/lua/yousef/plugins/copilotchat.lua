@@ -26,7 +26,7 @@ return {
 				user = "  Yousef ",
 				assistant = "  Copilot ",
 			},
-			model = "claude-sonnet-4",
+			model = "gpt-5",
 		})
 	end,
 	keys = {
