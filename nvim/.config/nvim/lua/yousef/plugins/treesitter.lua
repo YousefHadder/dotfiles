@@ -6,77 +6,22 @@ return {
 		dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
 		config = function()
 			require("nvim-treesitter.configs").setup({
-				highlight = { enable = true },
-				indent = { enable = true, disable = { "python" } },
-				context_commentstring = { enable = true, enable_autocmd = false },
-				move = { enable = true },
-				select = { enable = true },
-				ensure_installed = {
-					"bash",
-					"c",
-					"cpp",
-					"css",
-					"csv",
-					"diff",
-					"dockerfile",
-					"gitignore",
-					"go",
-					"html",
-					"javascript",
-					"json",
-					"lua",
-					"markdown",
-					"python",
-					"regex",
-					"ruby",
-					"sql",
-					"ssh_config",
-					"tmux",
-					"toml",
-					"tsx",
-					"typescript",
-					"vim",
-					"yaml",
-				},
-				textobjects = {
-					select = {
-						enable = true,
-						lookahead = true, -- Automatically jump forward to textobj
-						keymaps = {
-							-- Functions
-							["af"] = "@function.outer",
-							["if"] = "@function.inner",
-
-							-- Classes
-							["ac"] = "@class.outer",
-							["ic"] = "@class.inner",
-
-							-- Modules/Blocks
-							["am"] = "@block.outer",
-							["im"] = "@block.inner",
-
-							-- Conditionals (if/else)
-							["ai"] = "@conditional.outer",
-							["ii"] = "@conditional.inner",
-
-							-- Loops
-							["al"] = "@loop.outer",
-							["il"] = "@loop.inner",
-
-							-- Parameters/Arguments
-							["aa"] = "@parameter.outer",
-							["ia"] = "@parameter.inner",
-
-							-- Comments
-							["aC"] = "@comment.outer",
-							["iC"] = "@comment.inner",
-						},
-					},
-				},
 				auto_install = true,
 				sync_install = false,
 				ignore_install = {},
 				modules = {},
+
+				highlight = { enable = true },
+				indent = { enable = true, disable = { "python" } },
+				context_commentstring = { enable = true, enable_autocmd = false },
+
+				ensure_installed = {
+					"bash", "c", "cpp", "css", "csv", "diff", "dockerfile",
+					"gitignore", "go", "html", "javascript", "json", "lua",
+					"markdown", "python", "regex", "ruby", "sql", "ssh_config",
+					"tmux", "toml", "tsx", "typescript", "vim", "yaml",
+				},
+
 				incremental_selection = {
 					enable = true,
 					keymaps = {
@@ -86,29 +31,57 @@ return {
 						node_decremental = "gnd",
 					},
 				},
+
+				textobjects = {
+					select = {
+						enable = true,
+						lookahead = true, -- you wanted this
+						keymaps = {
+							-- functions
+							["af"] = "@function.outer",
+							["if"] = "@function.inner",
+							-- classes
+							["ac"] = "@class.outer",
+							["ic"] = "@class.inner",
+							-- blocks/modules
+							["am"] = "@block.outer",
+							["im"] = "@block.inner",
+							-- conditionals
+							["ai"] = "@conditional.outer",
+							["ii"] = "@conditional.inner",
+							-- loops
+							["al"] = "@loop.outer",
+							["il"] = "@loop.inner",
+							-- parameters
+							["aa"] = "@parameter.outer",
+							["ia"] = "@parameter.inner",
+							-- comments
+							["aC"] = "@comment.outer",
+							["iC"] = "@comment.inner",
+						},
+					},
+				},
 			})
 		end,
 	},
 
 	{
-		'nvim-treesitter/nvim-treesitter-context',
+		"nvim-treesitter/nvim-treesitter-context",
 		config = function()
-			require('treesitter-context').setup({
-				max_lines = 3,
+			require("treesitter-context").setup({
+				max_lines = 3, -- your choice (default is unlimited)
 				patterns = {
-					default = {
-						'class', 'function', 'method', 'for', 'while', 'if', 'switch', 'case',
-					},
+					default = { "class", "function", "method", "for", "while", "if", "switch", "case" },
 				},
 			})
-		end
+		end,
 	},
 
-	-- Highlights function arguments
+	-- highlights function arguments
 	{
-		'm-demare/hlargs.nvim',
+		"m-demare/hlargs.nvim",
 		config = function()
-			require('hlargs').setup()
-		end
-	}
+			require("hlargs").setup()
+		end,
+	},
 }

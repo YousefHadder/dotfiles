@@ -1,27 +1,30 @@
 return {
-	-- Main LSP Configuration
+	-- Core LSP
 	"neovim/nvim-lspconfig",
 	event = "VeryLazy",
+
 	dependencies = {
-		-- Mason dependencies
+		-- Mason
 		"williamboman/mason.nvim",
 		"williamboman/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 
-		-- Useful status updates for LSP
+		-- Status updates
 		{ "j-hui/fidget.nvim", opts = {} },
 
-		-- Completion engine
+		-- Completion (capabilities)
 		"saghen/blink.cmp",
 	},
+
 	config = function()
-		-- LSP Attach autocmd for buffer-local keymaps and features
+		---------------------------------------------------------------------------
+		-- On-attach: keymaps & buffer-scoped features
+		---------------------------------------------------------------------------
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
 			callback = function(event)
-				local map = function(keys, func, desc, mode)
-					mode = mode or "n"
-					vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+				local function map(lhs, rhs, desc, mode)
+					vim.keymap.set(mode or "n", lhs, rhs, { buffer = event.buf, desc = "LSP: " .. desc })
 				end
 
 				map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
@@ -29,21 +32,19 @@ return {
 				local client = vim.lsp.get_client_by_id(event.data.client_id)
 				if not client then return end
 
-				-- Document highlighting
+				-- Document highlight (if supported)
 				if client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-					local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
+					local hl_group = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
 					vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+						group = hl_group,
 						buffer = event.buf,
-						group = highlight_augroup,
 						callback = vim.lsp.buf.document_highlight,
 					})
-
 					vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+						group = hl_group,
 						buffer = event.buf,
-						group = highlight_augroup,
 						callback = vim.lsp.buf.clear_references,
 					})
-
 					vim.api.nvim_create_autocmd("LspDetach", {
 						group = vim.api.nvim_create_augroup("lsp-detach", { clear = true }),
 						callback = function(detach_event)
@@ -53,74 +54,74 @@ return {
 					})
 				end
 
-				-- Inlay hints toggle
+				-- Toggle inlay hints (if supported)
 				if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
 					map("<leader>th", function()
 						vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
 					end, "[T]oggle Inlay [H]ints")
 				end
 
-				-- Format on save (optional)
+				-- Format on save (if supported)
 				if client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting) then
 					vim.api.nvim_create_autocmd("BufWritePre", {
 						buffer = event.buf,
-						callback = function()
-							vim.lsp.buf.format({ bufnr = event.buf })
-						end,
+						callback = function() vim.lsp.buf.format({ bufnr = event.buf }) end,
 					})
 				end
 			end,
 		})
 
-		-- Enhanced diagnostic configuration
+		---------------------------------------------------------------------------
+		-- Diagnostics UI
+		---------------------------------------------------------------------------
 		vim.diagnostic.config({
 			severity_sort = true,
-			update_in_insert = false,
-			underline = {
-				severity = { min = vim.diagnostic.severity.WARN }
-			},
+			underline = { severity = { min = vim.diagnostic.severity.WARN } },
 			virtual_lines = { current_line = true },
 			virtual_text = {
 				severity = { min = vim.diagnostic.severity.WARN },
-				source = "if_many",
 				spacing = 2,
-				prefix = function(diagnostic)
+				prefix = function(d)
 					local icons = {
 						[vim.diagnostic.severity.ERROR] = "󰅚",
-						[vim.diagnostic.severity.WARN] = "󰀪",
-						[vim.diagnostic.severity.INFO] = "󰋽",
-						[vim.diagnostic.severity.HINT] = "󰌶",
+						[vim.diagnostic.severity.WARN]  = "󰀪",
+						[vim.diagnostic.severity.INFO]  = "󰋽",
+						[vim.diagnostic.severity.HINT]  = "󰌶",
 					}
-					return icons[diagnostic.severity] or "●"
+					return icons[d.severity] or "●"
 				end,
 			},
 			float = {
 				border = "rounded",
-				source = "if_many",
 				header = "",
 				prefix = "",
-				format = function(diagnostic)
-					return string.format("%s (%s): %s",
-						diagnostic.source or "LSP",
-						diagnostic.code or "no code",
-						diagnostic.message
+				format = function(diag)
+					return string.format(
+						"%s (%s): %s",
+						diag.source or "LSP",
+						diag.code or "no code",
+						diag.message
 					)
 				end,
 			},
 			signs = {
 				text = {
 					[vim.diagnostic.severity.ERROR] = "󰅚",
-					[vim.diagnostic.severity.WARN] = "󰀪",
-					[vim.diagnostic.severity.INFO] = "󰋽",
-					[vim.diagnostic.severity.HINT] = "󰌶",
+					[vim.diagnostic.severity.WARN]  = "󰀪",
+					[vim.diagnostic.severity.INFO]  = "󰋽",
+					[vim.diagnostic.severity.HINT]  = "󰌶",
 				},
 			},
 		})
 
-		-- Get blink.cmp capabilities
+		---------------------------------------------------------------------------
+		-- Capabilities (blink.cmp)
+		---------------------------------------------------------------------------
 		local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-		-- Enhanced server configurations
+		---------------------------------------------------------------------------
+		-- Server-specific settings
+		---------------------------------------------------------------------------
 		local servers = {
 			-- C/C++
 			clangd = {
@@ -177,14 +178,7 @@ return {
 
 			-- TypeScript/JavaScript
 			ts_ls = {
-				filetypes = {
-					"javascript",
-					"javascriptreact",
-					"typescript",
-					"typescriptreact",
-					"vue",
-					"json",
-				},
+				filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "json" },
 				settings = {
 					typescript = {
 						inlayHints = {
@@ -234,21 +228,10 @@ return {
 						runtime = { version = "LuaJIT" },
 						workspace = {
 							checkThirdParty = false,
-							library = {
-								"${3rd}/luv/library",
-								unpack(vim.api.nvim_get_runtime_file("", true)),
-							},
+							library = { "${3rd}/luv/library", unpack(vim.api.nvim_get_runtime_file("", true)) },
 						},
-						completion = {
-							callSnippet = "Replace",
-							postfix = ".",
-							showWord = "Fallback",
-							workspaceWord = true,
-						},
-						diagnostics = {
-							disable = { "missing-fields" },
-							globals = { "vim" },
-						},
+						completion = { callSnippet = "Replace", postfix = ".", showWord = "Fallback", workspaceWord = true },
+						diagnostics = { disable = { "missing-fields" }, globals = { "vim" } },
 						hint = {
 							enable = true,
 							arrayIndex = "Disable",
@@ -258,26 +241,17 @@ return {
 							semicolon = "Disable",
 							setType = false,
 						},
-						format = {
-							enable = false, -- Use stylua instead
-						},
+						format = { enable = false }, -- stylua instead
 						telemetry = { enable = false },
 					},
 				},
 			},
 
 			-- Ruby
-			ruby_lsp = {
-				init_options = {
-					formatter = "auto",
-					linters = { "rubocop" },
-				},
-			},
+			ruby_lsp = { init_options = { formatter = "auto", linters = { "rubocop" } } },
 
 			-- Bash
-			bashls = {
-				filetypes = { "sh", "bash", "zsh" },
-			},
+			bashls = { filetypes = { "sh", "bash", "zsh" } },
 
 			-- Python
 			pyright = {
@@ -293,20 +267,15 @@ return {
 			},
 		}
 
-		-- Mason tool installer setup
+		---------------------------------------------------------------------------
+		-- Mason: tools + servers
+		---------------------------------------------------------------------------
 		local ensure_installed = vim.tbl_keys(servers)
 		vim.list_extend(ensure_installed, {
 			-- Formatters
-			"stylua",
-			"prettier",
-			"black",
-			"gofumpt",
-			"rubocop",
-
+			"stylua", "prettier", "black", "gofumpt", "rubocop",
 			-- Linters
-			"eslint_d",
-			"shellcheck",
-			"golangci-lint",
+			"eslint_d", "shellcheck", "golangci-lint",
 		})
 
 		require("mason-tool-installer").setup({
@@ -315,34 +284,31 @@ return {
 			run_on_start = true,
 		})
 
-		-- Mason LSP setup with enhanced handlers
 		require("mason-lspconfig").setup({
 			ensure_installed = vim.tbl_keys(servers),
 			automatic_installation = true,
 			handlers = {
-				-- Default handler
+				-- default handler
 				function(server_name)
 					local server = servers[server_name] or {}
 					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
 					require("lspconfig")[server_name].setup(server)
 				end,
-
-				-- Disable tsserver if using ts_ls
+				-- prevent tsserver from being configured alongside ts_ls
 				["tsserver"] = function() end,
 			},
 		})
 
-		-- Global LSP settings
-		vim.lsp.set_log_level("WARN")
-
-		-- Improve LSP performance
-		local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+		---------------------------------------------------------------------------
+		-- Floating window defaults (rounded + bounds)
+		---------------------------------------------------------------------------
+		local orig_open = vim.lsp.util.open_floating_preview
 		function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 			opts = opts or {}
 			opts.border = opts.border or "rounded"
 			opts.max_width = opts.max_width or 80
 			opts.max_height = opts.max_height or 20
-			return orig_util_open_floating_preview(contents, syntax, opts, ...)
+			return orig_open(contents, syntax, opts, ...)
 		end
 	end,
 }
