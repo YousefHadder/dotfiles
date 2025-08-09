@@ -1,8 +1,8 @@
 return {
   'b0o/incline.nvim',
   dependencies = {
-    'nvim-web-devicons',   -- For file icons
-    'SmiteshP/nvim-navic', -- For LSP navigation context
+    'nvim-tree/nvim-web-devicons', -- For file icons
+    'SmiteshP/nvim-navic',         -- For LSP navigation context
   },
   config = function()
     local helpers = require("incline.helpers")

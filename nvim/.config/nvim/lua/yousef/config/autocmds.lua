@@ -145,15 +145,6 @@ autocmd("WinLeave", {
 -- Language-Specific Settings
 -- ======================================================
 
--- Auto-format on save for specific file types (using conform.nvim)
-autocmd("BufWritePre", {
-	group = format_group,
-	pattern = { "*.js", "*.jsx", "*.ts", "*.tsx", "*.lua", "*.go", "*.rs", "*.rb" },
-	callback = function()
-		require("conform").format({ timeout_ms = 500, lsp_format = "fallback" })
-	end,
-})
-
 -- Fix jsx file type detection
 autocmd({ "BufNewFile", "BufRead" }, {
 	group = ft_detect_group,

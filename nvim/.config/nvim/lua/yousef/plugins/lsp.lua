@@ -61,13 +61,7 @@ return {
 					end, "[T]oggle Inlay [H]ints")
 				end
 
-				-- Format on save (if supported)
-				if client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting) then
-					vim.api.nvim_create_autocmd("BufWritePre", {
-						buffer = event.buf,
-						callback = function() vim.lsp.buf.format({ bufnr = event.buf }) end,
-					})
-				end
+				-- Formatting is handled by conform.nvim's format_on_save
 			end,
 		})
 

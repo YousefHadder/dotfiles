@@ -1,253 +1,225 @@
-# Neovim Configuration
+# 🧠 Yousef’s Neovim
 
-A comprehensive, modern Neovim configuration focused on software development with AI integration, custom theming, and an extensive plugin ecosystem.
+A fast, modern, and UI‑polished Neovim setup with great defaults, batteries‑included LSP/formatting/testing, Copilot + chat, and slick pickers/explorer — all powered by lazy.nvim.
 
-## 🚀 Features
+• Works great for TypeScript/JavaScript, Go, Python, Lua, Bash/Zsh, Ruby, C/C++ and more.
 
-- **Custom Slate Theme**: Beautiful dark colorscheme applied consistently across all UI components
-- **Dual Search Systems**: Both Telescope and FZF-Lua for different fuzzy finding needs
-- **Complete LSP Setup**: Multi-language support with enhanced diagnostics and features
-- **AI Integration**: GitHub Copilot and Claude Sonnet 4 for enhanced productivity
-- **Modern UI**: Enhanced interfaces with Noice, custom dashboard, and cohesive theming
-- **Git Workflow**: Comprehensive git integration and visualization tools
-- **Testing Support**: Multi-language test runners with Neotest
-- **Session Management**: Automatic session saving and restoration
+## 🚀 Highlights
 
-## 📁 Configuration Structure
+- 💡 Completion: `blink.cmp` with signature help and ghost text
+- 🔍 Pickers/Explorer: `folke/snacks.nvim` (files, grep, buffers, git, symbols, projects) + built‑in explorer
+- 🧰 LSP & Tools: `mason` + `nvim-lspconfig` with smart diagnostics and inlay hints
+- 🎨 UI Polish: custom slate‑inspired statusline/tabline, Noice UI, Incline winbars, Alpha dashboard
+- 🧪 Testing: `neotest` (Jest, RSpec, Go) with handy keymaps
+- 🤖 AI: GitHub Copilot + CopilotChat
+- 🧭 Navigation: Flash jumps, Which‑Key guides, tmux navigation
+- 💾 Sessions: automatic session restore with `persistence.nvim`
+
+## 📁 Layout
 
 ```
 .config/nvim/
-├── init.lua                    # Entry point
-├── lazy-lock.json             # Plugin lock file
+├── init.lua                 # Entrypoint (loads config + lazy)
+├── lazy-lock.json          # Plugin lockfile
 ├── lua/yousef/
 │   ├── config/
-│   │   ├── init.lua           # Configuration loader
-│   │   ├── options.lua        # Neovim options and settings
-│   │   ├── keymaps.lua        # Key mappings and shortcuts
-│   │   └── autocmds.lua       # Autocommands and events
-│   ├── lazy.lua               # Lazy.nvim plugin manager setup
-│   └── plugins/               # Individual plugin configurations
-└── queries/                   # Custom Treesitter queries
+│   │   ├── init.lua        # Loads options/autocmds/keymaps
+│   │   ├── options.lua     # Core options (UI, folds, search, etc.)
+│   │   ├── keymaps.lua     # Keymaps (buffers, windows, terminal, Copilot, etc.)
+│   │   └── autocmds.lua    # Your autocmds
+│   ├── lazy.lua            # lazy.nvim bootstrap + setup
+│   └── plugins/            # One file per plugin/spec
+└── queries/                # Custom Treesitter queries (Ruby textobjects)
 ```
+
 
 ## ⚡ Quick Start
 
-1. **Prerequisites**:
-   - Neovim 0.9+ 
-   - Git
-   - A Nerd Font for icons
-   - Node.js (for some LSP servers)
-   - Go, Python, etc. (for language-specific features)
+1) Prereqs
+- Neovim 0.9+
+- Git, curl
+- A Nerd Font (for icons)
+- ripgrep (`rg`) and fd (picker performance)
+- Node.js, Go, Python (as needed for LSPs/formatters)
 
-2. **Installation**:
-   ```bash
-   git clone <this-repo> ~/.config/nvim
-   nvim
-   ```
+2) Install
+```
+git clone <this-repo> ~/.config/nvim
+nvim
+```
 
-3. **First Launch**: Lazy.nvim will automatically install all plugins on first startup.
+3) First run
+- lazy.nvim bootstraps and installs everything automatically.
 
-## 🎯 Key Bindings
+## 🧾 Cheat Sheet
 
-### Leader Key
-- **Leader**: `<Space>`
-- **Local Leader**: `<Space>`
+Navigation & Search
+- `<leader>ff`: files • `<leader>fr`: recent • `<leader>fg`: git files
+- `<leader>/`: grep • `<leader>fb`: buffers • `<leader>fp`: projects • `<leader>e`: explorer
+- `s`/`S`: Flash jump/treesitter jump • `gd/gD/gr/gI/gy`: LSP def/decl/refs/impl/type
 
-### Essential Mappings
-| Key | Mode | Action |
-|-----|------|--------|
-| `jk` | Insert | Exit insert mode |
-| `<Esc>` | Normal | Clear search highlight |
-| `<Tab>` | Normal | Next buffer |
-| `<S-Tab>` | Normal | Previous buffer |
+Windows, Buffers, Tabs
+- Move focus: `<C-h/j/k/l>` • Split: `<leader>|` (vsplit), `<leader>-` (hsplit)
+- Resize: arrow keys • Move split: `<leader>ml/md/mu/mr`
+- Buffers: `<Tab>/<S-Tab>` cycle • `<leader>bd` close • `<leader>bn` new • `gb` pick
+- Tabs: `[t` / `]t` prev/next • `<leader>tn` new • `<leader>tc` close
 
-### Navigation & Movement
-| Key | Mode | Action |
-|-----|------|--------|
-| `<C-h/j/k/l>` | Normal/Visual | Window navigation |
-| `<C-d/u>` | Normal | Scroll half page (centered) |
-| `n/N` | Normal | Search next/previous (centered) |
-| `<A-k/j>` | Normal/Visual | Move lines up/down |
+LSP & Code
+- `<leader>ca`: code actions • `<leader>th`: toggle inlay hints
+- `<leader>cf`: format buffer (Conform)
 
-### File Operations
-| Key | Mode | Action |
-|-----|------|--------|
-| `<leader>wa` | Normal | Save file |
-| `<leader>q` | Normal | Quit |
-| `<leader>Q` | Normal | Quit all |
-| `<leader>rf` | Normal | Reload config |
+Testing (neotest)
+- `<leader>tn`: nearest • `<leader>tf`: file • `<leader>ts`: summary • `<leader>to`: output • `<leader>td`: debug
 
-### Window Management
-| Key | Mode | Action |
-|-----|------|--------|
-| `<leader>|` | Normal | Vertical split |
-| `<leader>-` | Normal | Horizontal split |
-| `<leader>m[h/j/k/l]` | Normal | Move split |
-| Arrow keys | Normal | Resize windows |
+Terminal
+- `<leader>tt`: terminal • `<leader>ts`: split • `<leader>tv`: vsplit • `<Esc><Esc>`: exit terminal mode
 
-### Search & Navigation
-| Key | Mode | Action |
-|-----|------|--------|
-| `<leader>ff` | Normal | Find files |
-| `<leader>fg` | Normal | Live grep |
-| `<leader>fb` | Normal | Find buffers |
-| `<leader>fh` | Normal | Help tags |
-| `s` | Normal | Flash navigation |
+Git
+- `<leader>gg`: LazyGit • `<leader>gs`: git status • `<leader>gl`: git log • `<leader>gP`: praise
 
-### AI & Copilot
-| Key | Mode | Action |
-|-----|------|--------|
-| `<S-Tab>` | Insert | Accept Copilot suggestion |
-| `<C-w>` | Insert | Accept Copilot word |
-| `<C-l>` | Insert | Accept Copilot line |
-| `<leader>ac` | Normal | Copilot Chat |
-| `<leader>ae` | Normal | Explain code |
+AI
+- Copilot: `<S-Tab>` accept • `<C-w>` word • `<C-l>` line
+- CopilotChat: `<leader>aa` toggle • `<leader>ae/ar/af/ao/ad/at` explain/review/fix/opt/docs/tests • `<leader>ac/as` commits
 
-### LSP & Development
-| Key | Mode | Action |
-|-----|------|--------|
-| `<leader>ca` | Normal | Code actions |
-| `<leader>cf` | Normal | Format buffer |
-| `<leader>th` | Normal | Toggle inlay hints |
-| `gd` | Normal | Go to definition |
-| `gr` | Normal | Go to references |
+Misc
+- `<leader>rw`: replace word under cursor (global) • `<leader>cp`: copy current file path • `<leader>?`: Which‑Key
 
-### Testing
-| Key | Mode | Action |
-|-----|------|--------|
-| `<leader>tr` | Normal | Run test |
-| `<leader>ts` | Normal | Run test suite |
-| `<leader>tt` | Normal | Toggle test summary |
+## 🎮 Keys You’ll Use
 
-### Git
-| Key | Mode | Action |
-|-----|------|--------|
-| `<leader>gg` | Normal | Lazygit |
-| `<leader>gP` | Normal | Git praise |
+- Leader: `<Space>` (also localleader)
+- Which‑Key: `<leader>?` to discover context keys
 
-### Terminal
-| Key | Mode | Action |
-|-----|------|--------|
-| `<leader>tt` | Normal | Open terminal |
-| `<leader>ts` | Normal | Terminal in split |
-| `<leader>tv` | Normal | Terminal in vertical split |
-| `<Esc><Esc>` | Terminal | Exit terminal mode |
+Editing & Movement
+- `jk`: leave insert • `<Esc>`: clear search • `<C-d>/<C-u>`: scroll centered
+- `j/k`: move by display line • `<A-j>/<A-k>`: move selection
+- Better paste/replace, indentation tweaks, and “select all” via `vag`
 
-## 🔧 Configuration Highlights
+Windows, Buffers, Tabs
+- Navigate windows: `<C-h/j/k/l>` (tmux aware)
+- Split: `<leader>|` (vertical), `<leader>-` (horizontal); resize with arrows
+- Buffers: `<Tab>/<S-Tab>` cycle • `<leader>bd` close • `<leader>bn` new
+- Tabs: `[t`/`]t` prev/next • `<leader>tn` new • `<leader>tc` close
 
-### Neovim Options
-- **Line numbers**: Relative line numbers enabled
-- **Mouse support**: Full mouse integration
-- **Clipboard**: System clipboard integration
-- **Persistent undo**: Undo history preserved across sessions
-- **Smart search**: Case-insensitive with smart case detection
-- **Performance**: Optimized updatetime and timeoutlen
+Terminal
+- `<leader>tt` open • `<leader>ts` split • `<leader>tv` vsplit • `<Esc><Esc>` exit
 
-### Autocommands
-- **Auto-save formatting**: Removes trailing whitespace on save
-- **Cursor positioning**: Remembers last cursor position
-- **File type detection**: Enhanced file type recognition
-- **Large file handling**: Disables features for files > 10MB
-- **Terminal enhancements**: Auto-insert mode for terminals
+Copilot (Insert)
+- `<S-Tab>` accept • `<C-w>` accept word • `<C-l>` accept line
 
-## 🎨 Theme & UI
+Snacks Pickers & Explorer
+- Files: `<leader>ff` • Recent: `<leader>fr` • Git files: `<leader>fg`
+- Grep: `<leader>/` • Buffers: `<leader>fb` • Projects: `<leader>fp`
+- Explorer: `<leader>e` (hidden files enabled)
+- LSP: `gd/gD/gr/gI/gy` via Snacks pickers
 
-### Custom Slate Colorscheme
-The configuration uses a custom slate colorscheme that provides:
-- **Consistent theming** across all UI elements
-- **Enhanced syntax highlighting** with carefully chosen colors
-- **Modern transparency** effects where appropriate
-- **LSP and diagnostic** color integration
+LSP & Formatting
+- Code actions: `<leader>ca` • Toggle inlay hints: `<leader>th`
+- Format buffer: `<leader>cf` (Conform)
 
-### UI Enhancements
-- **Alpha Dashboard**: Custom start screen with Palestine flag ASCII art
-- **Lualine**: Informative status line with git, diagnostics, and file info
-- **Bufferline**: Enhanced buffer tabs with diagnostic indicators
-- **Noice**: Improved command line and notification UI
+Testing (neotest)
+- Nearest: `<leader>tn` • File: `<leader>tf` • Summary: `<leader>ts` • Output: `<leader>to` • Debug: `<leader>td`
 
-## 🔌 Plugin Ecosystem
+CopilotChat
+- Toggle chat: `<leader>aa`
+- Explain/Review/Fix/Optimize/Docs/Tests: `<leader>ae`/`ar`/`af`/`ao`/`ad`/`at`
+- Commit msgs: `<leader>ac` (all) • `<leader>as` (staged)
+- Model switcher: `<leader>am` • Prompt actions: `<leader>ap`
 
-### Core Plugins
-- **Lazy.nvim**: Modern plugin manager
-- **nvim-lspconfig**: LSP configuration
-- **nvim-treesitter**: Advanced syntax highlighting
-- **blink.cmp**: Modern completion engine
+Misc
+- Replace word under cursor globally: `<leader>rw`
+- Copy current file path: `<leader>cp`
 
-### Navigation & Search
-- **Telescope**: Fuzzy finder for files and LSP
-- **fzf-lua**: Alternative fuzzy finder with Git integration
-- **flash.nvim**: Enhanced navigation with labels
-- **snacks.nvim**: Multi-purpose utilities
+Tip: Which‑Key shows beautiful groups and icons for all `<leader>` menus.
 
-### Development Tools
-- **Mason**: LSP server and tool management
-- **Conform**: Code formatting
-- **Gitsigns**: Git integration in sign column
-- **Neotest**: Test runner interface
+## 🔌 Plugins (by purpose)
 
-### AI Integration
-- **Copilot**: GitHub AI code completion
-- **CopilotChat**: Claude Sonnet 4 integration for AI assistance
+Core & UX
+- 💤 `folke/lazy.nvim`: plugin manager
+- 🧰 `nvim-lspconfig`, `mason.nvim`, `mason-lspconfig.nvim`, `mason-tool-installer.nvim`
+- 🧩 `folke/which-key.nvim` • `folke/noice.nvim` • `goolord/alpha-nvim` • `b0o/incline.nvim`
 
-### Text Editing
-- **nvim-surround**: Surround text objects
-- **nvim-autopairs**: Automatic bracket pairing
-- **mini.nvim**: Collection of useful utilities
+Completion & Editing
+- ✨ `saghen/blink.cmp` (+ `rafamadriz/friendly-snippets`)
+- 🧲 `windwp/nvim-autopairs` • 🧱 `kylechui/nvim-surround` • 🧸 `echasnovski/mini.nvim`
 
-### Quality of Life
-- **which-key**: Keymap help and discovery
-- **persistence**: Session management
-- **guess-indent**: Automatic indentation detection
-- **nvim-colorizer**: Color highlighting in files
+Pickers, Explorer, Git
+- 🔎 `folke/snacks.nvim` (pickers/explorer/lazygit/notifier/zen/scratch)
+- 🌿 `lewis6991/gitsigns.nvim`
 
-## 🌍 Language Support
+Treesitter & Syntax
+- 🌲 `nvim-treesitter` (+ textobjects/context) • `m-demare/hlargs.nvim`
+- 🎨 `norcalli/nvim-colorizer.lua` • `MeanderingProgrammer/render-markdown.nvim`
 
-The configuration provides comprehensive support for:
+Statusline/Bufferline
+- 📊 `nvim-lualine/lualine.nvim` • 🗂️ `akinsho/bufferline.nvim`
 
-- **Go**: gopls, gofmt, tests
-- **TypeScript/JavaScript**: typescript-language-server, Prettier, ESLint
-- **Python**: pyright, black, ruff
-- **Lua**: lua_ls with Neovim API support
-- **Rust**: rust-analyzer, rustfmt
-- **Ruby**: solargraph, RuboCop
-- **JSON/YAML**: Schema validation and formatting
-- **Markdown**: Enhanced rendering and formatting
+AI & Chat
+- 🤖 `github/copilot.vim` • 💬 `CopilotC-Nvim/CopilotChat.nvim`
 
-## 🛠️ Customization
+Testing
+- 🧪 `nvim-neotest/neotest` (+ jest/rspec/go adapters)
 
-### Adding New Plugins
-1. Create a new file in `lua/yousef/plugins/`
-2. Return a plugin specification table
-3. Lazy.nvim will automatically load it
+Sessions & QoL
+- 💾 `folke/persistence.nvim` • 🧭 `christoomey/vim-tmux-navigator`
+- 📐 `nmac427/guess-indent.nvim` • 🛍️ `alex-popov-tech/store.nvim`
 
-### Modifying Keymaps
-Edit `lua/yousef/config/keymaps.lua` to add or modify key bindings.
+## 🧠 LSPs, Formatters, and Linters
 
-### Changing Options
-Modify `lua/yousef/config/options.lua` for Neovim settings.
+Installed/managed with Mason + configured via lspconfig/Conform.
 
-### Theme Customization
-The custom colorscheme is defined in `lua/yousef/plugins/colorscheme.lua`.
+Servers (highlights)
+- TypeScript/JavaScript: `ts_ls` with rich inlay hints and preferences
+- Lua: `lua_ls` (Neovim runtime + luv types via `lazydev`)
+- Go: `gopls` (analyses, codelenses, hints)
+- Python: `pyright`
+- Ruby: `ruby_lsp`
+- Bash/Zsh: `bashls`
+- C/C++: `clangd`
+
+Formatting (Conform)
+- JS/TS/React: `prettier`/`prettierd` + `eslint_d`
+- Python: `isort` + `black`
+- Lua: `stylua`
+- Go: `goimports` + `gofmt`
+- Ruby: `rubocop`
+- Shell: `shfmt`
+- Others: `clang_format`, `prettier` for css/html/json/yaml/markdown/graphql
+
+Diagnostics UI
+- Clean, sorted diagnostics with icons, rounded floats, and virtual lines
+- Inlay hints toggle: `<leader>th`
+
+## 🎨 UI Notes
+
+- Slate‑inspired colors for `lualine` and `bufferline` for a cohesive dark theme
+- `incline.nvim` adds a compact winbar with filename, LSP breadcrumbs, diagnostics, git diffs, and a clock
+- `alpha.nvim` shows a custom dashboard on launch (with themed ASCII header)
+- `noice.nvim` modernizes messages/cmdline; notifications via Snacks
+
+## 🧱 Treesitter Extras
+
+- Ruby textobjects (`queries/ruby/textobjects.scm`) for functions, classes, blocks, regex, comments, and parameters
+
+## 🛠️ Customize
+
+- Options: edit `lua/yousef/config/options.lua`
+- Keymaps: edit `lua/yousef/config/keymaps.lua`
+- Plugins: add a new file in `lua/yousef/plugins/` returning a lazy.nvim spec
+- lazy.nvim auto‑detects new specs via `lua/yousef/lazy.lua` import
 
 ## 🔍 Troubleshooting
 
-### Common Issues
-1. **LSP not working**: Ensure language servers are installed via Mason
-2. **Icons not showing**: Install a Nerd Font and set it in your terminal
-3. **Slow startup**: Check for plugin conflicts or large files
-4. **Clipboard issues**: Ensure system clipboard tools are installed
+- LSP not working: open `:Mason`, ensure servers installed
+- Icons missing: use a Nerd Font in your terminal
+- Pickers slow/missing results: install `ripgrep` and `fd`
+- CopilotChat: ensure `github/copilot.vim` is authenticated
+- Health: run `:checkhealth` • Logs: `:Lazy log`
 
-### Health Checks
-Run `:checkhealth` to diagnose configuration issues.
+## 💡 Tips
 
-### Logs
-Check `:Lazy log` for plugin-related issues.
-
-## 📚 Learning Resources
-
-- **Which-Key**: Press `<leader>` and wait to see available keymaps
-- **Telescope**: Use `<leader>fh` to search help tags
-- **LSP**: Use `<leader>ca` for code actions and hover for documentation
+- Press `<leader>` then pause: Which‑Key shows discoverable menus with icons
+- Snacks Explorer is minimal and fast; use `<leader>e` and `<leader>gg` for LazyGit
+- Telescope is configured and available when you need it; Snacks is the default day‑to‑day picker
 
 ## 🤝 Contributing
 
@@ -255,7 +227,6 @@ This is a personal configuration, but feel free to:
 - Report issues or bugs
 - Suggest improvements
 - Fork and adapt for your needs
+---
 
-## 📄 License
-
-This configuration is provided as-is for educational and personal use.
+Made with ❤️ — happy hacking!
