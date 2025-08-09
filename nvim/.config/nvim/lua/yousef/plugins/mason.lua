@@ -12,7 +12,16 @@ return {
 		},
 		build = ":MasonUpdate",
 		config = function()
-			require("mason").setup()
+			require("mason").setup({
+				ui = {
+					border = "rounded", -- Use rounded borders for Mason UI
+					icons = {
+						package_installed = "✓",
+						package_pending = "➜",
+						package_uninstalled = "✗",
+					},
+				},
+			})
 		end,
 	},
 
