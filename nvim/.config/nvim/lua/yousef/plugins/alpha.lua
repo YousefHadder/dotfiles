@@ -34,7 +34,7 @@ return {
 			dashboard.button("r", " " .. " Recent files", [[<cmd> lua Snacks.picker.recent() <cr>]]),
 			dashboard.button("g", " " .. " Find text", [[<cmd> lua Snacks.picker.grep() <cr>]]),
 			dashboard.button("c", " " .. " Config", "<cmd> lua Snacks.picker.files({ cwd = '~/.config/nvim' }) <cr>"),
-			dashboard.button("s", " " .. " Restore Session", [[<cmd> LoadSessionFilesOnly <cr>]]),
+			dashboard.button("s", " " .. " Restore Session", [[<cmd> lua require("persistence").load() <cr>]]),
 			dashboard.button("l", "󰒲 " .. " Lazy", "<cmd> Lazy <cr>"),
 			dashboard.button("q", " " .. " Quit", "<cmd> qa <cr>"),
 		}

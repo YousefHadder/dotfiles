@@ -306,6 +306,7 @@ autocmd({ "CursorMoved", "DiagnosticChanged" }, {
 		end
 	end,
 })
+
 -- Enable true color support
 vim.opt.termguicolors = true
 
@@ -322,29 +323,18 @@ vim.cmd([[
     hi FloatBorder guifg=#ffffff guibg=NONE ctermbg=NONE
 ]])
 
-
-vim.api.nvim_create_user_command("LoadSessionFilesOnly", function()
-	require("persistence").load()
-
-	vim.defer_fn(function()
-		-- Close all non-file buffers
-		for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-			if vim.api.nvim_buf_is_valid(buf) then
-				local name = vim.api.nvim_buf_get_name(buf)
-				local buftype = vim.bo[buf].buftype
-
-				-- Keep only normal buffers with readable files
-				local is_file = name ~= ""
-						and buftype == "" -- normal buffer type
-						and vim.fn.filereadable(name) == 1
-
-				if not is_file then
-					pcall(vim.api.nvim_buf_delete, buf, { force = true })
-				end
+vim.api.nvim_create_autocmd("User", {
+	pattern = "PersistenceSavePre",
+	callback = function()
+		for _, b in ipairs(vim.api.nvim_list_bufs()) do
+			if vim.bo[b].filetype == "copilot-chat"
+					or vim.bo[b].filetype == "snacks_picker_list" then
+				vim.cmd.bunload(b)
 			end
 		end
-	end, 100) -- Small delay to ensure session is fully loaded
-end, {})
+	end,
+})
+
 
 -- Return the module
 return {}
