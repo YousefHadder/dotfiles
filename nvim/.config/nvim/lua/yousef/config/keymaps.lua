@@ -108,8 +108,8 @@ keymap("n", "<leader>bn", "<cmd>enew<CR>", { noremap = true, silent = true, desc
 -- Tab navigation
 keymap("n", "[t", "<cmd>tabprevious<CR>", { desc = "Previous tab" })
 keymap("n", "]t", "<cmd>tabnext<CR>", { desc = "Next tab" })
-keymap("n", "<leader>tn", "<cmd>tabnew<CR>", { desc = "New tab" })
-keymap("n", "<leader>tc", "<cmd>tabclose<CR>", { desc = "Close tab" })
+keymap("n", "<leader>ot", "<cmd>tabnew<CR>", { desc = "New tab" })
+keymap("n", "<leader>ct", "<cmd>tabclose<CR>", { desc = "Close tab" })
 
 
 -- ======================================================

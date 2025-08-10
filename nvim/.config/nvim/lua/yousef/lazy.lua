@@ -31,7 +31,7 @@ require("lazy").setup({
 	change_detection = {
 		notify = false,
 	},
-}, {
+	-- Move UI options into the main opts table so Lazy applies them
 	ui = {
 		border = "rounded",
 		icons = vim.g.have_nerd_font and {} or {
