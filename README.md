@@ -8,6 +8,7 @@ A carefully curated collection of configuration files and scripts for a streamli
 This dotfiles repository contains my personal development environment configuration, optimized for productivity and efficiency. It includes configurations for modern terminal tools, editors, version control, and development utilities with full **GitHub Codespaces** support.
 
 ### Key Features
+- **Modular Architecture**: Organized installation scripts and Zsh configuration for maintainability
 - **Automated Installation**: One-command setup with comprehensive `install.sh`
 - **Cross-Platform**: Works on macOS, Linux, and GitHub Codespaces
 - **Modern Tools**: Curated selection of powerful CLI utilities
@@ -66,9 +67,11 @@ cd ~/dotfiles
 
 The installation script will:
 1. **Bootstrap Phase**: Update system, install Zsh and Oh My Zsh
-2. **Installation Phase**: Install Homebrew and all packages from Brewfile
+2. **Installation Phase**: Install Homebrew and all packages from Brewfile  
 3. **Configuration Phase**: Copy scripts and create symlinks using GNU Stow
 4. **Finalization**: Switch to new Zsh shell with all configurations active
+
+The `install.sh` script is now modular and organized into separate components in the `install/` directory for better maintainability.
 
 ### GitHub Codespaces Support
 This repository is fully configured for GitHub Codespaces with automatic environment detection and non-interactive installation.
@@ -78,11 +81,20 @@ This repository is fully configured for GitHub Codespaces with automatic environ
 ```
 dotfiles/
 ├── Brewfile                 # Homebrew package definitions
-├── install.sh              # Automated installation script
+├── install.sh              # Main installation script
 ├── README.md               # This comprehensive guide
 ├── .gitignore              # Git ignore patterns
 ├── .stowrc                 # GNU Stow configuration
 ├── .luarc.json             # Lua LSP configuration
+│
+├── install/               # Modular installation scripts
+│   ├── bootstrap.sh       # System bootstrap and Zsh setup
+│   ├── homebrew.sh        # Homebrew installation
+│   ├── languages.sh       # Programming language setup
+│   ├── packages.sh        # Package installation via Homebrew
+│   ├── scripts.sh         # Script copying and permissions
+│   ├── symlinks.sh        # GNU Stow symlink creation
+│   └── utils.sh           # Utility functions and helpers
 │
 ├── git/
 │   └── .gitconfig          # Git configuration and aliases
@@ -130,7 +142,17 @@ dotfiles/
 │       └── yazi.toml      # Main configuration
 │
 └── zsh/
-    └── .zshrc             # Zsh shell configuration with modern aliases
+    ├── .zshrc             # Main Zsh configuration
+    └── conf.d/            # Modular Zsh configuration files
+        ├── 00-paths.zsh   # PATH and environment paths
+        ├── 01-environment.zsh  # Environment variables
+        ├── 02-homebrew.zsh     # Homebrew configuration
+        ├── 03-oh-my-zsh.zsh    # Oh My Zsh setup and plugins
+        ├── 04-editor.zsh       # Editor preferences
+        ├── 05-tools.zsh        # Tool-specific configurations
+        ├── 06-fzf.zsh          # FZF fuzzy finder setup
+        ├── 07-plugins.zsh      # Additional Zsh plugins
+        └── 08-functions.zsh    # Custom shell functions
 ```
 
 ## 📖 Installation Guide
@@ -200,13 +222,17 @@ If you prefer manual control:
 ## ⚙️ Configuration Details
 
 ### Zsh Configuration
-- **Oh My Zsh**: Framework with Git and rbenv plugins
-- **Modern Aliases**:
+The Zsh configuration is now **modular and organized** into separate files in `zsh/conf.d/` for better maintainability:
+
+- **Modular Structure**: Configuration split into logical components (paths, environment, tools, etc.)
+- **Load Order**: Files are loaded in numerical order (00-08) for proper dependency management
+- **Oh My Zsh**: Framework with Git and rbenv plugins configured in `03-oh-my-zsh.zsh`
+- **Modern Aliases**: Defined in various files based on functionality
   - `ls` → `eza --icons=always` with variants (`ll`, `la`, `lt`)
   - `cd` → `z` (zoxide smart jumping)
   - `vim` → `nvim`
-- **Environment Variables**: Optimized PATH, GOPATH, and tool configurations
-- **Cross-Platform**: Automatic Homebrew path detection for macOS/Linux
+- **Environment Variables**: Optimized PATH, GOPATH, and tool configurations in dedicated files
+- **Cross-Platform**: Automatic Homebrew path detection for macOS/Linux in `02-homebrew.zsh`
 
 ### Neovim Setup (Comprehensive Development Environment)
 - **Plugin Manager**: Lazy.nvim for fast, lazy-loaded plugins
@@ -287,6 +313,12 @@ If you prefer manual control:
    ```bash
    # Example: Edit Neovim config
    nvim nvim/.config/nvim/lua/yousef/config/options.lua
+   
+   # Example: Edit Zsh environment variables
+   nvim zsh/conf.d/01-environment.zsh
+   
+   # Example: Edit installation script component
+   nvim install/packages.sh
    ```
 
 2. **Re-stow if needed**:
