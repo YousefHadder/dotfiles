@@ -172,6 +172,20 @@ fi
 log "Updating Homebrew and checking status..."
 brew update
 
+
+# -------------------------------
+# Install Rust & Cargo
+# -------------------------------
+if ! command -v cargo >/dev/null 2>&1; then
+  echo "Installing Rust & Cargo via rustup..."
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+  # Load cargo into PATH for this session
+  source "$HOME/.cargo/env"
+else
+  echo "Rust & Cargo already installed: $(cargo --version)"
+fi
+
+
 # -------------------------------
 # Install packages from Brewfile
 # -------------------------------

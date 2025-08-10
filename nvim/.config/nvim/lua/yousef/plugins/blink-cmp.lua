@@ -1,9 +1,9 @@
 return {
 	"saghen/blink.cmp",
 	dependencies = { "rafamadriz/friendly-snippets" },
-
+	version = "*",
 	event = { "InsertEnter", "CmdlineEnter" },
-
+	build = "cargo build --release",
 	opts = {
 		keymap = { preset = "default", ["<CR>"] = { "accept", "fallback" } },
 
@@ -11,10 +11,11 @@ return {
 			nerd_font_variant = "mono",
 		},
 
-		fuzzy = { implementation = "lua" },
+		fuzzy = { implementation = "prefer_rust" },
 
 		completion = {
-			list = { selection = { preselect = true, auto_insert = false } },
+			list = { selection = { preselect = false, auto_insert = false } },
+
 			menu = {
 				border = "rounded",
 			},
@@ -23,19 +24,19 @@ return {
 				auto_show_delay_ms = 500,
 				window = { max_width = 60, border = "rounded" },
 			},
-			ghost_text = { enabled = true },
 		},
 
 		signature = { enabled = true },
 
 		sources = {
-			providers = {
-				path = {
-					module = "blink.cmp.sources.path",
-					opts = { trailing_slash = false, label_trailing_slash = true, show_hidden_files_by_default = false },
-				},
-			},
+			default = { "lsp", "path", "snippets", "buffer" },
 		},
+
+		cmdline = {
+			enabled = true,
+			keymap = { preset = "default" },
+		},
+
 	},
 
 	config = function(_, opts)

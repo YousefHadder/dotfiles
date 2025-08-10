@@ -1,11 +1,13 @@
+local opt = vim.opt
+local g = vim.g
+local cmd = vim.cmd
+local api = vim.api
+
 -- Leader keys
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-vim.g.copilot_no_tab_map = true
+g.mapleader = " "
+g.maplocalleader = " "
 
 -- General options
-local opt = vim.opt
-
 opt.mouse = "a"               -- Enable mouse support
 opt.clipboard = "unnamedplus" -- Use system clipboard
 opt.swapfile = false          -- Disable swap files
@@ -14,17 +16,17 @@ opt.undofile = true           -- Enable persistent undo
 opt.undodir = vim.fn.stdpath("data") .. "/undo"
 
 -- UI options
-opt.number = true           -- Show line numbers
-opt.relativenumber = true   -- Show relative line numbers
-opt.cursorline = true       -- Highlight current line
-opt.signcolumn = "yes"      -- Always show sign column
-opt.wrap = false            -- Disable line wrapping
-opt.scrolloff = 8           -- Keep 8 lines above/below cursor
-opt.sidescrolloff = 8       -- Keep 8 columns left/right of cursor
-opt.colorcolumn = "120"     -- Show column at 120 characters
-opt.list = true             -- Show whitespace characters
+opt.number = true         -- Show line numbers
+opt.relativenumber = true -- Show relative line numbers
+opt.cursorline = true     -- Highlight current line
+opt.signcolumn = "yes"    -- Always show sign column
+opt.wrap = false          -- Disable line wrapping
+opt.scrolloff = 8         -- Keep 8 lines above/below cursor
+opt.sidescrolloff = 8     -- Keep 8 columns left/right of cursor
+opt.colorcolumn = "120"   -- Show column at 120 characters
+opt.list = true           -- Show whitespace characters
 opt.listchars = { tab = "→ ", trail = "·", nbsp = "␣" }
-opt.laststatus = 3          -- Global statusline
+opt.laststatus = 3        -- Global statusline
 opt.whichwrap = "b,s,h,l" -- Allow movement across lines with wrap
 
 -- Split options
@@ -57,15 +59,15 @@ opt.timeoutlen = 300 -- Faster key sequence completion
 -- Folding options (defer to ensure Treesitter is available)
 vim.defer_fn(function()
   if vim.treesitter.foldexpr then
-    vim.opt.foldmethod = "expr"
-    vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+    opt.foldmethod = "expr"
+    opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
   else
-    vim.opt.foldmethod = "indent"
+    opt.foldmethod = "indent"
   end
-  vim.opt.foldlevel = 99
-  vim.opt.foldlevelstart = 99
-  vim.opt.foldenable = true
-  vim.opt.foldcolumn = "0"
+  opt.foldlevel = 99
+  opt.foldlevelstart = 99
+  opt.foldenable = true
+  opt.foldcolumn = "0"
 end, 100)
 
 -- Backspace options
@@ -78,12 +80,13 @@ local separators = {
   bold = { vert = '║', horiz = '═' },
   blocks = { vert = '▌', horiz = '▄' },
 }
-vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#5a5a5a", bg = "#5a5a5a", bold = true })
-vim.api.nvim_set_hl(0, "VertSplit", { fg = "#5a5a5a", bg = "#5a5a5a", bold = true })
+
+api.nvim_set_hl(0, "VertSplit", { fg = "#5a5a5a", bg = "#5a5a5a", bold = true })
+api.nvim_set_hl(0, "WinSeparator", { fg = "#5a5a5a", bg = "#5a5a5a", bold = true })
 
 -- Use vim.defer_fn to set fillchars after startup
 vim.defer_fn(function()
-  vim.opt.fillchars:append(separators.blocks)
+  opt.fillchars:append(separators.blocks)
 end, 100)
 
 -- Miscellaneous options
@@ -91,5 +94,21 @@ opt.isfname:append("@-@")
 
 -- Defer ColorColumn highlight to ensure it's set after colorscheme
 vim.defer_fn(function()
-  vim.cmd([[highlight ColorColumn ctermbg=236 guibg=#3a3a3a]])
+  cmd([[highlight ColorColumn ctermbg=236 guibg=#3a3a3a]])
 end, 100)
+
+-- Enable true color support
+opt.termguicolors = true
+
+-- Set colorscheme
+cmd('colorscheme slate')
+
+-- Make transparent
+cmd([[
+    hi Normal guibg=NONE ctermbg=NONE
+    hi EndOfBuffer guibg=NONE ctermbg=NONE
+    hi SignColumn guibg=NONE ctermbg=NONE
+    hi NormalFloat guibg=NONE ctermbg=NONE
+    hi Pmenu guibg=NONE ctermbg=NONE
+    hi FloatBorder guifg=#ffffff guibg=NONE ctermbg=NONE
+]])

@@ -6,12 +6,12 @@ local augroup = vim.api.nvim_create_augroup
 -- Create autocommand groups
 local general_group = augroup("GeneralSettings", { clear = true })
 local highlight_group = augroup("HighlightYank", { clear = true })
-local format_group = augroup("FormatSettings", { clear = true })
 local terminal_group = augroup("TerminalSettings", { clear = true })
 local git_group = augroup("GitSettings", { clear = true })
 local cursor_group = augroup("CursorSettings", { clear = true })
 local ft_detect_group = augroup("FiletypeDetection", { clear = true })
 local matchparen_group = augroup("MatchParenSettings", { clear = true })
+local persistence_group = augroup("PersistenceSettings", { clear = true })
 
 -- ======================================================
 -- General Quality of Life
@@ -298,23 +298,8 @@ autocmd({ "CursorMoved", "DiagnosticChanged" }, {
 	end,
 })
 
--- Enable true color support
-vim.opt.termguicolors = true
-
--- Set colorscheme
-vim.cmd('colorscheme slate')
-
--- Make transparent
-vim.cmd([[
-    hi Normal guibg=NONE ctermbg=NONE
-    hi EndOfBuffer guibg=NONE ctermbg=NONE
-    hi SignColumn guibg=NONE ctermbg=NONE
-    hi NormalFloat guibg=NONE ctermbg=NONE
-    hi Pmenu guibg=NONE ctermbg=NONE
-    hi FloatBorder guifg=#ffffff guibg=NONE ctermbg=NONE
-]])
-
-vim.api.nvim_create_autocmd("User", {
+autocmd("User", {
+	group = persistence_group,
 	pattern = "PersistenceSavePre",
 	callback = function()
 		for _, b in ipairs(vim.api.nvim_list_bufs()) do
@@ -325,7 +310,6 @@ vim.api.nvim_create_autocmd("User", {
 		end
 	end,
 })
-
 
 -- Return the module
 return {}

@@ -74,10 +74,10 @@ keymap({ "v", "n" }, "<C-k>", "<cmd>wincmd k<CR>", { desc = "Go to upper window"
 keymap({ "v", "n" }, "<C-l>", "<cmd>wincmd l<CR>", { desc = "Go to right window", silent = true })
 
 -- Window resizing
-keymap("n", "<Up>", ":resize -2<CR>", { noremap = true, silent = true })
-keymap("n", "<Down>", ":resize +2<CR>", { noremap = true, silent = true })
-keymap("n", "<Left>", ":vertical resize -2<CR>", { noremap = true, silent = true })
-keymap("n", "<Right>", ":vertical resize +2<CR>", { noremap = true, silent = true })
+keymap("n", "<Up>", ":resize +2<CR>", { noremap = true, silent = true })
+keymap("n", "<Down>", ":resize -2<CR>", { noremap = true, silent = true })
+keymap("n", "<Left>", ":vertical resize +2<CR>", { noremap = true, silent = true })
+keymap("n", "<Right>", ":vertical resize -2<CR>", { noremap = true, silent = true })
 
 -- Split creation
 keymap("n", "<leader>|", "<cmd>vsplit <C-w>= <CR>", { noremap = true, silent = true, desc = "Vertical split" })
