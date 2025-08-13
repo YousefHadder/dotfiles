@@ -303,8 +303,7 @@ autocmd("User", {
 	pattern = "PersistenceSavePre",
 	callback = function()
 		for _, b in ipairs(vim.api.nvim_list_bufs()) do
-			if vim.bo[b].filetype == "copilot-chat"
-					or vim.bo[b].filetype == "snacks_picker_list" then
+			if vim.bo[b].filetype == "copilot-chat" then
 				vim.cmd.bunload(b)
 			end
 		end

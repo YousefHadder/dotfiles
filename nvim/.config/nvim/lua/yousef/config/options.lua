@@ -28,6 +28,7 @@ opt.list = true           -- Show whitespace characters
 opt.listchars = { tab = "→ ", trail = "·", nbsp = "␣" }
 opt.laststatus = 3        -- Global statusline
 opt.whichwrap = "b,s,h,l" -- Allow movement across lines with wrap
+opt.sessionoptions = "buffers,curdir,folds,help,tabpages,winsize,terminal"
 
 -- Split options
 opt.splitbelow = true -- Open horizontal splits below
