@@ -1,30 +1,45 @@
 return {
-  "github/copilot.vim",
+  "zbirenbaum/copilot.lua",
+  cmd = "Copilot",
   event = "InsertEnter",
-  init = function()
-    -- Stop TAB fights with completion
-    vim.g.copilot_no_tab_map = true
-    vim.g.copilot_assume_mapped = true
-
-    -- Also hide during built-in completion (belt & suspenders)
-    vim.g.copilot_hide_during_completion = 1
-
-    -- Optional: tiny delay reduces flicker of ghost text
-    vim.g.copilot_idle_delay = 150
-  end,
+  dependencies = {
+    "zbirenbaum/copilot-cmp",
+  },
   config = function()
-    -- Hide Copilot ghost text while Blink’s menu is visible
+    require("copilot").setup({
+      panel = {
+        keymap = {
+          accept = "<S-Tab>",
+        },
+      },
+      suggestion = {
+        auto_trigger = true,
+        keymap = {
+          accept = "<S-Tab>",
+          accept_word = "<C-w>",
+          accept_line = "<C-l>",
+        },
+      },
+    })
+
+    -- Hide Copilot ghost text while Blink's menu is visible
     local grp = vim.api.nvim_create_augroup("CopilotBlinkHarmony", { clear = true })
     vim.api.nvim_create_autocmd("User", {
       pattern = "BlinkCmpMenuOpen",
       group = grp,
-      callback = function() vim.b.copilot_suggestion_hidden = true end,
+      callback = function()
+        require("copilot.suggestion").dismiss()
+      end,
     })
     vim.api.nvim_create_autocmd("User", {
       pattern = "BlinkCmpMenuClose",
       group = grp,
-      callback = function() vim.b.copilot_suggestion_hidden = false end,
+      callback = function()
+        -- Re-enable copilot suggestions after blink menu closes
+        vim.defer_fn(function()
+          require("copilot.suggestion").next()
+        end, 100)
+      end,
     })
   end,
-
 }

@@ -122,17 +122,6 @@ keymap("n", "<leader>tv", "<cmd>vsplit | terminal<CR>", { desc = "Open terminal 
 keymap("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
 -- ======================================================
--- Copilot
--- ======================================================
-
-keymap('i', '<C-w>', '<Plug>(copilot-accept-word)')
-keymap('i', '<C-l>', '<Plug>(copilot-accept-line)')
-keymap('i', '<S-Tab>', 'copilot#Accept("\\<CR>")', {
-  expr = true,
-  replace_keycodes = false
-})
-
--- ======================================================
 -- Utility Functions
 -- ======================================================
 
