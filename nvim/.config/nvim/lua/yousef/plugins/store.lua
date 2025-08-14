@@ -8,6 +8,6 @@ return {
     { "<leader>os", "<cmd>Store<cr>", desc = "Open Plugin Store" },
   },
   opts = {
-    -- optional configuration here
+    plugins_folder = "~/dotfiles/nvim/.config/nvim/lua/yousef/plugins",
   },
 }
