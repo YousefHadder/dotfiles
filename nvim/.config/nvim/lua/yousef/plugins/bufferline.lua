@@ -1,9 +1,8 @@
 return {
-  -- scope buffers to tabs
   {
     "tiagovla/scope.nvim",
     event = "VeryLazy",
-    config = true, -- `require("scope").setup({})`
+    config = true,
   },
   {
     "akinsho/bufferline.nvim",

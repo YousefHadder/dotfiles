@@ -117,7 +117,6 @@ keymap("n", "<leader>ct", "<cmd>tabclose<CR>", { desc = "Close tab" })
 -- ======================================================
 
 keymap("n", "<leader>tt", "<cmd>terminal<CR>", { desc = "Open terminal" })
-keymap("n", "<leader>ts", "<cmd>split | terminal<CR>", { desc = "Open terminal in split" })
 keymap("n", "<leader>tv", "<cmd>vsplit | terminal<CR>", { desc = "Open terminal in vertical split" })
 keymap("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
@@ -139,6 +138,8 @@ keymap("n", "<leader>cp", function()
   vim.fn.setreg("+", filePath)
   print("File path copied to clipboard: " .. filePath)
 end, { desc = "Copy file path to clipboard" })
+
+
 
 -- ======================================================
 -- LSP Cleanup
