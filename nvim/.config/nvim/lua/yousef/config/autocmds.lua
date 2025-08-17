@@ -200,14 +200,6 @@ autocmd({ "WinEnter", "BufWinEnter", "TermOpen" }, {
 	end,
 })
 
--- Close terminal buffer on process exit
-autocmd("TermClose", {
-	group = terminal_group,
-	callback = function()
-		vim.cmd("bdelete!")
-	end,
-})
-
 -- ======================================================
 -- Project Specific
 -- ======================================================
@@ -304,7 +296,7 @@ autocmd("User", {
 	callback = function()
 		for _, b in ipairs(vim.api.nvim_list_bufs()) do
 			if vim.bo[b].filetype == "copilot-chat"
-					or vim.bo[b].filetype == "snacks_picker_list" then
+					or vim.bo[b].filetype == "snacks_layout_box" then
 				vim.cmd.bunload(b)
 			end
 		end

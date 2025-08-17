@@ -1,9 +1,8 @@
 return {
-  -- scope buffers to tabs
   {
     "tiagovla/scope.nvim",
     event = "VeryLazy",
-    config = true, -- `require("scope").setup({})`
+    config = true,
   },
   {
     "akinsho/bufferline.nvim",
@@ -107,8 +106,8 @@ return {
           modified_icon = "● ",
           show_tab_indicators = true,
           offsets = {
-            { filetype = "snacks-picker",    text = "Explorer", highlight = "Directory", text_align = "left" },
-            { filetype = "snacks_layout_box" },
+            { filetype = "snacks_layout_box", text = "Explorer",     highlight = "Directory", text_align = "center" },
+            { filetype = "copilot-chat",      text = "Copilot Chat", highlight = "Directory", text_align = "center" },
           },
           get_element_icon = function(element)
             local icon, hl = require("nvim-web-devicons").get_icon_by_filetype(element.filetype, { default = false })
