@@ -114,17 +114,5 @@ function y() {
 	rm -f -- "$tmp"
 }
 
-function lstree() {
-    local depth=${1:-2}
-    local dir=${2:-.}
-
-    echo "📁 Contents of $(pwd)/$dir"
-    echo "===================="
-    ls -la "$dir"
-    echo -e "\n🌳 Tree structure (depth $depth)"
-    echo "===================="
-    tree -L "$depth" "$dir"
-}
-
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
