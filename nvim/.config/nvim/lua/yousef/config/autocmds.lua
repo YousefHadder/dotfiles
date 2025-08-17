@@ -200,14 +200,6 @@ autocmd({ "WinEnter", "BufWinEnter", "TermOpen" }, {
 	end,
 })
 
--- Close terminal buffer on process exit
-autocmd("TermClose", {
-	group = terminal_group,
-	callback = function()
-		vim.cmd("bdelete!")
-	end,
-})
-
 -- ======================================================
 -- Project Specific
 -- ======================================================
