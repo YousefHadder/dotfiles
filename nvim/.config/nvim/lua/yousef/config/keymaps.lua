@@ -140,6 +140,99 @@ keymap("n", "<leader>cp", function()
 end, { desc = "Copy file path to clipboard" })
 
 
+-- Open all files that are changed (staged/unstaged) or untracked
+-- Put this in your keymaps.lua (or wherever you configure mappings)
+keymap("n", "<leader>go", function()
+  -- Helper to run a shell command and get a list of lines
+  local function systemlist(cmd)
+    local ok, out = pcall(vim.fn.systemlist, cmd)
+    if not ok then return {} end
+    if vim.v.shell_error ~= 0 then return {} end
+    return out
+  end
+
+  -- Quick check: are we inside a git repo?
+  if vim.v.shell_error ~= 0 and #systemlist("git rev-parse --is-inside-work-tree 2>/dev/null") == 0 then
+    vim.notify("Not a git repository", vim.log.levels.WARN)
+    return
+  end
+
+  -- Collect paths from:
+  -- 1) unstaged changes (worktree vs index)
+  -- 2) staged changes (index vs HEAD)
+  -- 3) untracked files (respects .gitignore)
+  local changed_unstaged = systemlist("git diff --name-only")
+  local changed_staged   = systemlist("git diff --name-only --cached")
+  local untracked        = systemlist("git ls-files --others --exclude-standard")
+
+  -- In rare cases `git status --porcelain` catches renames/deletes better.
+  -- We use it only to filter out deleted paths robustly.
+  local status_lines     = systemlist("git status --porcelain=v1 -unormal")
+
+  -- Build a set of deleted (so we don't try to open them)
+  local deleted          = {}
+  for _, line in ipairs(status_lines) do
+    -- Formats:
+    --  " D file", "D  file" (deleted), "R  old -> new" (rename), etc.
+    local x = line:sub(1, 1)
+    local y = line:sub(2, 2)
+    local payload = vim.trim(line:sub(4))
+
+    if x == "D" or y == "D" then
+      -- deleted tracked file
+      if payload:find(" -> ") then
+        -- For safety, add both old and new sides as deleted candidates
+        local oldp, newp = payload:match("^(.-)%s+->%s+(.-)$")
+        if oldp then deleted[oldp] = true end
+        if newp then deleted[newp] = true end
+      else
+        deleted[payload] = true
+      end
+    end
+  end
+
+  -- Merge + dedupe
+  local set = {}
+  local function add_list(list)
+    for _, p in ipairs(list) do
+      p = vim.trim(p)
+      if p ~= "" and not deleted[p] then
+        set[p] = true
+      end
+    end
+  end
+
+  add_list(changed_unstaged)
+  add_list(changed_staged)
+  add_list(untracked)
+
+  -- Convert to array
+  local files = {}
+  for p, _ in pairs(set) do
+    table.insert(files, p)
+  end
+  table.sort(files)
+
+  if #files == 0 then
+    vim.notify("No changed or untracked files to open.", vim.log.levels.INFO)
+    return
+  end
+
+  -- Option A: add buffers without jumping around (badd), then open the first
+  for _, p in ipairs(files) do
+    vim.cmd.badd(vim.fn.fnameescape(p))
+  end
+  -- Jump to the first file (optional)
+  vim.cmd.edit(vim.fn.fnameescape(files[1]))
+
+  -- If you prefer to open each file immediately in the current window instead,
+  -- replace the badd/edit block with:
+  -- for _, p in ipairs(files) do
+  --   vim.cmd.edit(vim.fn.fnameescape(p))
+  -- end
+
+  vim.notify(("Opened %d file(s) into buffers."):format(#files), vim.log.levels.INFO)
+end, { desc = "Open all changed/staged/untracked files" })
 
 -- ======================================================
 -- LSP Cleanup

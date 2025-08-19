@@ -20,6 +20,7 @@ return {
         { "<leader>g", group = "git", icon = { icon = "󰊢 ", color = "orange" } },
         { "<leader>gh", group = "git hunks", icon = { icon = "󰊢 ", color = "orange" } },
         { "<leader>m", group = "move/split", icon = { icon = "󰩈 ", color = "cyan" } },
+        { "<leader>M", group = "mcp hub", icon = { icon = "󰒋 ", color = "purple" } },
         { "<leader>n", group = "notifications", icon = { icon = "󰍡 ", color = "yellow" } },
         { "<leader>q", group = "quit/session", icon = { icon = "󰗼 ", color = "red" } },
         { "<leader>r", group = "replace/reload", icon = { icon = "󰛔 ", color = "yellow" } },
