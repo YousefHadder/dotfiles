@@ -29,7 +29,7 @@ return {
 		})
 	end,
 	keys = {
-		{ "<leader>aa", "<cmd>CopilotChat<cr>",             desc = "CopilotChat - Toggle chat window" },
+		{ "<leader>aa", "<cmd>CopilotChatToggle<cr>",       desc = "CopilotChat - Toggle chat window" },
 		{
 			"<leader>ab",
 			function()
