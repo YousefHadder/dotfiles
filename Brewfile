@@ -1,6 +1,6 @@
 # Specify taps (additional repositories)
 tap "FelixKratz/formulae"
-tap "timescam/tap"
+tap "timescam/homebrew-tap"
 
 # Install Homebrew formulas (command-line utilities and libraries)
 brew "node"

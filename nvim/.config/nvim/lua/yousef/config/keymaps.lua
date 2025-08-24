@@ -7,6 +7,7 @@ local keymap = vim.keymap.set
 -- Disable the spacebar key's default behavior in Normal and Visual modes
 keymap({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 
+
 -- Use jk instead of Esc
 keymap("i", "jk", "<ESC>")
 
@@ -139,6 +140,84 @@ keymap("n", "<leader>cp", function()
   print("File path copied to clipboard: " .. filePath)
 end, { desc = "Copy file path to clipboard" })
 
+
+-- Open all files that are changed (staged/unstaged) or untracked
+-- Put this in your keymaps.lua (or wherever you configure mappings)
+keymap("n", "<leader>go", function()
+  local shellescape = vim.fn.shellescape
+  local join = vim.fs.joinpath
+
+  -- Find repo root
+  local root = (vim.fn.systemlist("git rev-parse --show-toplevel")[1] or ""):gsub("%s+$", "")
+  if root == "" then
+    vim.notify("Not a git repository", vim.log.levels.WARN)
+    return
+  end
+  local gitC = "git -C " .. shellescape(root) .. " "
+
+  local function systemlist(cmd)
+    local out = vim.fn.systemlist(cmd)
+    if vim.v.shell_error ~= 0 then return {} end
+    return out
+  end
+
+  -- Collect relative paths (from repo root)
+  local changed_unstaged = systemlist(gitC .. "diff --name-only")
+  local changed_staged   = systemlist(gitC .. "diff --name-only --cached")
+  local untracked        = systemlist(gitC .. "ls-files --others --exclude-standard")
+  local status_lines     = systemlist(gitC .. "status --porcelain=v1 -unormal")
+
+  -- Build a set of deleted paths to skip
+  local deleted          = {}
+  for _, line in ipairs(status_lines) do
+    local x = line:sub(1, 1)
+    local y = line:sub(2, 2)
+    local payload = vim.trim(line:sub(4))
+    if x == "D" or y == "D" then
+      if payload:find(" -> ") then
+        local oldp, newp = payload:match("^(.-)%s+->%s+(.-)$")
+        if oldp then deleted[oldp] = true end
+        if newp then deleted[newp] = true end
+      else
+        deleted[payload] = true
+      end
+    end
+  end
+
+  -- Merge + dedupe
+  local rel_set = {}
+  local function add(list)
+    for _, p in ipairs(list) do
+      p = vim.trim(p)
+      if p ~= "" and not deleted[p] then
+        rel_set[p] = true
+      end
+    end
+  end
+  add(changed_unstaged)
+  add(changed_staged)
+  add(untracked)
+
+  -- To array of absolute paths
+  local files = {}
+  for rel, _ in pairs(rel_set) do
+    table.insert(files, join(root, rel))
+  end
+  table.sort(files)
+
+  if #files == 0 then
+    vim.notify("No changed or untracked files to open.", vim.log.levels.INFO)
+    return
+  end
+
+  -- Add all to buffer list (no jumping), then open the first
+  for _, abs in ipairs(files) do
+    vim.cmd.badd(vim.fn.fnameescape(abs))
+  end
+  vim.cmd.edit(vim.fn.fnameescape(files[1]))
+
+  vim.notify(("Opened %d file(s) from %s"):format(#files, root), vim.log.levels.INFO)
+end, { desc = "Open all changed/staged/untracked files (repo-root aware)" })
 
 
 -- ======================================================

@@ -259,6 +259,12 @@ return {
 					},
 				},
 			},
+
+			-- Markdown (Marksman)
+			-- Uses the marksman language server (installable via mason)
+			marksman = {
+				filetypes = { "markdown", "markdown.mdx" },
+			},
 		}
 
 		---------------------------------------------------------------------------

@@ -43,6 +43,8 @@ return {
 					"jq-lsp",
 					"jsonlint",
 					"json-lsp",
+					"marksman",
+					"markdownlint",
 					"lua-language-server",
 					"ts_ls",
 					"prettierd",
@@ -83,6 +85,7 @@ return {
 					"lua_ls",
 					"gopls",
 					"ruby_lsp",
+					"marksman",
 				},
 			})
 		end,

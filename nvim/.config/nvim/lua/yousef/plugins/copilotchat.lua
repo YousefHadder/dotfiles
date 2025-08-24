@@ -29,8 +29,9 @@ return {
 		})
 	end,
 	keys = {
+		{ "<leader>aa", "<cmd>CopilotChatToggle<cr>",       desc = "CopilotChat - Toggle chat window" },
 		{
-			"<leader>aa",
+			"<leader>ab",
 			function()
 				require("CopilotChat").toggle({
 					selection = function(source)

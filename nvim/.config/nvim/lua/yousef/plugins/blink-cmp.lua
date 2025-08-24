@@ -39,7 +39,7 @@ return {
 			},
 		},
 
-		signature = { enabled = true },
+		signature = { enabled = false },
 
 		sources = {
 			default = { "lsp", "path", "snippets", "buffer", "copilot" },
