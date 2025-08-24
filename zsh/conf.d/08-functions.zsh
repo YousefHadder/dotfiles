@@ -21,5 +21,5 @@ function lstree() {
     tree -L "$depth" "$dir"
 }
 
-# Generated for envman. Do not edit.
-[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+# If you use envman, add the following to your shell configuration:
+# [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
