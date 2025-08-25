@@ -29,7 +29,8 @@ return {
 		})
 	end,
 	keys = {
-		{ "<leader>aa", "<cmd>CopilotChatToggle<cr>",       desc = "CopilotChat - Toggle chat window" },
+		{ "<leader>ax", "<cmd>CopilotChatStop<cr>",   desc = "CopilotChat - Stop generating" },
+		{ "<leader>aa", "<cmd>CopilotChatToggle<cr>", desc = "CopilotChat - Toggle chat window" },
 		{
 			"<leader>ab",
 			function()

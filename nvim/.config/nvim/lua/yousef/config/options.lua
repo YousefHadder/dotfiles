@@ -16,18 +16,18 @@ opt.undofile = true           -- Enable persistent undo
 opt.undodir = vim.fn.stdpath("data") .. "/undo"
 
 -- UI options
-opt.number = true         -- Show line numbers
-opt.relativenumber = true -- Show relative line numbers
-opt.cursorline = true     -- Highlight current line
-opt.signcolumn = "yes"    -- Always show sign column
-opt.wrap = true           -- Disable line wrapping
-opt.scrolloff = 8         -- Keep 8 lines above/below cursor
-opt.sidescrolloff = 8     -- Keep 8 columns left/right of cursor
-opt.colorcolumn = "120"   -- Show column at 120 characters
-opt.list = true           -- Show whitespace characters
+opt.number = true             -- Show line numbers
+opt.relativenumber = true     -- Show relative line numbers
+opt.cursorline = true         -- Highlight current line
+opt.signcolumn = "yes"        -- Always show sign column
+opt.wrap = true               -- Disable line wrapping
+opt.scrolloff = 8             -- Keep 8 lines above/below cursor
+opt.sidescrolloff = 8         -- Keep 8 columns left/right of cursor
+opt.colorcolumn = "120"       -- Show column at 120 characters
+opt.list = true               -- Show whitespace characters
 opt.listchars = { tab = "→ ", trail = "·", nbsp = "␣" }
-opt.laststatus = 3        -- Global statusline
-opt.whichwrap = "b,s,h,l" -- Allow movement across lines with wrap
+opt.laststatus = 3            -- Global statusline
+opt.whichwrap = "b,s,h,l,[,]" -- Allow movement across lines with wrap
 
 -- Split options
 opt.splitbelow = true -- Open horizontal splits below
