@@ -35,57 +35,57 @@ A fast, modern, and UI‑polished Neovim setup with great defaults, batteries‑
 
 ## ⚡ Quick Start
 
-1) Prereqs
+**1) Prereqs**
 - Neovim 0.9+
 - Git, curl
 - A Nerd Font (for icons)
 - ripgrep (`rg`) and fd (picker performance)
 - Node.js, Go, Python (as needed for LSPs/formatters)
 
-2) Install
+**2) Install**
 ```
 git clone <this-repo> ~/.config/nvim
 nvim
 ```
 
-3) First run
+**3) First run**
 - lazy.nvim bootstraps and installs everything automatically.
 
 ## 🧾 Cheat Sheet
 
-Navigation & Search
+**Navigation & Search**
 - `<leader><space>`: smart find files • `<leader>ff`: find files • `<leader>fr`: recent • `<leader>fg`: git files
 - `<leader>sb`/`<leader>sg`: grep lines/files • `<leader>sw`: grep word • `<leader>sB`: grep buffers
 - `<leader>fb`: buffers • `<leader>fp`: projects • `<leader>e`: explorer • `<leader>fc`: config files
 - `<A-s>`/`<A-S>`: Flash jump/treesitter jump • `gd/gD/gr/gI/gy`: LSP def/decl/refs/impl/type
 
-Windows, Buffers, Tabs
+**Windows, Buffers, Tabs**
 - Move focus: `<C-h/j/k/l>` • Split: `<leader>|` (vsplit), `<leader>-` (hsplit)
 - Resize: arrow keys • Move split: `<leader>ml/md/mu/mr`
 - Buffers: `<Tab>/<S-Tab>` cycle • `<leader>bd` close • `<leader>bn` new • `gb` pick • `<A-h/l>` move buffers
 - Tabs: `[t` / `]t` prev/next • `<leader>ot` new • `<leader>ct` close
 
-LSP & Code
+**LSP & Code**
 - `<leader>ca`: code actions • `<leader>th`: toggle inlay hints
 - `<leader>cf`: format buffer (Conform)
 
-Testing (neotest)
+**Testing (neotest)**
 - `<leader>tn`: nearest • `<leader>tf`: file • `<leader>ts`: summary • `<leader>to`: output • `<leader>td`: debug
 
-Terminal
+**Terminal**
 - `<leader>tt`: terminal • `<leader>tv`: vsplit • `<C-/>`/`<C-_>`: toggle terminal • `<Esc><Esc>`: exit terminal mode
 
-Git
+**Git**
 - `<leader>gg`: LazyGit • `<leader>gs`: git status • `<leader>gl`: git log • `<leader>gP`: praise
 - `<leader>gb`: branches • `<leader>gS`: stash • `<leader>gd`: diff hunks • `<leader>gf`: log file
 - `<leader>gB`: browse • `<leader>go`: open all changed/staged/untracked files in buffers
 
-AI
+**AI**
 - Copilot: `<S-Tab>` accept • `<C-w>` word • `<C-l>` line
 - CopilotChat: `<leader>aa` toggle • `<leader>ae/ar/af/ao/ad/at` explain/review/fix/opt/docs/tests • `<leader>ac/as` commits
 - MCPHub: `<leader>Mh` open interface • `<leader>aM` ask CopilotChat with MCP tools
 
-Misc
+**Misc**
 - `<leader>rw`: replace word under cursor (global) • `<leader>cp`: copy current file path • `<leader>?`: Which‑Key
 - `<leader>wa`: save file • `<leader>q`: quit • `<leader>Q`: quit all • `<leader>rf`: reload config
 - `<leader>cR`: rename file • `vag`: select all • `]]`/`[[`: next/prev reference • `<leader>z`/`<leader>Z`: zen/zoom
@@ -95,51 +95,51 @@ Misc
 - Leader: `<Space>` (also localleader)
 - Which‑Key: `<leader>?` to discover context keys
 
-Editing & Movement
+**Editing & Movement**
 - `jk`: leave insert • `<Esc>`: clear search • `<C-d>/<C-u>`: scroll centered
 - `j/k`: move by display line • `<A-j>/<A-k>`: move lines up/down
 - Better paste/replace, indentation tweaks, and "select all" via `vag`
 
-Windows, Buffers, Tabs
+**Windows, Buffers, Tabs**
 - Navigate windows: `<C-h/j/k/l>` (tmux aware)
 - Split: `<leader>|` (vertical), `<leader>-` (horizontal); resize with arrows
 - Buffers: `<Tab>/<S-Tab>` cycle • `<leader>bd` close • `<leader>bn` new • `<A-h/l>` move buffers
 - Tabs: `[t`/`]t` prev/next • `<leader>ot` new • `<leader>ct` close
 
-Terminal
+**Terminal**
 - `<leader>tt` open • `<leader>tv` vsplit • `<C-/>` toggle • `<Esc><Esc>` exit
 
-Copilot (Insert)
+**Copilot (Insert)**
 - `<S-Tab>` accept • `<C-w>` accept word • `<C-l>` accept line
 
-Snacks Pickers & Explorer
+**Snacks Pickers & Explorer**
 - Smart find: `<leader><space>` • Files: `<leader>ff` • Recent: `<leader>fr` • Git files: `<leader>fg`
 - Grep: `<leader>sg` • Lines: `<leader>sb` • Buffers: `<leader>fb` • Projects: `<leader>fp`
 - Explorer: `<leader>e` (hidden files enabled)
 - LSP: `gd/gD/gr/gI/gy` via Snacks pickers
 - Other: `<leader>z` zen mode • `<leader>Z` zoom • `<leader>.` scratch buffer
 
-LSP & Formatting
+**LSP & Formatting**
 - Code actions: `<leader>ca` • Toggle inlay hints: `<leader>th`
 - Format buffer: `<leader>cf` (Conform)
 
-Testing (neotest)
+**Testing (neotest)**
 - Nearest: `<leader>tn` • File: `<leader>tf` • Summary: `<leader>ts` • Output: `<leader>to` • Debug: `<leader>td`
 
-CopilotChat & MCP
+**CopilotChat & MCP**
 - Toggle chat: `<leader>aa` • Buffer context: `<leader>ab`
 - Explain/Review/Fix/Optimize/Docs/Tests: `<leader>ae`/`ar`/`af`/`ao`/`ad`/`at`
 - Commit msgs: `<leader>ac` (all) • `<leader>as` (staged)
 - Model switcher: `<leader>am` • Prompt actions: `<leader>ap`
 - MCPHub interface: `<leader>Mh` • Ask with MCP tools: `<leader>aM`
 
-UI Toggles
+**UI Toggles**
 - Spell check: `<leader>us` • Wrap: `<leader>uw` • Line numbers: `<leader>ul`
 - Relative numbers: `<leader>uL` • Diagnostics: `<leader>ud` • Treesitter: `<leader>uT`
 - Inlay hints: `<leader>uh` • Indent guides: `<leader>ug` • Dim: `<leader>uD`
 - Notifications: `<leader>n` history • `<leader>un` dismiss all
 
-Misc
+**Misc**
 - Replace word under cursor globally: `<leader>rw`
 - Copy current file path: `<leader>cp`
 - Save file: `<leader>wa` • Quit: `<leader>q` • Quit all: `<leader>Q`
@@ -149,33 +149,33 @@ Tip: Which‑Key shows beautiful groups and icons for all `<leader>` menus.
 
 ## 🔌 Plugins (by purpose)
 
-Core & UX
+**Core & UX**
 - 💤 `folke/lazy.nvim`: plugin manager
 - 🧰 `nvim-lspconfig`, `mason.nvim`, `mason-lspconfig.nvim`, `mason-tool-installer.nvim`
 - 🧩 `folke/which-key.nvim` • `folke/noice.nvim` • `goolord/alpha-nvim` • `b0o/incline.nvim`
 
-Completion & Editing
+**Completion & Editing**
 - ✨ `saghen/blink.cmp` (+ `rafamadriz/friendly-snippets`)
 - 🧲 `windwp/nvim-autopairs` • 🧱 `kylechui/nvim-surround` • 🧸 `echasnovski/mini.nvim`
 
-Pickers, Explorer, Git
+**Pickers, Explorer, Git**
 - 🔎 `folke/snacks.nvim` (pickers/explorer/lazygit/notifier/zen/scratch)
 - 🌿 `lewis6991/gitsigns.nvim`
 
-Treesitter & Syntax
+**Treesitter & Syntax**
 - 🌲 `nvim-treesitter` (+ textobjects/context) • `m-demare/hlargs.nvim`
 - 🎨 `norcalli/nvim-colorizer.lua` • `MeanderingProgrammer/render-markdown.nvim`
 
-Statusline/Bufferline
+**Statusline/Bufferline**
 - 📊 `nvim-lualine/lualine.nvim` • 🗂️ `akinsho/bufferline.nvim`
 
-AI & Chat
+**AI & Chat**
 - 🤖 `github/copilot.vim` • 💬 `CopilotC-Nvim/CopilotChat.nvim` • 🔌 `ravitemer/mcphub.nvim`
 
-Testing
+**Testing**
 - 🧪 `nvim-neotest/neotest` (+ jest/rspec/go adapters)
 
-Sessions & QoL
+**Sessions & QoL**
 - 💾 `folke/persistence.nvim` • 🧭 `christoomey/vim-tmux-navigator`
 - 📐 `nmac427/guess-indent.nvim` • 🛍️ `alex-popov-tech/store.nvim`
 
@@ -183,7 +183,7 @@ Sessions & QoL
 
 Installed/managed with Mason + configured via lspconfig/Conform.
 
-Servers (highlights)
+**Servers (highlights)**
 - TypeScript/JavaScript: `ts_ls` with rich inlay hints and preferences
 - Lua: `lua_ls` (Neovim runtime + luv types via `lazydev`)
 - Go: `gopls` (analyses, codelenses, hints)
@@ -193,7 +193,7 @@ Servers (highlights)
 - C/C++: `clangd`
 - Markdown: `marksman`
 
-Formatting (Conform)
+**Formatting (Conform)**
 - JS/TS/React: `prettier`/`prettierd` + `eslint_d`
 - Python: `isort` + `black`
 - Lua: `stylua`
@@ -203,7 +203,7 @@ Formatting (Conform)
 - Others: `clang_format`, `prettier` for css/html/json/yaml/markdown/graphql
 - Markdown: `markdownlint` for linting
 
-Diagnostics UI
+**Diagnostics UI**
 - Clean, sorted diagnostics with icons, rounded floats, and virtual lines
 - Inlay hints toggle: `<leader>th`
 
