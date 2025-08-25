@@ -39,3 +39,4 @@ mouse-hide-while-typing = true
 config-default-files = true
 macos-titlebar-style = tabs
 macos-option-as-alt = true
+keybind = shift+enter=text:\n
