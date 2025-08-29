@@ -12,6 +12,7 @@ local cursor_group = augroup("CursorSettings", { clear = true })
 local ft_detect_group = augroup("FiletypeDetection", { clear = true })
 local matchparen_group = augroup("MatchParenSettings", { clear = true })
 local persistence_group = augroup("PersistenceSettings", { clear = true })
+local help_group = augroup("HelpWindows", { clear = true })
 
 -- ======================================================
 -- General Quality of Life
@@ -303,5 +304,12 @@ autocmd("User", {
 	end,
 })
 
+autocmd("FileType", {
+	group = help_group,
+	pattern = "help",
+	callback = function()
+		vim.cmd("wincmd L")
+	end,
+})
 -- Return the module
 return {}
