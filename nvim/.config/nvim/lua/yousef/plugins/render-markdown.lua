@@ -27,8 +27,8 @@ return {
       })
     end,
   },
-  {
-    vim.opt.runtimepath:prepend('/Users/yousefhadder/github/markdown-plus.nvim'),
-    require('markdown-plus').setup()
-  }
+  -- {
+  --   vim.opt.runtimepath:prepend('/Users/yousefhadder/github/markdown-plus.nvim'),
+  --   require('markdown-plus').setup()
+  -- }
 }
