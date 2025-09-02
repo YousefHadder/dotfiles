@@ -5,45 +5,6 @@ bootstrap_system() {
   log "--- Starting Bootstrap Phase ---"
 
   # -------------------------------
-  # Update system based on OS
-  # -------------------------------
-  if [ "$OS" == "Darwin" ]; then
-    log "Running macOS specific commands..."
-    log "Updating macOS..."
-    sudo softwareupdate -i -a --agree-to-license
-
-    log "Checking for Xcode Command Line Tools..."
-    # This will prompt for installation if not already installed.
-    # In a non-interactive environment, this might need pre-configuration.
-    # For GitHub Codespaces, these tools are usually available.
-    if ! xcode-select -p >/dev/null 2>&1; then
-      log "Installing Xcode Command Line Tools..."
-      touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
-      PROD=$(softwareupdate -l | grep "\*.*Command Line" | head -n 1 | awk -F"*" '{print $2}' | sed -e 's/^ *//' | tr -d '\n')
-      if [ -n "$PROD" ]; then
-        softwareupdate -i "$PROD" --verbose
-      fi
-      rm /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
-    else
-      log "Xcode Command Line Tools already installed."
-    fi
-  elif [ "$OS" == "Linux" ]; then
-    log "Running Linux specific commands..."
-    if command -v apt-get >/dev/null 2>&1; then
-      log "Using apt-get to update Linux..."
-      sudo apt-get update && sudo apt-get upgrade -y
-    elif command -v yum >/dev/null 2>&1; then
-      log "Using yum to update Linux..."
-      sudo yum update -y
-    elif command -v dnf >/dev/null 2>&1; then
-      log "Using dnf to update Linux..."
-      sudo dnf upgrade -y
-    else
-      log "No supported package manager found. Please update your system manually."
-    fi
-  fi
-
-  # -------------------------------
   # Install zsh using the OS package manager
   # -------------------------------
   if ! command -v zsh &>/dev/null; then
