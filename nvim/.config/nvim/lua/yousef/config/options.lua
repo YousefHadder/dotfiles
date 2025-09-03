@@ -112,3 +112,6 @@ cmd([[
     hi Pmenu guibg=NONE ctermbg=NONE
     hi FloatBorder guifg=#ffffff guibg=NONE ctermbg=NONE
 ]])
+
+-- Custom comment color - light gray/white for better visibility on dark background
+cmd([[hi Comment guifg=#e0e0e0 gui=italic]])
