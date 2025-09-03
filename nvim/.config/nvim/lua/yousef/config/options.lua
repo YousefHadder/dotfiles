@@ -115,3 +115,6 @@ cmd([[
 
 -- Custom comment color - light gray/white for better visibility on dark background
 cmd([[hi Comment guifg=#e0e0e0 gui=italic]])
+
+-- Custom highlight for @param tags in comments
+cmd([[hi CommentParam guifg=#00ff7f gui=bold]])

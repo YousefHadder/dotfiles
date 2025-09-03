@@ -311,5 +311,20 @@ autocmd("FileType", {
 		vim.cmd("wincmd L")
 	end,
 })
+-- ======================================================
+-- Custom Comment Syntax Highlighting
+-- ======================================================
+
+-- Highlight @param, @returns, etc. in comments using match patterns
+autocmd({"BufEnter", "BufReadPost", "WinEnter"}, {
+	group = augroup("CommentParamHighlighting", { clear = true }),
+	callback = function()
+		-- Clear any existing matches first
+		pcall(vim.fn.clearmatches)
+		-- Add match pattern for @tags in comments
+		vim.fn.matchadd("CommentParam", [[@\w\+]], 10)
+	end,
+})
+
 -- Return the module
 return {}
