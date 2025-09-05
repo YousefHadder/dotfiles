@@ -3,6 +3,7 @@
 export EDITOR='nvim'
 alias n=nvim
 alias nvim-kickstart='NVIM_APPNAME="nvim-kickstart" nvim'
+alias lvim='NVIM_APPNAME="lvim" nvim'
 
 # Navigation Aliases
 alias cd=z
