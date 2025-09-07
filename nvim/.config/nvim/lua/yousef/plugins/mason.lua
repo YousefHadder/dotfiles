@@ -55,6 +55,9 @@ return {
 					"stylelint-lsp",
 					"stylua",
 					"yaml-language-server",
+					-- Additional linters for nvim-lint
+					"pylint",
+					"revive",
 				},
 				debounce_hours = 96,
 				auto_update = false, -- Disable auto-updates for faster startup
