@@ -173,33 +173,6 @@ return {
 			-- ESLint
 			eslint = {
 				filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
-				settings = {
-					codeAction = {
-						disableRuleComment = {
-							enable = true,
-							location = "separateLine"
-						},
-						showDocumentation = {
-							enable = true
-						}
-					},
-					codeActionOnSave = {
-						enable = false,
-						mode = "all"
-					},
-					format = true,
-					nodePath = "",
-					onIgnoredFiles = "off",
-					packageManager = "npm",
-					quiet = false,
-					rulesCustomizations = {},
-					run = "onType",
-					useESLintClass = false,
-					validate = "on",
-					workingDirectory = {
-						mode = "location"
-					}
-				}
 			},
 
 			-- TypeScript/JavaScript
@@ -209,39 +182,11 @@ return {
 					typescript = {
 						inlayHints = {
 							includeInlayParameterNameHints = "all",
-							includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-							includeInlayFunctionParameterTypeHints = true,
-							includeInlayVariableTypeHints = true,
-							includeInlayPropertyDeclarationTypeHints = true,
-							includeInlayFunctionLikeReturnTypeHints = true,
-							includeInlayEnumMemberValueHints = true,
-						},
-						preferences = {
-							disableSuggestions = false,
-							quotePreference = "auto",
-							includeCompletionsForModuleExports = true,
-							includeCompletionsForImportStatements = true,
-							includeCompletionsWithSnippetText = true,
-							includeAutomaticOptionalChainCompletions = true,
 						},
 					},
 					javascript = {
 						inlayHints = {
 							includeInlayParameterNameHints = "all",
-							includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-							includeInlayFunctionParameterTypeHints = true,
-							includeInlayVariableTypeHints = true,
-							includeInlayPropertyDeclarationTypeHints = true,
-							includeInlayFunctionLikeReturnTypeHints = true,
-							includeInlayEnumMemberValueHints = true,
-						},
-						preferences = {
-							disableSuggestions = false,
-							quotePreference = "auto",
-							includeCompletionsForModuleExports = true,
-							includeCompletionsForImportStatements = true,
-							includeCompletionsWithSnippetText = true,
-							includeCompletionsWithInsertText = true,
 						},
 					},
 				},
@@ -276,27 +221,14 @@ return {
 			-- Ruby
 			ruby_lsp = { init_options = { formatter = "auto", linters = { "rubocop" } } },
 
-			-- Bash
+			-- Bash (zsh added to default sh, bash)
 			bashls = { filetypes = { "sh", "bash", "zsh" } },
 
-			-- Python
-			pyright = {
-				settings = {
-					python = {
-						analysis = {
-							autoSearchPaths = true,
-							useLibraryCodeForTypes = true,
-							diagnosticMode = "workspace",
-						},
-					},
-				},
-			},
+			-- Python (using defaults)
+			pyright = {},
 
-			-- Markdown (Marksman)
-			-- Uses the marksman language server (installable via mason)
-			marksman = {
-				filetypes = { "markdown", "markdown.mdx" },
-			},
+			-- Markdown (using defaults)
+			marksman = {},
 		}
 
 		---------------------------------------------------------------------------
