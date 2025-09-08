@@ -6,19 +6,21 @@ return {
 
 		-- Configure linters by filetype
 		lint.linters_by_ft = {
-			javascript = { "eslint_d" },
-			typescript = { "eslint_d" },
-			javascriptreact = { "eslint_d" },
-			typescriptreact = { "eslint_d" },
+			-- Disable eslint_d for now due to flat config compatibility issues
+			lua = { "luacheck" },
+			javascript = {},
+			typescript = {},
+			javascriptreact = {},
+			typescriptreact = {},
 			ruby = { "rubocop" },
-			go = { "revive" }, -- Use revive instead of golangci-lint for nvim-lint
+			go = { "revive" },
 			python = { "pylint" },
 			bash = { "shellcheck" },
 			sh = { "shellcheck" },
 			zsh = { "shellcheck" },
 		}
 
-		-- Create autocmd group for inting
+		-- Create autocmd group for linting
 		local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
 
 		-- Lint on specific events
@@ -43,4 +45,3 @@ return {
 		end, { desc = "[L]int current file" })
 	end,
 }
-

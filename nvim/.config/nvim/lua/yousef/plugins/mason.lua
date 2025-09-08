@@ -34,30 +34,33 @@ return {
 			local mason_tool_installer = require("mason-tool-installer")
 			mason_tool_installer.setup({
 				ensure_installed = {
+					-- LSPs
 					"eslint-lsp",
-					"eslint_d",
-					"goimports",
-					"golangci-lint",
 					"gopls",
-					"isort",
 					"jq-lsp",
-					"jsonlint",
 					"json-lsp",
 					"marksman",
-					"markdownlint",
 					"lua-language-server",
 					"ts_ls",
-					"prettierd",
-					"prettier",
-					"rubocop",
 					"sorbet",
-					"shellcheck",
 					"stylelint-lsp",
-					"stylua",
 					"yaml-language-server",
-					-- Additional linters for nvim-lint
+					-- Linters
+					"eslint_d",
+					"golangci-lint",
+					"jsonlint",
+					"markdownlint",
+					"rubocop",
+					"shellcheck",
 					"pylint",
 					"revive",
+					"luacheck",
+					-- Formatters
+					"goimports",
+					"isort",
+					"prettierd",
+					"prettier",
+					"stylua",
 				},
 				debounce_hours = 96,
 				auto_update = false, -- Disable auto-updates for faster startup
@@ -65,38 +68,5 @@ return {
 		end,
 	},
 
-	-- Mason LSP Config - depends on mason.nvim
-	{
-		"williamboman/mason-lspconfig.nvim",
-		event = { "BufReadPre", "BufNewFile" },
-		dependencies = {
-			"williamboman/mason.nvim",
-			"neovim/nvim-lspconfig"
-		},
-		config = function()
-			require("mason-lspconfig").setup({
-				automatic_installation = true,
-				automatic_enable = true, -- Fix diagnostic warning
-				ensure_installed = {
-					"bashls",
-					"cssls",
-					"dockerls",
-					"eslint",
-					"html",
-					"jsonls",
-					"ts_ls",
-					"lua_ls",
-					"gopls",
-					"ruby_lsp",
-					"marksman",
-				},
-			})
-		end,
-	},
-
-	-- LSP Config
-	{
-		"neovim/nvim-lspconfig",
-		dependencies = { "williamboman/mason-lspconfig.nvim" },
-	},
+	-- Note: mason-lspconfig and nvim-lspconfig are configured in lsp.lua
 }

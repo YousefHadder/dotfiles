@@ -90,10 +90,10 @@ keymap('n', '<leader>md', '<C-w>J', { desc = 'Move split down' })
 keymap('n', '<leader>mu', '<C-w>K', { desc = 'Move split up' })
 keymap('n', '<leader>mr', '<C-w>L', { desc = 'Move split right' })
 
-keymap("n", "C-h", ":TmuxNavigateLeft<CR>")
-keymap("n", "C-j", ":TmuxNavigateDown<CR>")
-keymap("n", "C-k", ":TmuxNavigateUp<CR>")
-keymap("n", "C-l", ":TmuxNavigateRight<CR>")
+keymap("n", "<C-h>", ":TmuxNavigateLeft<CR>")
+keymap("n", "<C-j>", ":TmuxNavigateDown<CR>")
+keymap("n", "<C-k>", ":TmuxNavigateUp<CR>")
+keymap("n", "<C-l>", ":TmuxNavigateRight<CR>")
 
 
 -- ======================================================
@@ -139,6 +139,29 @@ keymap("n", "<leader>cp", function()
   vim.fn.setreg("+", filePath)
   print("File path copied to clipboard: " .. filePath)
 end, { desc = "Copy file path to clipboard" })
+
+-- Copy diagnostics of current line to clipboard
+keymap("n", "<leader>cd", function()
+  local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line(".") - 1 })
+  if #diagnostics == 0 then
+    vim.notify("No diagnostics on current line", vim.log.levels.INFO)
+    return
+  end
+
+  vim.notify(string.format("Found %d diagnostic(s) on current line", #diagnostics), vim.log.levels.INFO)
+
+  local messages = {}
+  for _, diagnostic in ipairs(diagnostics) do
+    local severity = vim.diagnostic.severity[diagnostic.severity]
+    local source = diagnostic.source or "LSP"
+    local code = diagnostic.code and ("(" .. diagnostic.code .. ")") or ""
+    table.insert(messages, string.format("[%s] %s %s: %s", severity, source, code, diagnostic.message))
+  end
+
+  local text = table.concat(messages, "\n")
+  vim.fn.setreg("+", text)
+  vim.notify(string.format("Copied %d diagnostic(s) to clipboard", #diagnostics), vim.log.levels.INFO)
+end, { desc = "Copy current line diagnostics to clipboard" })
 
 
 -- Open all files that are changed (staged/unstaged) or untracked
