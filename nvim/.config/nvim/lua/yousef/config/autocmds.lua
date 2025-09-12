@@ -167,6 +167,22 @@ autocmd({ "BufNewFile", "BufRead" }, {
 	command = "set filetype=sh",
 })
 
+-- Ruby file detection for non-standard cases
+autocmd({ "BufNewFile", "BufRead" }, {
+	group = ft_detect_group,
+	pattern = "*",
+	callback = function()
+		local filename = vim.fn.expand("%:t")
+		local first_line = vim.fn.getline(1)
+
+		-- Non-standard shebang patterns (malformed or rails-specific)
+		if first_line:match("^#!bin/rails") or first_line:match("^#!/bin/rails runner") then
+			vim.bo.filetype = "ruby"
+			return
+		end
+	end,
+})
+
 -- ======================================================
 -- Git Integration
 -- ======================================================

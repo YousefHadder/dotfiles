@@ -4,4 +4,7 @@ vim.filetype.add({
   extension = {
     gs = "javascript",
   },
+  filename = {
+    ["test"] = "ruby",
+  },
 })
