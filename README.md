@@ -30,6 +30,7 @@ A carefully curated collection of configuration files and scripts for a streamli
     - [Tmux Setup](#tmux-setup)
     - [Git Configuration](#git-configuration)
     - [Starship Prompt](#starship-prompt)
+    - [Claude AI Configuration](#claude-ai-configuration)
   - [🎨 Customization](#customization)
     - [Adding New Packages](#adding-new-packages)
     - [Modifying Existing Configurations](#modifying-existing-configurations)
@@ -89,6 +90,7 @@ This dotfiles repository contains my personal development environment configurat
 - **Git**: Optimized configuration with helpful aliases
 - **Lazygit**: Beautiful terminal Git UI with custom configuration
 - **FZF**: Fuzzy finder with Git integration scripts
+- **Claude**: AI assistant configuration with custom powerline and global code instructions
 
 ### Utilities & Enhancements
 - **Yazi**: Modern file manager with custom themes and keymaps
@@ -149,6 +151,12 @@ dotfiles/
 │   ├── scripts.sh         # Script copying and permissions
 │   ├── symlinks.sh        # GNU Stow symlink creation
 │   └── utils.sh           # Utility functions and helpers
+│
+├── claude/                 # Claude AI configuration
+│   └── .claude/
+│       ├── CLAUDE.md       # Global Claude code instructions
+│       ├── settings.json   # Claude status line settings
+│       └── claude-powerline.json  # Powerline theme configuration
 │
 ├── git/
 │   └── .gitconfig          # Git configuration and aliases
@@ -334,6 +342,12 @@ The Zsh configuration is now **modular and organized** into separate files in `z
 - **Modules**: OS, directory, Git status, Node.js, AWS, execution time
 - **Layout**: Two-line format with comprehensive information display
 
+### Claude AI Configuration
+- **Global Instructions**: Comprehensive coding standards and tool preferences (CLAUDE.md)
+- **Powerline Integration**: Custom status line configuration with usage tracking
+- **Theme**: Custom color scheme for better visibility and modern appearance
+- **Features**: Session tracking, token usage monitoring, and budget management
+
 ## 🎨 Customization
 
 ### Adding New Packages
@@ -413,7 +427,7 @@ The `.stowrc` file automatically ignores certain files:
 - `install.sh`
 - `scripts` directory
 
-**Note**: The `git` and `ghostty` packages are intentionally skipped during automated stowing in the install script.
+**Note**: The `git`, `ghostty`, and `claude` packages are intentionally skipped during automated stowing in the install script when running in GitHub Codespaces.
 
 ## 🔧 Troubleshooting
 
