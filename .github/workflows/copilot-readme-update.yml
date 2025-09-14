@@ -12,6 +12,9 @@ jobs:
       issues: write
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Create Copilot issue
         run: |
           gh issue create \
