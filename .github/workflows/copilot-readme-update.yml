@@ -5,7 +5,7 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# Broader permissions so Copilot can later create PRs
+# Broader permissions so Copilot can later open PRs if it chooses
 permissions:
   issues: write
   contents: write
@@ -19,104 +19,35 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Look for existing open Copilot README issue
-        id: find_existing
+      - name: Create Copilot issue
+        id: create_issue
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          existing_number=$(gh issue list \
-            --search "in:title \"Review latest commit and update README\" state:open" \
-            --json number --jq '.[0].number' || true)
-          if [[ -n "$existing_number" && "$existing_number" != "null" ]]; then
-            echo "existing_issue_number=$existing_number" >> "$GITHUB_OUTPUT"
-            echo "Found existing issue #$existing_number"
-          else
-            echo "No existing issue found."
-          fi
+          issue_url=$(gh issue create \
+            --title "🤖 Review latest commit and update README files if needed" \
+            --body "Review the latest commit and update the README files (root README.md and neovim/.config/neovim/README.md) if the changes are worthy of being documented." \
+            --label "copilot")
+          echo "issue_url=$issue_url" >> "$GITHUB_OUTPUT"
 
-      - name: Create (or comment on) issue
-        id: create_or_comment
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          EXISTING: ${{ steps.find_existing.outputs.existing_issue_number }}
-        run: |
-          if [[ -n "$EXISTING" ]]; then
-            echo "Issue already exists (#$EXISTING); adding a comment instead of creating a new one."
-            gh issue comment "$EXISTING" --body "New push to main detected. Please re-evaluate whether README updates are needed."
-            echo "issue_number=$EXISTING" >> "$GITHUB_OUTPUT"
-            echo "issue_url=$(gh issue view $EXISTING --json url --jq .url)" >> "$GITHUB_OUTPUT"
-          else
-            # Create new issue WITHOUT assignment first (use GITHUB_TOKEN just to create)
-            issue_url=$(gh issue create \
-              --title "🤖 Review latest commit and update README files if needed" \
-              --body "$(cat <<'EOF'
-                A push to main just occurred.
-
-                Task:
-                1. Compare the latest commit(s) to previously documented functionality.
-                2. If changes affect usage, configuration, tooling, or developer experience:
-                   - Update root README.md
-                   - Update neovim/.config/neovim/README.md
-                3. If no changes are needed, leave a comment explaining why.
-
-                When you are ready, open a PR summarizing modifications with a clear commit scope.
-
-                Context Hints for Copilot:
-                - Focus on dev environment setup changes, tooling updates, aliases, shell/env adjustments, or Neovim plugin configuration shifts.
-                - Ignore cosmetic changes (e.g., formatting-only or comment-only changes) unless they alter documented usage.
-
-                EOF
-                )" \
-              --label "copilot" \
-              --label "documentation" \
-              --web > /dev/null 2>&1 || true)
-
-            # Re-fetch (because gh issue create --web returns a browser open; fallback)
-            # Safer approach: search the most recently created matching issue.
-            new_issue_number=$(gh issue list --limit 1 --json number,title,createdAt \
-              --search "in:title \"Review latest commit and update README\" state:open" \
-              --jq '.[0].number')
-            if [[ -z "$new_issue_number" ]]; then
-              echo "Failed to determine new issue number"; exit 1
-            fi
-            issue_url=$(gh issue view "$new_issue_number" --json url --jq .url)
-            echo "issue_number=$new_issue_number" >> "$GITHUB_OUTPUT"
-            echo "issue_url=$issue_url" >> "$GITHUB_OUTPUT"
-            echo "Created issue #$new_issue_number: $issue_url"
-          fi
-
-      - name: Wait briefly before assignment
+      - name: Wait briefly before assigning
         run: sleep 5
 
-      - name: Assign Copilot with user PAT (ensures agent triggers)
-        id: assign
-        env:
-          GH_TOKEN: ${{ secrets.COPILOT_ISSUE_ASSIGN }} # <-- PAT you create
-          ISSUE_NUMBER: ${{ steps.create_or_comment.outputs.issue_number }}
-        run: |
-          if [[ -z "$ISSUE_NUMBER" ]]; then
-            echo "No issue number available; cannot assign."
-            exit 0
-          fi
-          echo "Assigning @copilot to issue #$ISSUE_NUMBER using PAT..."
-          if gh issue edit "$ISSUE_NUMBER" --add-assignee "copilot"; then
-            echo "Assignment successful."
-          else
-            echo "Assignment failed."
-            exit 1
-          fi
-
-      - name: Add acknowledgment comment (optional)
-        if: success()
+      - name: Assign Copilot to issue (using user PAT so agent triggers)
         env:
           GH_TOKEN: ${{ secrets.COPILOT_ISSUE_ASSIGN }}
-          ISSUE_NUMBER: ${{ steps.create_or_comment.outputs.issue_number }}
+          ISSUE_URL: ${{ steps.create_issue.outputs.issue_url }}
         run: |
-          gh issue comment "$ISSUE_NUMBER" --body $'🤖 @copilot has been assigned.\n\nPlease proceed with the README evaluation workflow as described in the issue body.'
+          issue_number=$(echo "$ISSUE_URL" | grep -o '[0-9]*$')
+          echo "Assigning copilot to issue #$issue_number"
+          gh issue edit "$issue_number" --add-assignee "copilot"
+          echo "Assigned."
 
-      - name: "Debug: Show final issue state"
+      - name: (Optional) Confirmation log
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ISSUE_NUMBER: ${{ steps.create_or_comment.outputs.issue_number }}
+          ISSUE_URL: ${{ steps.create_issue.outputs.issue_url }}
         run: |
-          gh issue view "$ISSUE_NUMBER" --json number,title,assignees,labels,state --jq '.'
+          issue_number=$(echo "$ISSUE_URL" | grep -o '[0-9]*$')
+            echo "Final issue state:"
+            gh issue view "$issue_number" --json number,title,assignees --jq '.'
