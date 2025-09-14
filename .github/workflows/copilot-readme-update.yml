@@ -16,11 +16,19 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Create Copilot issue
+        id: create_issue
         run: |
-          gh issue create \
+          ISSUE_URL=$(gh issue create \
             --title "🤖 Review latest commit and update README files if needed" \
             --body "Review the latest commit and update the README files (root README.md and neovim/.config/neovim/README.md) if the changes are worthy of being documented." \
-            --label "copilot" \
-            --assignee "@copilot" \
+            --label "copilot")
+          echo "issue_url=$ISSUE_URL" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Assign Copilot to issue
+        run: |
+          ISSUE_NUMBER=$(echo "${{ steps.create_issue.outputs.issue_url }}" | grep -o '[0-9]*$')
+          gh issue edit $ISSUE_NUMBER --add-assignee "@copilot"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
