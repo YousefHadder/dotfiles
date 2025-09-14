@@ -4,6 +4,26 @@ A fast, modern, and UI‑polished Neovim setup with great defaults, batteries‑
 
 • Works great for TypeScript/JavaScript, Go, Python, Lua, Bash/Zsh, Ruby, C/C++ and more.
 
+## Table of content
+
+- [🧠 Yousef’s Neovim](#yousefs-neovim)
+  - [Table of content](#table-of-content)
+  - [🚀 Highlights](#highlights)
+  - [📁 Layout](#layout)
+  - [⚡ Quick Start](#quick-start)
+  - [🧾 Cheat Sheet](#cheat-sheet)
+  - [🎮 Keys You’ll Use](#keys-youll-use)
+  - [🔌 Plugins (by purpose)](#plugins-by-purpose)
+  - [🧠 LSPs, Formatters, and Linters](#lsps-formatters-and-linters)
+  - [🎨 UI Notes](#ui-notes)
+  - [🔌 MCPHub Integration](#mcphub-integration)
+  - [🧱 Treesitter Extras](#treesitter-extras)
+  - [🛠️ Customize](#customize)
+  - [🔍 Troubleshooting](#troubleshooting)
+  - [💡 Tips](#tips)
+  - [🤝 Contributing](#contributing)
+
+
 ## 🚀 Highlights
 
 - 💡 Completion: `blink.cmp` with signature help and ghost text

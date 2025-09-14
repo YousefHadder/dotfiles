@@ -2,6 +2,60 @@
 
 A carefully curated collection of configuration files and scripts for a streamlined development environment across macOS and Linux systems.
 
+# Table of Contents
+
+- [My Dotfiles 🚀](#my-dotfiles)
+- [Table of Contents](#table-of-contents)
+  - [🎯 Overview](#overview)
+    - [Key Features](#key-features)
+  - [🛠 What's Included](#whats-included)
+    - [Shell & Terminal](#shell-terminal)
+    - [Development Tools](#development-tools)
+    - [Utilities & Enhancements](#utilities-enhancements)
+    - [Package Management](#package-management)
+  - [🚀 Quick Start](#quick-start)
+- [Clone the repository](#clone-the-repository)
+- [Navigate to the directory](#navigate-to-the-directory)
+- [Run the installation script](#run-the-installation-script)
+    - [GitHub Codespaces Support](#github-codespaces-support)
+  - [📁 Repository Structure](#repository-structure)
+  - [📖 Installation Guide](#installation-guide)
+    - [Prerequisites](#prerequisites)
+    - [Detailed Installation Steps](#detailed-installation-steps)
+    - [What Gets Installed](#what-gets-installed)
+    - [Manual Installation (Alternative)](#manual-installation-alternative)
+  - [⚙️ Configuration Details](#configuration-details)
+    - [Zsh Configuration](#zsh-configuration)
+    - [Neovim Setup (Comprehensive Development Environment)](#neovim-setup-comprehensive-development-environment)
+    - [Tmux Setup](#tmux-setup)
+    - [Git Configuration](#git-configuration)
+    - [Starship Prompt](#starship-prompt)
+  - [🎨 Customization](#customization)
+    - [Adding New Packages](#adding-new-packages)
+    - [Modifying Existing Configurations](#modifying-existing-configurations)
+    - [Neovim Plugin Management](#neovim-plugin-management)
+    - [Environment-Specific Settings](#environment-specific-settings)
+- [In .zshrc - automatic platform detection](#in-zshrc-automatic-platform-detection)
+    - [Stow Package Management](#stow-package-management)
+  - [🔧 Troubleshooting](#troubleshooting)
+    - [Common Issues](#common-issues)
+- [Remove plugin cache and restart](#remove-plugin-cache-and-restart)
+- [Manually install TPM and plugins](#manually-install-tpm-and-plugins)
+    - [Getting Help](#getting-help)
+  - [🚀 Key Features & Shortcuts](#key-features-shortcuts)
+    - [Neovim Shortcuts (Some Highlights)](#neovim-shortcuts-some-highlights)
+    - [Tmux Shortcuts](#tmux-shortcuts)
+    - [Zsh Aliases](#zsh-aliases)
+  - [🤝 Contributing](#contributing)
+    - [How to Contribute](#how-to-contribute)
+    - [Guidelines](#guidelines)
+    - [Areas for Contribution](#areas-for-contribution)
+    - [Reporting Issues](#reporting-issues)
+  - [📄 License](#license)
+  - [🙏 Acknowledgments](#acknowledgments)
+  - [🔗 Related Projects](#related-projects)
+
+
 
 ## 🎯 Overview
 
@@ -67,7 +121,7 @@ cd ~/dotfiles
 
 The installation script will:
 1. **Bootstrap Phase**: Update system, install Zsh and Oh My Zsh
-2. **Installation Phase**: Install Homebrew and all packages from Brewfile  
+2. **Installation Phase**: Install Homebrew and all packages from Brewfile
 3. **Configuration Phase**: Copy scripts and create symlinks using GNU Stow
 4. **Finalization**: Switch to new Zsh shell with all configurations active
 
@@ -313,10 +367,10 @@ The Zsh configuration is now **modular and organized** into separate files in `z
    ```bash
    # Example: Edit Neovim config
    nvim nvim/.config/nvim/lua/yousef/config/options.lua
-   
+
    # Example: Edit Zsh environment variables
    nvim zsh/conf.d/01-environment.zsh
-   
+
    # Example: Edit installation script component
    nvim install/packages.sh
    ```
