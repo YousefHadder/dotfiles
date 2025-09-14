@@ -42,7 +42,7 @@ jobs:
         run: |
           if [[ -n "$EXISTING" ]]; then
             echo "Issue already exists (#$EXISTING); adding a comment instead of creating a new one."
-            gh issue comment "$EXISTING" --body "New push to main detected ($(date -u +'%Y-%m-%d %H:%M:%S') UTC). Please re-evaluate whether README updates are needed."
+            gh issue comment "$EXISTING" --body "New push to main detected. Please re-evaluate whether README updates are needed."
             echo "issue_number=$EXISTING" >> "$GITHUB_OUTPUT"
             echo "issue_url=$(gh issue view $EXISTING --json url --jq .url)" >> "$GITHUB_OUTPUT"
           else
