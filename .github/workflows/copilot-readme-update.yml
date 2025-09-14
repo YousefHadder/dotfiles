@@ -40,7 +40,7 @@ jobs:
         run: |
           issue_number=$(echo "$ISSUE_URL" | grep -o '[0-9]*$')
           echo "Assigning copilot to issue #$issue_number"
-          gh issue edit "$issue_number" --add-assignee "copilot"
+          gh issue edit "$issue_number" --add-assignee "@copilot"
           echo "Assigned."
 
       - name: (Optional) Confirmation log
