@@ -1,0 +1,24 @@
+name: Copilot README Update
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  create-copilot-issue:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - name: Create Copilot issue
+        run: |
+          gh issue create \
+            --title "🤖 Review latest commit and update README files if needed" \
+            --body "Review the latest commit and update the README files (root README.md and neovim/.config/neovim/README.md) if the changes are worthy of being documented." \
+            --assignee "copilot" \
+            --label "copilot,documentation"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
