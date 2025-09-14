@@ -20,7 +20,7 @@ jobs:
           gh issue create \
             --title "🤖 Review latest commit and update README files if needed" \
             --body "Review the latest commit and update the README files (root README.md and neovim/.config/neovim/README.md) if the changes are worthy of being documented." \
-            --assignee "copilot" \
+            --assignee "@copilot" \
             --label "copilot,documentation"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
