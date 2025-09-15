@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths-ignore:
       - 'README.md'
-      - 'neovim/.config/neovim/README.md'
+      - 'nvim/.config/nvim/README.md'
   workflow_dispatch:
 
 permissions:
@@ -28,7 +28,7 @@ jobs:
         run: |
           issue_url=$(gh issue create \
             --title "🤖 Review latest commit and update README files if needed" \
-            --body "Review the latest commit and update the README files (root README.md and neovim/.config/neovim/README.md) if the changes are worthy of being documented." \
+            --body "Review the latest commit and update the README files (root README.md and nvim/.config/nvim/README.md) if the changes are worthy of being documented." \
             --label "copilot")
           echo "issue_url=$issue_url" >> "$GITHUB_OUTPUT"
 
