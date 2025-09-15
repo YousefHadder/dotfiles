@@ -6,6 +6,7 @@ on:
     paths-ignore:
       - 'README.md'
       - 'nvim/.config/nvim/README.md'
+      - '.github/workflows/copilot-readme-update.yml'
   workflow_dispatch:
 
 permissions:
