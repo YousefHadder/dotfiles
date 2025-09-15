@@ -3,9 +3,11 @@ name: Copilot README Update
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'README.md'
+      - 'neovim/.config/neovim/README.md'
   workflow_dispatch:
 
-# Broader permissions so Copilot can later open PRs if it chooses
 permissions:
   issues: write
   contents: write
@@ -22,7 +24,7 @@ jobs:
       - name: Create Copilot issue
         id: create_issue
         env:
-            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           issue_url=$(gh issue create \
             --title "🤖 Review latest commit and update README files if needed" \
@@ -43,11 +45,10 @@ jobs:
           gh issue edit "$issue_number" --add-assignee "@copilot"
           echo "Assigned."
 
-      - name: (Optional) Confirmation log
+      - name: Confirmation log
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_URL: ${{ steps.create_issue.outputs.issue_url }}
         run: |
           issue_number=$(echo "$ISSUE_URL" | grep -o '[0-9]*$')
-            echo "Final issue state:"
-            gh issue view "$issue_number" --json number,title,assignees --jq '.'
+          gh issue view "$issue_number" --json number,title,assignees --jq '.'
