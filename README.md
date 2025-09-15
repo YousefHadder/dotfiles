@@ -86,6 +86,7 @@ This dotfiles repository contains my personal development environment configurat
 - **Neovim**: Comprehensive Lua configuration with:
   - LSP integration (Mason, nvim-lspconfig)
   - GitHub Copilot and CopilotChat
+  - MCPHub integration for enhanced AI capabilities
   - Modern completion with blink.cmp
   - File management with Neo-tree and fzf-lua
   - Testing framework (Neotest)
@@ -311,6 +312,7 @@ The Zsh configuration is now **modular and organized** into separate files in `z
 - **AI Integration**:
   - GitHub Copilot for code suggestions
   - CopilotChat for AI conversations
+  - MCPHub for Model Context Protocol server integration
 - **File Management**:
   - Neo-tree for project exploration
   - fzf-lua for fuzzy finding
