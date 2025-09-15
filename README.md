@@ -47,6 +47,8 @@ A carefully curated collection of configuration files and scripts for a streamli
     - [Neovim Shortcuts (Some Highlights)](#neovim-shortcuts-some-highlights)
     - [Tmux Shortcuts](#tmux-shortcuts)
     - [Zsh Aliases](#zsh-aliases)
+  - [🤖 Automation & Workflows](#automation-workflows)
+    - [Automated README Updates](#automated-readme-updates)
   - [🤝 Contributing](#contributing)
     - [How to Contribute](#how-to-contribute)
     - [Guidelines](#guidelines)
@@ -70,6 +72,7 @@ This dotfiles repository contains my personal development environment configurat
 - **Organized Structure**: Clean organization using GNU Stow
 - **Developer-Focused**: Optimized for coding with LSP, Copilot, and modern workflows
 - **Extensive Neovim Setup**: Complete Lua-based configuration with 30+ plugins
+- **Automated Documentation**: GitHub Actions workflow for keeping README files current
 
 ## 🛠 What's Included
 
@@ -143,6 +146,10 @@ dotfiles/
 ├── .stowrc                 # GNU Stow configuration
 ├── .luarc.json             # Lua LSP configuration
 │
+├── .github/                # GitHub repository automation
+│   └── workflows/
+│       └── copilot-readme-update.yml  # Automated README review workflow
+│
 ├── install/               # Modular installation scripts
 │   ├── bootstrap.sh       # System bootstrap and Zsh setup
 │   ├── homebrew.sh        # Homebrew installation
@@ -184,8 +191,7 @@ dotfiles/
 │   │   ├── ctp_memory.conf    # Memory usage
 │   │   ├── pane_size.conf     # Pane size indicator
 │   │   └── primary_ip.conf    # IP address display
-│   ├── fzf-git.sh        # Enhanced git operations with fzf
-│   └── update_pane_size.sh   # Tmux pane size updater
+│   └── fzf-git.sh        # Enhanced git operations with fzf
 │
 ├── starship/              # Starship prompt configuration
 │   └── .config/
@@ -513,6 +519,22 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 - **Smart cd**: `z <directory>` (zoxide)
 - **Git shortcuts**: Provided by Oh My Zsh git plugin
 
+## 🤖 Automation & Workflows
+
+This repository includes GitHub Actions automation to maintain documentation quality:
+
+### Automated README Updates
+- **Workflow**: `.github/workflows/copilot-readme-update.yml`
+- **Trigger**: Runs on every push to main branch and manual workflow dispatch
+- **Purpose**: Automatically creates GitHub issues assigned to @copilot for README review
+- **Process**:
+  1. Creates an issue requesting README review after significant commits
+  2. Assigns the issue to @copilot for automated analysis
+  3. Copilot reviews changes and updates documentation if needed
+- **Benefits**: Ensures documentation stays current with code changes without manual intervention
+
+This automation helps maintain accurate and comprehensive documentation by leveraging AI to detect when README files need updates after repository changes.
+
 ## 🤝 Contributing
 
 This repository is in active development and contributions are welcome!
@@ -538,6 +560,7 @@ This repository is in active development and contributions are welcome!
 - **Add appropriate comments** for complex configurations
 - **Update Brewfile** when adding new packages
 - **Use proper Stow structure** for new configurations
+- **Leverage automation**: The GitHub Actions workflow will automatically trigger README reviews for significant changes
 
 ### Areas for Contribution
 
