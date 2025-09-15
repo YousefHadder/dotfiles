@@ -184,8 +184,7 @@ dotfiles/
 │   │   ├── ctp_memory.conf    # Memory usage
 │   │   ├── pane_size.conf     # Pane size indicator
 │   │   └── primary_ip.conf    # IP address display
-│   ├── fzf-git.sh        # Enhanced git operations with fzf
-│   └── update_pane_size.sh   # Tmux pane size updater
+│   └── fzf-git.sh        # Enhanced git operations with fzf
 │
 ├── starship/              # Starship prompt configuration
 │   └── .config/
