@@ -23,9 +23,10 @@ palette = 13=#ffccff
 palette = 14=#bbddff
 palette = 15=#ffffff
 
+background-image = "/Users/yousefhadder/Downloads/gh.png"
+background-image-opacity = 0.15
+background-image-fit = cover
 
-background-opacity = 0.85
-background-blur-radius = 10
 term = "xterm-256color"
 
 font-family = Hack Nerd Font Mono Regular
