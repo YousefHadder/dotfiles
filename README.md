@@ -30,6 +30,7 @@ A carefully curated collection of configuration files and scripts for a streamli
     - [Tmux Setup](#tmux-setup)
     - [Git Configuration](#git-configuration)
     - [Starship Prompt](#starship-prompt)
+    - [Ghostty Terminal](#ghostty-terminal)
     - [Claude AI Configuration](#claude-ai-configuration)
   - [🎨 Customization](#customization)
     - [Adding New Packages](#adding-new-packages)
@@ -349,6 +350,16 @@ The Zsh configuration is now **modular and organized** into separate files in `z
 - **Theme**: Custom Dracula palette
 - **Modules**: OS, directory, Git status, Node.js, AWS, execution time
 - **Layout**: Two-line format with comprehensive information display
+
+### Ghostty Terminal
+- **Performance**: High-performance terminal emulator with GPU acceleration
+- **Theme**: Custom Slate colorscheme matching Neovim configuration
+- **Background Images**: Support for background images with configurable opacity
+  - Background image path: configurable in `ghostty/.config/ghostty/config`
+  - Opacity control: `background-image-opacity = 0.15`
+  - Fit mode: `background-image-fit = cover`
+- **Font**: Hack Nerd Font Mono for consistent icon rendering
+- **macOS Integration**: Native titlebar styling and Option key as Alt
 
 ### Claude AI Configuration
 - **Global Instructions**: Comprehensive coding standards and tool preferences (CLAUDE.md)

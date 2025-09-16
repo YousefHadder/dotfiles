@@ -190,7 +190,7 @@ Tip: Which‑Key shows beautiful groups and icons for all `<leader>` menus.
 - 📊 `nvim-lualine/lualine.nvim` • 🗂️ `akinsho/bufferline.nvim`
 
 **AI & Chat**
-- 🤖 `github/copilot.vim` • 💬 `CopilotC-Nvim/CopilotChat.nvim` • 🔌 `ravitemer/mcphub.nvim`
+- 🤖 `zbirenbaum/copilot.lua` • 💬 `CopilotC-Nvim/CopilotChat.nvim` • 🔌 `ravitemer/mcphub.nvim`
 
 **Testing**
 - 🧪 `nvim-neotest/neotest` (+ jest/rspec/go adapters)
@@ -259,7 +259,7 @@ MCPHub provides Model Context Protocol (MCP) server integration for enhanced AI 
 - LSP not working: open `:Mason`, ensure servers installed
 - Icons missing: use a Nerd Font in your terminal
 - Pickers slow/missing results: install `ripgrep` and `fd`
-- CopilotChat: ensure `github/copilot.vim` is authenticated
+- CopilotChat: ensure `zbirenbaum/copilot.lua` is authenticated
 - Health: run `:checkhealth` • Logs: `:Lazy log`
 
 ## 💡 Tips
