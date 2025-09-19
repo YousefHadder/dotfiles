@@ -60,7 +60,7 @@ keymap("n", "vag", "<cmd>keepjumps normal! ggVG<cr>")
 keymap("n", "<leader>rf", "<cmd>so %<CR>", { silent = true })
 
 -- Quick save and quit
-keymap("n", "<leader>wa", "<cmd>write<CR>", { desc = "Save file" })
+keymap("n", "<leader>wa", "<cmd>wa<CR>", { desc = "Save file" })
 keymap("n", "<leader>q", "<cmd>quit<CR>", { desc = "Quit" })
 keymap("n", "<leader>Q", "<cmd>qall<CR>", { desc = "Quit all" })
 
