@@ -302,7 +302,10 @@ The Zsh configuration is now **modular and organized** into separate files in `z
   - `cd` → `z` (zoxide smart jumping)
   - `vim` → `nvim`
 - **Environment Variables**: Optimized PATH, GOPATH, and tool configurations in dedicated files
-- **Cross-Platform**: Automatic Homebrew path detection for macOS/Linux in `02-homebrew.zsh`
+- **Functions**: Custom shell functions in `zsh/conf.d/08-functions.zsh`:
+  - `y()`: Yazi file manager with directory change support
+  - `gpp <file.cpp>`: Compile C++ files with optimal settings
+  - `grun <file.cpp>`: Compile and run C++ files in one command
 
 ### Neovim Setup (Comprehensive Development Environment)
 - **Plugin Manager**: Lazy.nvim for fast, lazy-loaded plugins
@@ -531,6 +534,7 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 - **Enhanced ls**: `l`, `ll`, `la`, `lt` (with icons)
 - **Smart cd**: `z <directory>` (zoxide)
 - **Git shortcuts**: Provided by Oh My Zsh git plugin
+- **C++ compilation**: `gpp <file.cpp>` (compile), `grun <file.cpp>` (compile and run)
 
 ## 🤖 Automation & Workflows
 
