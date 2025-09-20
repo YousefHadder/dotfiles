@@ -92,6 +92,9 @@ nvim
 **Testing (neotest)**
 - `<leader>tn`: nearest • `<leader>tf`: file • `<leader>ts`: summary • `<leader>to`: output • `<leader>td`: debug
 
+**Code Execution**
+- `<leader>rr`: run current file with code_runner
+
 **Terminal**
 - `<leader>tt`: terminal • `<leader>tv`: vsplit • `<C-/>`/`<C-_>`: toggle terminal • `<Esc><Esc>`: exit terminal mode
 
@@ -146,6 +149,9 @@ nvim
 **Testing (neotest)**
 - Nearest: `<leader>tn` • File: `<leader>tf` • Summary: `<leader>ts` • Output: `<leader>to` • Debug: `<leader>td`
 
+**Code Execution**
+- Run code: `<leader>rr` (code_runner supports multiple languages)
+
 **CopilotChat & MCP**
 - Toggle chat: `<leader>aa` • Buffer context: `<leader>ab`
 - Explain/Review/Fix/Optimize/Docs/Tests: `<leader>ae`/`ar`/`af`/`ao`/`ad`/`at`
@@ -194,6 +200,9 @@ Tip: Which‑Key shows beautiful groups and icons for all `<leader>` menus.
 
 **Testing**
 - 🧪 `nvim-neotest/neotest` (+ jest/rspec/go adapters)
+
+**Code Execution**
+- 🏃 `CRAG666/code_runner.nvim` (run code directly from editor)
 
 **Sessions & QoL**
 - 💾 `folke/persistence.nvim` • 🧭 `christoomey/vim-tmux-navigator`
