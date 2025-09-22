@@ -256,7 +256,10 @@ return {
 				function(server_name)
 					local server = servers[server_name] or {}
 					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-					require("lspconfig")[server_name].setup(server)
+
+					-- Use new vim.lsp.config API instead of deprecated lspconfig
+					vim.lsp.config(server_name, server)
+					vim.lsp.enable(server_name)
 				end,
 				-- prevent tsserver from being configured alongside ts_ls
 				["tsserver"] = function() end,
