@@ -51,7 +51,7 @@ autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
 autocmd("BufWritePre", {
 	group = general_group,
 	callback = function(event)
-		local file = vim.fn.fnamemodify(event.match, ':p')
+		local file = vim.fn.fnamemodify(event.match, ":p")
 		local dir = vim.fn.fnamemodify(file, ":p:h")
 		local success, _ = vim.fn.isdirectory(dir)
 		if not success then
@@ -312,10 +312,14 @@ autocmd("User", {
 	pattern = "PersistenceSavePre",
 	callback = function()
 		for _, b in ipairs(vim.api.nvim_list_bufs()) do
-			if vim.bo[b].filetype == "copilot-chat"
-					or vim.bo[b].filetype == "snacks_layout_box"
-					or vim.bo[b].filetype == "neotest-summary" then
-				vim.cmd.bunload(b)
+			if vim.api.nvim_buf_is_loaded(b) then
+				local bt = vim.bo[b].buftype
+				local name = vim.api.nvim_buf_get_name(b)
+				-- Keep only real file buffers: normal buftype and has a pathname
+				local is_file = bt == "" and name ~= ""
+				if not is_file then
+					vim.cmd.bunload(b)
+				end
 			end
 		end
 	end,
