@@ -27,13 +27,14 @@ A fast, modern, and UI‑polished Neovim setup with great defaults, batteries‑
 ## 🚀 Highlights
 
 - 💡 Completion: `blink.cmp` with signature help and ghost text
-- 🔍 Pickers/Explorer: `folke/snacks.nvim` (files, grep, buffers, git, symbols, projects) + built‑in explorer
+- 🔍 Pickers/Explorer: `folke/snacks.nvim` (unified files, grep, buffers, git, symbols, projects, explorer, terminal)
 - 🧰 LSP & Tools: `mason` + `nvim-lspconfig` with smart diagnostics and inlay hints
-- 🎨 UI Polish: custom slate‑inspired statusline/tabline, Noice UI, Incline winbars, Alpha dashboard
+- 🎨 UI Polish: custom slate‑inspired statusline/tabline, Noice UI with rounded borders, Incline winbars, Alpha dashboard with Palestine flag theme
 - 🧪 Testing: `neotest` (Jest, RSpec, Go) with handy keymaps
 - 🤖 AI: GitHub Copilot + CopilotChat + MCPHub integration
 - 🧭 Navigation: Flash jumps, Which‑Key guides, tmux navigation
 - 💾 Sessions: automatic session restore with `persistence.nvim`
+- 🛠️ Tools: Snacks provides zen mode, scratch buffers, notifications, and terminal management
 
 ## 📁 Layout
 
@@ -74,8 +75,8 @@ nvim
 ## 🧾 Cheat Sheet
 
 **Navigation & Search**
-- `<leader><space>`: smart find files • `<leader>ff`: find files • `<leader>fr`: recent • `<leader>fg`: git files
-- `<leader>sb`/`<leader>sg`: grep lines/files • `<leader>sw`: grep word • `<leader>sB`: grep buffers
+- `<leader><space>`: smart find files • `<leader>ff`: find files • `<leader>fr`: recent files
+- `<leader>sb`/`<leader>fg`: grep lines/files • `<leader>sw`: grep word • `<leader>sB`: grep buffers  
 - `<leader>fb`: buffers • `<leader>fp`: projects • `<leader>e`: explorer • `<leader>fc`: config files
 - `<A-s>`/`<A-S>`: Flash jump/treesitter jump • `gd/gD/gr/gI/gy`: LSP def/decl/refs/impl/type
 
@@ -99,7 +100,7 @@ nvim
 - `<leader>tt`: terminal • `<leader>tv`: vsplit • `<C-/>`/`<C-_>`: toggle terminal • `<Esc><Esc>`: exit terminal mode
 
 **Git**
-- `<leader>gg`: LazyGit • `<leader>gs`: git status • `<leader>gl`: git log • `<leader>gP`: praise
+- `<leader>gg`: LazyGit • `<leader>gs`: git status • `<leader>gl`: git log • `<leader>gL`: git log line
 - `<leader>gb`: branches • `<leader>gS`: stash • `<leader>gd`: diff hunks • `<leader>gf`: log file
 - `<leader>gB`: browse • `<leader>go`: open all changed/staged/untracked files in buffers
 
@@ -136,11 +137,13 @@ nvim
 - `<S-Tab>` accept • `<C-w>` accept word • `<C-l>` accept line
 
 **Snacks Pickers & Explorer**
-- Smart find: `<leader><space>` • Files: `<leader>ff` • Recent: `<leader>fr` • Git files: `<leader>fg`
-- Grep: `<leader>sg` • Lines: `<leader>sb` • Buffers: `<leader>fb` • Projects: `<leader>fp`
-- Explorer: `<leader>e` (hidden files enabled)
-- LSP: `gd/gD/gr/gI/gy` via Snacks pickers
-- Other: `<leader>z` zen mode • `<leader>Z` zoom • `<leader>.` scratch buffer
+- Smart find: `<leader><space>` • Files: `<leader>ff` • Recent: `<leader>fr` • Git files: Not set (use git status)
+- Grep: `<leader>fg` • Lines: `<leader>sb` • Buffers: `<leader>fb` • Projects: `<leader>fp`
+- Explorer: `<leader>e` (with hidden files enabled by default)
+- LSP: `gd/gD/gr/gI/gy` via Snacks pickers for definitions, declarations, references, implementations, type definitions
+- Git: `<leader>gs` status • `<leader>gl` log • `<leader>gb` branches • `<leader>gS` stash • `<leader>gd` diff hunks
+- Terminal: `<C-/>` toggle • Notifications: `<leader>n` history • `<leader>un` dismiss all
+- Other: `<leader>z` zen mode • `<leader>Z` zoom • `<leader>.` scratch buffer • `<leader>S` select scratch buffer
 
 **LSP & Formatting**
 - Code actions: `<leader>ca` • Toggle inlay hints: `<leader>th`
@@ -185,7 +188,7 @@ Tip: Which‑Key shows beautiful groups and icons for all `<leader>` menus.
 - 🧲 `windwp/nvim-autopairs` • 🧱 `kylechui/nvim-surround` • 🧸 `echasnovski/mini.nvim`
 
 **Pickers, Explorer, Git**
-- 🔎 `folke/snacks.nvim` (pickers/explorer/lazygit/notifier/zen/scratch)
+- 🔎 `folke/snacks.nvim` (unified pickers, explorer, lazygit integration, notifier, zen mode, terminal, scratch buffers)
 - 🌿 `lewis6991/gitsigns.nvim`
 
 **Treesitter & Syntax**
@@ -240,8 +243,9 @@ Installed/managed with Mason + configured via lspconfig/Conform.
 
 - Slate‑inspired colors for `lualine` and `bufferline` for a cohesive dark theme
 - `incline.nvim` adds a compact winbar with filename, LSP breadcrumbs, diagnostics, git diffs, and a clock
-- `alpha.nvim` shows a custom dashboard on launch (with themed ASCII header)
-- `noice.nvim` modernizes messages/cmdline; notifications via Snacks
+- `alpha.nvim` shows a custom dashboard on launch with Palestine flag ASCII art theme
+- `noice.nvim` modernizes messages/cmdline with rounded borders and enhanced presets; notifications via Snacks
+- `snacks.nvim` provides unified notifications, zen mode, and terminal management for a cohesive experience
 
 ## 🔌 MCPHub Integration
 
@@ -274,8 +278,10 @@ MCPHub provides Model Context Protocol (MCP) server integration for enhanced AI 
 ## 💡 Tips
 
 - Press `<leader>` then pause: Which‑Key shows discoverable menus with icons
-- Snacks Explorer is minimal and fast; use `<leader>e` and `<leader>gg` for LazyGit
-- Telescope is configured and available when you need it; Snacks is the default day‑to‑day picker
+- Snacks Explorer (`<leader>e`) is minimal, fast, and shows hidden files by default
+- Use `<leader><space>` for smart file finding and `<leader>fg` for text search
+- Snacks provides unified experience for pickers, terminal (`<C-/>`), notifications, and zen mode
+- Telescope is still configured and available for specialized use cases
 
 ## 🤝 Contributing
 

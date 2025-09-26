@@ -311,9 +311,9 @@ The Zsh configuration is now **modular and organized** into separate files in `z
   - CopilotChat for AI conversations
   - MCPHub for Model Context Protocol server integration
 - **File Management**:
-  - Neo-tree for project exploration
-  - fzf-lua for fuzzy finding
-  - Telescope for advanced searching
+  - Snacks Explorer for fast project exploration with hidden file support
+  - Neo-tree for detailed project exploration (when needed)
+  - Snacks Pickers for smart file finding, grep, and navigation
 - **Development Tools**:
   - Treesitter for syntax highlighting
   - Which-key for keybinding discovery
@@ -322,8 +322,9 @@ The Zsh configuration is now **modular and organized** into separate files in `z
 - **UI Enhancements**:
   - Lualine for statusline
   - Bufferline for tab management
-  - Alpha for dashboard
-  - Noice for command line UI
+  - Alpha dashboard with custom Palestine flag theme
+  - Noice for enhanced command line UI with rounded borders
+  - Snacks for notifications, zen mode, and terminal management
 
 ### Tmux Setup
 - **Theme**: Catppuccin Mocha with custom styling
@@ -508,13 +509,17 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 ### Neovim Shortcuts (Some Highlights)
 - **Leader Key**: `<Space>`
-- **File Explorer**: `<leader>e` (Snacks Explorer)
-- **Find Files**: `<leader>ff` (telescope find files)
-- **Find Text**: `<leader>fg` (telescope grep text)
-- **Git Status**: `<leader>gs` (telescope git status)
+- **File Explorer**: `<leader>e` (Snacks Explorer with hidden files)
+- **Smart Find**: `<leader><space>` (smart find files)
+- **Find Files**: `<leader>ff` (Snacks picker files)
+- **Find Text**: `<leader>fg` (Snacks picker grep)
+- **Git Status**: `<leader>gs` (Snacks picker git status)
+- **Recent Files**: `<leader>fr` (Snacks picker recent)
 - **Copilot Chat**: `<leader>aa`
 - **Format Code**: `<leader>cf` (code format)
 - **LSP Actions**: `<leader>ca` (code actions)
+- **Terminal**: `<Ctrl-/>` (Snacks terminal toggle)
+- **Zen Mode**: `<leader>z` (Snacks zen mode)
 
 ### Tmux Shortcuts
 - **Prefix**: `Ctrl+b`
