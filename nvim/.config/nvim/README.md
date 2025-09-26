@@ -76,7 +76,7 @@ nvim
 
 **Navigation & Search**
 - `<leader><space>`: smart find files • `<leader>ff`: find files • `<leader>fr`: recent files
-- `<leader>sb`/`<leader>fg`: grep lines/files • `<leader>sw`: grep word • `<leader>sB`: grep buffers  
+- `<leader>sb`/`<leader>fg`: grep lines/files • `<leader>sw`: grep word • `<leader>sB`: grep buffers
 - `<leader>fb`: buffers • `<leader>fp`: projects • `<leader>e`: explorer • `<leader>fc`: config files
 - `<A-s>`/`<A-S>`: Flash jump/treesitter jump • `gd/gD/gr/gI/gy`: LSP def/decl/refs/impl/type
 
@@ -137,7 +137,7 @@ nvim
 - `<S-Tab>` accept • `<C-w>` accept word • `<C-l>` accept line
 
 **Snacks Pickers & Explorer**
-- Smart find: `<leader><space>` • Files: `<leader>ff` • Recent: `<leader>fr` • Git files: Not set (use git status)
+- Smart find: `<leader><space>` • Files: `<leader>ff` • Recent: `<leader>fr`
 - Grep: `<leader>fg` • Lines: `<leader>sb` • Buffers: `<leader>fb` • Projects: `<leader>fp`
 - Explorer: `<leader>e` (with hidden files enabled by default)
 - LSP: `gd/gD/gr/gI/gy` via Snacks pickers for definitions, declarations, references, implementations, type definitions
