@@ -61,7 +61,7 @@ return {
           gui = modified and "bold,italic" or "bold",
         })
 
-        local function sep() return { " | ", guifg = "#585b70" } end
+        local function sep() return { " | ", guifg = "#666666" } end
 
         if props.focused then
           -- NAVIC
@@ -106,9 +106,9 @@ return {
           -- GIT DIFF
           local git_icons = { added = "", changed = "", removed = "" }
           local git_palette = {
-            added   = "#a6e3a1",
-            changed = "#f9e2af",
-            removed = "#f38ba8",
+            added   = "#00875f",  -- slate green
+            changed = "#d7d787",  -- slate yellow
+            removed = "#ff8787",  -- slate red
           }
 
           local signs = vim.b[props.buf].gitsigns_status_dict

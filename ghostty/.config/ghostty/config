@@ -1,29 +1,29 @@
 # appearance
 # theme = Aardvark Blue
 window-decoration = none
-# Slate colorscheme (matching Neovim)
-background = 0f0f0f
-foreground = d0d0d0
+# Slate colorscheme (matching slate.vim exactly)
+background = 262626
+foreground = ffffff
 
 # Terminal colors (based on slate.vim)
-palette = 0=#19191f
-palette = 1=#cc4455
-palette = 2=#337700
-palette = 3=#ffcc99
-palette = 4=#566981
-palette = 5=#ffccff
-palette = 6=#89A7B1
-palette = 7=#ebebf4
-palette = 8=#515166
-palette = 9=#cc4455
-palette = 10=#337700
-palette = 11=#ffeecc
-palette = 12=#9eb2d9
-palette = 13=#ffccff
-palette = 14=#bbddff
+palette = 0=#000000
+palette = 1=#cd0000
+palette = 2=#00cd00
+palette = 3=#cdcd00
+palette = 4=#0000ee
+palette = 5=#cd00cd
+palette = 6=#00cdcd
+palette = 7=#e5e5e5
+palette = 8=#7f7f7f
+palette = 9=#ff0000
+palette = 10=#00ff00
+palette = 11=#ffff00
+palette = 12=#5c5cff
+palette = 13=#ff00ff
+palette = 14=#00ffff
 palette = 15=#ffffff
 
-background-image = "/Users/yousefhadder/Downloads/gh.png"
+background-image = "/Users/yousefhadder/Downloads/palestine.jpg"
 background-image-opacity = 0.15
 background-image-fit = cover
 

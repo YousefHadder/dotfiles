@@ -14,12 +14,12 @@ export FZF_CTRL_R_OPTS="
   --color header:italic
   --header 'Press CTRL-Y to copy command into clipboard'"
 export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
-export FZF_DEFAULT_OPTS="--style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' --height 50% --layout=default --border --color=hl:#2dd4bf --layout=default --border --color=hl:#2dd4bf"
+export FZF_DEFAULT_OPTS="--style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' --height 50% --layout=default --border --color=hl:#5f87d7"
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
-  --color=fg:#ebebf4,fg+:#ebebf4,bg:#19191f,bg+:#557799
-  --color=hl:#89A7B1,hl+:#9eb2d9,info:#ffcc99,marker:#337700
-  --color=prompt:#cc4455,spinner:#89A7B1,pointer:#89A7B1,header:#515166
-  --color=border:#89A7B1,separator:#515166,label:#ebebf4,query:#ebebf4
+  --color=fg:#ffffff,fg+:#ffffff,bg:#262626,bg+:#333333
+  --color=hl:#5f87d7,hl+:#87d7ff,info:#d7875f,marker:#d7d787
+  --color=prompt:#ff8787,spinner:#5f87d7,pointer:#d7875f,header:#666666
+  --color=border:#666666,separator:#666666,label:#ffffff,query:#ffffff
   --border="rounded" --border-label="" --preview-window="border-rounded" --prompt="> "
   --marker=">" --pointer="◆" --separator="─" --scrollbar="│"'
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always -n --line-range :500 {}'"

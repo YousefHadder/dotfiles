@@ -27,10 +27,12 @@ return {
 					vim.keymap.set(mode or "n", lhs, rhs, { buffer = event.buf, desc = "LSP: " .. desc })
 				end
 
-				map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+				-- map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 
 				local client = vim.lsp.get_client_by_id(event.data.client_id)
-				if not client then return end
+				if not client then
+					return
+				end
 
 				-- Document highlight (if supported)
 				if client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
@@ -78,9 +80,9 @@ return {
 				prefix = function(d)
 					local icons = {
 						[vim.diagnostic.severity.ERROR] = "󰅚",
-						[vim.diagnostic.severity.WARN]  = "󰀪",
-						[vim.diagnostic.severity.INFO]  = "󰋽",
-						[vim.diagnostic.severity.HINT]  = "󰌶",
+						[vim.diagnostic.severity.WARN] = "󰀪",
+						[vim.diagnostic.severity.INFO] = "󰋽",
+						[vim.diagnostic.severity.HINT] = "󰌶",
 					}
 					return icons[d.severity] or "●"
 				end,
@@ -90,20 +92,15 @@ return {
 				header = "",
 				prefix = "",
 				format = function(diag)
-					return string.format(
-						"%s (%s): %s",
-						diag.source or "LSP",
-						diag.code or "no code",
-						diag.message
-					)
+					return string.format("%s (%s): %s", diag.source or "LSP", diag.code or "no code", diag.message)
 				end,
 			},
 			signs = {
 				text = {
 					[vim.diagnostic.severity.ERROR] = "󰅚",
-					[vim.diagnostic.severity.WARN]  = "󰀪",
-					[vim.diagnostic.severity.INFO]  = "󰋽",
-					[vim.diagnostic.severity.HINT]  = "󰌶",
+					[vim.diagnostic.severity.WARN] = "󰀪",
+					[vim.diagnostic.severity.INFO] = "󰋽",
+					[vim.diagnostic.severity.HINT] = "󰌶",
 				},
 			},
 		})
@@ -201,7 +198,12 @@ return {
 							checkThirdParty = false,
 							library = { "${3rd}/luv/library", unpack(vim.api.nvim_get_runtime_file("", true)) },
 						},
-						completion = { callSnippet = "Replace", postfix = ".", showWord = "Fallback", workspaceWord = true },
+						completion = {
+							callSnippet = "Replace",
+							postfix = ".",
+							showWord = "Fallback",
+							workspaceWord = true,
+						},
 						diagnostics = { disable = { "missing-fields" }, globals = { "vim" } },
 						hint = {
 							enable = true,
@@ -237,9 +239,15 @@ return {
 		local ensure_installed = vim.tbl_keys(servers)
 		vim.list_extend(ensure_installed, {
 			-- Formatters
-			"stylua", "prettier", "black", "gofumpt", "rubocop",
+			"stylua",
+			"prettier",
+			"black",
+			"gofumpt",
+			"rubocop",
 			-- Linters
-			"eslint_d", "shellcheck", "golangci-lint",
+			"eslint_d",
+			"shellcheck",
+			"golangci-lint",
 		})
 
 		require("mason-tool-installer").setup({

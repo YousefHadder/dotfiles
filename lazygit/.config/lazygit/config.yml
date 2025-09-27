@@ -23,26 +23,26 @@ gui:
     commandLogSize: 8
     theme:
         activeBorderColor:
-          - "#ff966c"
+          - "#d7875f"
           - "bold"
         inactiveBorderColor:
-          - "#589ed7"
+          - "#666666"
         searchingActiveBorderColor:
-          - "#ff966c"
+          - "#d7875f"
           - "bold"
         optionsTextColor:
-          - "#82aaff"
+          - "#5f87d7"
         selectedLineBgColor:
-          - "#2d3f76"
+          - "#333333"
         cherryPickedCommitFgColor:
-          - "#82aaff"
+          - "#5f87d7"
         cherryPickedCommitBgColor:
-          - "#c099ff"
+          - "#87d7ff"
         markedBaseCommitFgColor:
-          - "#82aaff"
+          - "#5f87d7"
         markedBaseCommitBgColor:
-          - "#ffc777"
+          - "#d7d787"
         unstagedChangesColor:
-          - "#c53b53"
+          - "#ff8787"
         defaultFgColor:
-          - "#c8d3f5"
+          - "#ffffff"
