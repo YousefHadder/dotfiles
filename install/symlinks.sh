@@ -1,30 +1,40 @@
 #!/usr/bin/env bash
 # GNU Stow symlink creation
 
-create_symlinks() {
-  log "--- Starting Symlink Creation ---"
+stow_packages() {
+  local packages=("$@")
 
-  # -------------------------------
-  # Create symlinks for dotfiles using GNU Stow
-  # -------------------------------
+  # Ensure stow is installed
   if ! command -v stow &>/dev/null; then
     log "GNU Stow is not installed. Installing with Homebrew..."
     brew install stow
   fi
 
-  log "Creating symlinks for packages using GNU Stow..."
   cd "$DOTFILES_DIR" || {
     log "ERROR: Failed to cd into ${DOTFILES_DIR}"
     exit 1
   }
 
-  # Non-interactive loop for automated environments
-  for package in */; do
-    package="${package%/}"
+  # If no packages specified, stow all packages
+  if [ ${#packages[@]} -eq 0 ]; then
+    log "Creating symlinks for all packages using GNU Stow..."
+    for package in */; do
+      package="${package%/}"
 
-    # Skip specified packages
-    if [[ "$package" == "git" || "$package" == "ghostty" || "$package" == "install" ]]; then
-      log "Skipping package: $package"
+      # Skip specified packages
+      if [[ "$package" == "git" || "$package" == "ghostty" || "$package" == "install" ]]; then
+        log "Skipping package: $package"
+        continue
+      fi
+
+      packages+=("$package")
+    done
+  fi
+
+  # Stow specified packages
+  for package in "${packages[@]}"; do
+    if [ ! -d "$package" ]; then
+      log "WARNING: Package directory '$package' does not exist. Skipping."
       continue
     fi
 
@@ -37,6 +47,39 @@ create_symlinks() {
     stow -R -t "$HOME" "$package"
   done
 
-  log "All dotfiles packages have been stowed successfully."
+  log "Stow operation complete."
+}
+
+create_symlinks() {
+  log "--- Starting Symlink Creation ---"
+  stow_packages
   log "--- Symlink Creation Complete ---"
 }
+
+# Allow running this script directly for manual stowing
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  # Script is being run directly
+  SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  DOTFILES_DIR="$(dirname "$SCRIPT_DIR")"
+
+  # Source utils for log function
+  source "${SCRIPT_DIR}/utils.sh"
+
+  if [ $# -eq 0 ]; then
+    echo "Usage: $0 <package1> [package2] [...]"
+    echo ""
+    echo "Available packages:"
+    cd "$DOTFILES_DIR"
+    for dir in */; do
+      dir="${dir%/}"
+      if [[ "$dir" != "install" && "$dir" != ".git" ]]; then
+        echo "  - $dir"
+      fi
+    done
+    exit 1
+  fi
+
+  log "--- Manual Stow Operation ---"
+  stow_packages "$@"
+  log "--- Manual Stow Complete ---"
+fi
