@@ -29,11 +29,11 @@ return {
 		dashboard.section.header.val = vim.split(logo, "\n")
 		-- stylua: ignore
 		dashboard.section.buttons.val = {
-			dashboard.button("f", " " .. " Find file", "<cmd> lua Snacks.picker.files() <cr>"),
+			dashboard.button("f", " " .. " Find file", "<cmd>FzfLua files<cr>"),
 			dashboard.button("n", " " .. " New file", [[<cmd> ene <BAR> startinsert <cr>]]),
-			dashboard.button("r", " " .. " Recent files", [[<cmd> lua Snacks.picker.recent() <cr>]]),
-			dashboard.button("g", " " .. " Find text", [[<cmd> lua Snacks.picker.grep() <cr>]]),
-			dashboard.button("c", " " .. " Config", "<cmd> lua Snacks.picker.files({ cwd = '~/.config/nvim' }) <cr>"),
+			dashboard.button("r", " " .. " Recent files", [[<cmd> FzfLua oldfiles <cr>]]),
+			dashboard.button("g", " " .. " Find text", [[<cmd> FzfLua live_grep <cr>]]),
+			dashboard.button("c", " " .. " Config", "<cmd> lua require('fzf-lua').files({ cwd = vim.fn.stdpath('config') }) <cr>"),
 			dashboard.button("s", " " .. " Restore Session", [[<cmd> lua require("persistence").load() <cr>]]),
 			dashboard.button("l", "󰒲 " .. " Lazy", "<cmd> Lazy <cr>"),
 			dashboard.button("q", " " .. " Quit", "<cmd> qa <cr>"),

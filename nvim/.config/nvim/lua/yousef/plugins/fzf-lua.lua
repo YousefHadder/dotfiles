@@ -3,40 +3,286 @@ return {
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	cmd = "FzfLua",
 	keys = {
+		-- Top level pickers
+		{
+			"<leader><space>",
+			function()
+				require("fzf-lua").files({ cwd = vim.fn.getcwd() })
+			end,
+			desc = "Smart Find Files",
+		},
+		{
+			"<leader>:",
+			function()
+				require("fzf-lua").command_history()
+			end,
+			desc = "Command History",
+		},
+
+		-- Find operations (leader+f)
+		{ "<leader>fb", "<cmd>FzfLua buffers<cr>", desc = "Buffers" },
+		{
+			"<leader>fc",
+			function()
+				require("fzf-lua").files({ cwd = vim.fn.stdpath("config") })
+			end,
+			desc = "Find Config File",
+		},
 		{ "<leader>ff", "<cmd>FzfLua files<cr>", desc = "Find Files" },
-		{ "<leader>fg", "<cmd>FzfLua live_grep<cr>", desc = "Live Grep" },
-		{ "<leader>fb", "<cmd>FzfLua buffers<cr>", desc = "Find Buffers" },
-		{ "<leader>fh", "<cmd>FzfLua help_tags<cr>", desc = "Help Tags" },
+		{ "<leader>fg", "<cmd>FzfLua live_grep<cr>", desc = "Grep" },
 		{ "<leader>fo", "<cmd>FzfLua oldfiles<cr>", desc = "Recent Files" },
-		{ "<leader>fc", "<cmd>FzfLua commands<cr>", desc = "Commands" },
+		{ "<leader>fr", "<cmd>FzfLua resume<cr>", desc = "Resume" },
+		{ "<leader>fh", "<cmd>FzfLua help_tags<cr>", desc = "Help Tags" },
 		{ "<leader>fk", "<cmd>FzfLua keymaps<cr>", desc = "Keymaps" },
-		{ "<leader>fs", "<cmd>FzfLua grep_string<cr>", desc = "Find String" },
-		{ "<leader>fd", "<cmd>FzfLua diagnostics_document<cr>", desc = "Document Diagnostics" },
-		{ "<leader>fD", "<cmd>FzfLua diagnostics_workspace<cr>", desc = "Workspace Diagnostics" },
-		{ "<leader>fr", "<cmd>FzfLua resume<cr>", desc = "Resume Last Search" },
-		{ "<leader>f.", "<cmd>FzfLua files cwd=~/.config<cr>", desc = "Find Config Files" },
-		{ "<leader>/", "<cmd>FzfLua grep_curbuf<cr>", desc = "Search in Current Buffer" },
 
-		-- Git
-		{ "<leader>gf", "<cmd>FzfLua git_files<cr>", desc = "Git Files" },
-		{ "<leader>gc", "<cmd>FzfLua git_commits<cr>", desc = "Git Commits" },
+		-- Git operations (leader+g)
 		{ "<leader>gb", "<cmd>FzfLua git_branches<cr>", desc = "Git Branches" },
+		{ "<leader>gc", "<cmd>FzfLua git_commits<cr>", desc = "Git Commits" },
+		{ "<leader>gf", "<cmd>FzfLua git_files<cr>", desc = "Git Files" },
 		{ "<leader>gs", "<cmd>FzfLua git_status<cr>", desc = "Git Status" },
+		{
+			"<leader>gl",
+			function()
+				require("fzf-lua").git_commits()
+			end,
+			desc = "Git Log",
+		},
+		{
+			"<leader>gL",
+			function()
+				require("fzf-lua").git_bcommits()
+			end,
+			desc = "Git Log (current file)",
+		},
+		{
+			"<leader>gS",
+			function()
+				require("fzf-lua").git_stash()
+			end,
+			desc = "Git Stash",
+		},
 
-		-- LSP
-		{ "gd", "<cmd>FzfLua lsp_definitions<cr>", desc = "Go to Definition" },
-		{ "gr", "<cmd>FzfLua lsp_references<cr>", desc = "References" },
-		{ "gi", "<cmd>FzfLua lsp_implementations<cr>", desc = "Go to Implementation" },
-		{ "gy", "<cmd>FzfLua lsp_typedefs<cr>", desc = "Type Definitions" },
+		-- Search operations (leader+s)
+		{
+			"<leader>sb",
+			function()
+				require("fzf-lua").blines()
+			end,
+			desc = "Buffer Lines",
+		},
+		{
+			"<leader>sB",
+			function()
+				require("fzf-lua").lgrep_curbuf()
+			end,
+			desc = "Grep Current Buffer",
+		},
+		{
+			"<leader>sg",
+			function()
+				require("fzf-lua").live_grep()
+			end,
+			desc = "Grep",
+		},
+		{
+			"<leader>sw",
+			function()
+				require("fzf-lua").grep_cword()
+			end,
+			desc = "Grep Word under Cursor",
+			mode = "n",
+		},
+		{
+			"<leader>sw",
+			function()
+				require("fzf-lua").grep_visual()
+			end,
+			desc = "Grep Visual Selection",
+			mode = "x",
+		},
+		{
+			'<leader>s"',
+			function()
+				require("fzf-lua").registers()
+			end,
+			desc = "Registers",
+		},
+		{
+			"<leader>s/",
+			function()
+				require("fzf-lua").search_history()
+			end,
+			desc = "Search History",
+		},
+		{
+			"<leader>sa",
+			function()
+				require("fzf-lua").autocmds()
+			end,
+			desc = "Autocmds",
+		},
+		{
+			"<leader>sC",
+			function()
+				require("fzf-lua").commands()
+			end,
+			desc = "Commands",
+		},
+		{ "<leader>sd", "<cmd>FzfLua diagnostics_workspace<cr>", desc = "Diagnostics" },
+		{ "<leader>sD", "<cmd>FzfLua diagnostics_document<cr>", desc = "Buffer Diagnostics" },
+		{
+			"<leader>sh",
+			function()
+				require("fzf-lua").help_tags()
+			end,
+			desc = "Help Pages",
+		},
+		{
+			"<leader>sH",
+			function()
+				require("fzf-lua").highlights()
+			end,
+			desc = "Highlights",
+		},
+		{
+			"<leader>si",
+			function()
+				require("fzf-lua").awesome_colorschemes()
+			end,
+			desc = "Icons/Colorschemes",
+		},
+		{
+			"<leader>sj",
+			function()
+				require("fzf-lua").jumps()
+			end,
+			desc = "Jumps",
+		},
+		{
+			"<leader>sk",
+			function()
+				require("fzf-lua").keymaps()
+			end,
+			desc = "Keymaps",
+		},
+		{
+			"<leader>sl",
+			function()
+				require("fzf-lua").loclist()
+			end,
+			desc = "Location List",
+		},
+		{
+			"<leader>sm",
+			function()
+				require("fzf-lua").marks()
+			end,
+			desc = "Marks",
+		},
+		{
+			"<leader>sM",
+			function()
+				require("fzf-lua").man_pages()
+			end,
+			desc = "Man Pages",
+		},
+		{
+			"<leader>sp",
+			function()
+				require("fzf-lua").files({ cwd = vim.fn.stdpath("data") .. "/lazy" })
+			end,
+			desc = "Search for Plugin Spec",
+		},
+		{
+			"<leader>sq",
+			function()
+				require("fzf-lua").quickfix()
+			end,
+			desc = "Quickfix List",
+		},
+		{
+			"<leader>sR",
+			function()
+				require("fzf-lua").resume()
+			end,
+			desc = "Resume",
+		},
+		{
+			"<leader>ss",
+			function()
+				require("fzf-lua").lsp_document_symbols()
+			end,
+			desc = "LSP Document Symbols",
+		},
+		{
+			"<leader>sS",
+			function()
+				require("fzf-lua").lsp_live_workspace_symbols()
+			end,
+			desc = "LSP Workspace Symbols",
+		},
+		{
+			"<leader>uC",
+			function()
+				require("fzf-lua").colorschemes()
+			end,
+			desc = "Colorschemes",
+		},
+
+		-- LSP operations
+		{ "gd", "<cmd>FzfLua lsp_definitions<cr>", desc = "Goto Definition" },
+		{ "gD", "<cmd>FzfLua lsp_declarations<cr>", desc = "Goto Declaration" },
+		{ "gr", "<cmd>FzfLua lsp_references<cr>", desc = "References", nowait = true },
+		{ "gi", "<cmd>FzfLua lsp_implementations<cr>", desc = "Goto Implementation" },
+		{ "gy", "<cmd>FzfLua lsp_typedefs<cr>", desc = "Goto Type Definition" },
+		{ "<leader>ca", "<cmd>FzfLua lsp_code_actions<cr>", desc = "Code Actions" },
 		{ "<leader>ds", "<cmd>FzfLua lsp_document_symbols<cr>", desc = "Document Symbols" },
 		{ "<leader>ws", "<cmd>FzfLua lsp_workspace_symbols<cr>", desc = "Workspace Symbols" },
-		{ "<leader>ca", "<cmd>FzfLua lsp_code_actions<cr>", desc = "Code Actions" },
+
+		-- Other operations
+		{ "<leader>/", "<cmd>FzfLua grep_curbuf<cr>", desc = "Search in Current Buffer" },
 	},
 	config = function()
 		local fzf = require("fzf-lua")
 
 		fzf.setup({
 			"default-title",
+			-- Global settings
+			winopts = {
+				height = 0.85,
+				width = 0.80,
+				row = 0.35,
+				col = 0.50,
+				border = "rounded",
+				fullscreen = false,
+				preview = {
+					default = "bat",
+					border = "border",
+					wrap = "nowrap",
+					hidden = "nohidden",
+					vertical = "down:45%",
+					horizontal = "right:60%",
+					layout = "flex",
+					flip_columns = 120,
+					title = true,
+					title_pos = "center",
+					scrollbar = "float",
+					scrolloff = "-2",
+					scrollchars = { "█", "" },
+					delay = 100,
+					winopts = {
+						number = true,
+						relativenumber = false,
+						cursorline = true,
+						cursorlineopt = "both",
+						cursorcolumn = false,
+						signcolumn = "no",
+						list = false,
+						foldenable = false,
+						foldmethod = "manual",
+					},
+				},
+			},
 			fzf_opts = {
 				["--no-scrollbar"] = true,
 				["--no-separator"] = true,
@@ -77,50 +323,18 @@ return {
 					["shift-up"] = "preview-page-up",
 				},
 			},
-			winopts = {
-				height = 0.85,
-				width = 0.80,
-				row = 0.35,
-				col = 0.50,
-				border = "rounded",
-				fullscreen = false,
-				preview = {
-					default = "bat",
-					border = "border",
-					wrap = "nowrap",
-					hidden = "nohidden",
-					vertical = "down:45%",
-					horizontal = "right:60%",
-					layout = "flex",
-					flip_columns = 120,
-					title = true,
-					title_pos = "center",
-					scrollbar = "float",
-					scrolloff = "-2",
-					scrollchars = { "█", "" },
-					delay = 100,
-					winopts = {
-						number = true,
-						relativenumber = false,
-						cursorline = true,
-						cursorlineopt = "both",
-						cursorcolumn = false,
-						signcolumn = "no",
-						list = false,
-						foldenable = false,
-						foldmethod = "manual",
-					},
-				},
-			},
+			-- File picker configuration - use fd by default
 			files = {
 				prompt = "Files❯ ",
+				cmd = "fd --type f --hidden --follow --exclude .git",
 				multiprocess = true,
 				git_icons = true,
 				file_icons = true,
 				color_icons = true,
-				find_opts = [[-type f -not -path '*/\.git/*' -printf '%P\n']],
-				rg_opts = "--color=never --files --hidden --follow -g '!.git'",
+				-- Use fd as primary, with fallbacks
 				fd_opts = "--color=never --type f --hidden --follow --exclude .git",
+				rg_opts = "--color=never --files --hidden --follow -g '!.git'",
+				find_opts = [[-type f -not -path '*/\.git/*' -printf '%P\n']],
 				actions = {
 					["default"] = fzf.actions.file_edit_or_qf,
 					["ctrl-s"] = fzf.actions.file_split,
@@ -129,15 +343,16 @@ return {
 					["alt-q"] = fzf.actions.file_sel_to_qf,
 				},
 			},
+			-- Grep configuration - use rg by default
 			grep = {
 				prompt = "Rg❯ ",
 				input_prompt = "Grep For❯ ",
+				cmd = "rg --column --line-number --no-heading --color=always --smart-case --max-columns=4096",
 				multiprocess = true,
 				git_icons = true,
 				file_icons = true,
 				color_icons = true,
-				rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
-				grep_opts = "--binary-files=without-match --line-number --recursive --color=auto --perl-regexp -e",
+				rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096 --hidden --follow -g '!.git' -e",
 				rg_glob = true,
 				glob_flag = "--iglob",
 				glob_separator = "%s%-%-",
@@ -285,4 +500,3 @@ return {
 		fzf.register_ui_select()
 	end,
 }
-
