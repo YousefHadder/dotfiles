@@ -145,13 +145,6 @@ return {
 			desc = "Highlights",
 		},
 		{
-			"<leader>si",
-			function()
-				require("fzf-lua").awesome_colorschemes()
-			end,
-			desc = "Icons/Colorschemes",
-		},
-		{
 			"<leader>sj",
 			function()
 				require("fzf-lua").jumps()

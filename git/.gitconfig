@@ -4,6 +4,13 @@
   ignorecase = false
   pager = delta
 
+[difftool]
+		prompt = true
+[diff]
+		tool = nvimdiff
+[difftool "nvimdiff"]
+		cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+
 [push]
   default = simple
 
@@ -18,6 +25,17 @@
 [delta]
   navigate = true
   side-by-side = true
+  syntax-theme = base16
+  minus-style = "syntax #3f0001"
+  minus-emph-style = "syntax #780002"
+  plus-style = "syntax #002800"
+  plus-emph-style = "syntax #006000"
+  line-numbers-minus-style = "#d75f5f"
+  line-numbers-plus-style = "#87d787"
+  file-style = "bold yellow"
+  file-decoration-style = "yellow ul"
+  hunk-header-style = "file line-number syntax"
+  hunk-header-decoration-style = "cyan box"
 
 [hub]
   protocol = https

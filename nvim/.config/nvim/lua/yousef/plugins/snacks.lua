@@ -61,6 +61,13 @@ return {
 		-- Removed all picker keymaps - now using fzf-lua instead
 		-- Other
 		{
+			"<leader>si",
+			function()
+				Snacks.picker.icons()
+			end,
+			desc = "Icon Picker",
+		},
+		{
 			"<leader>z",
 			function()
 				Snacks.zen()
