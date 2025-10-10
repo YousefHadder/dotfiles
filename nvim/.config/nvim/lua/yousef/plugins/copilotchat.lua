@@ -27,6 +27,7 @@ return {
 			},
 			model = "claude-sonnet-4.5",
 		})
+		require("fzf-lua").register_ui_select()
 	end,
 	keys = {
 		{ "<leader>ax", "<cmd>CopilotChatStop<cr>", desc = "CopilotChat - Stop generating" },
