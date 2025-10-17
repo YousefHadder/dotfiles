@@ -275,12 +275,12 @@ return {
 		})
 
 		---------------------------------------------------------------------------
-		-- Floating window defaults (rounded + bounds)
+		-- Floating window defaults (size bounds)
+		-- Note: Border is now handled globally via vim.o.winborder in options.lua
 		---------------------------------------------------------------------------
 		local orig_open = vim.lsp.util.open_floating_preview
 		function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 			opts = opts or {}
-			opts.border = opts.border or "rounded"
 			opts.max_width = opts.max_width or 80
 			opts.max_height = opts.max_height or 20
 			return orig_open(contents, syntax, opts, ...)

@@ -100,6 +100,9 @@ end, 100)
 -- Enable true color support
 opt.termguicolors = true
 
+-- Set default border for all floating windows (Neovim 0.11+)
+opt.winborder = "rounded"
+
 -- Set colorscheme
 cmd('colorscheme slate')
 

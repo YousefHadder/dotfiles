@@ -248,11 +248,19 @@ end, { desc = "Open all changed/staged/untracked files (repo-root aware)" })
 -- ======================================================
 
 local function clean_lsp_mappings()
+  -- Remove default mappings from Neovim < 0.11
   pcall(vim.keymap.del, 'n', 'gd')
   pcall(vim.keymap.del, 'n', 'gD')
   pcall(vim.keymap.del, 'n', 'gr')
   pcall(vim.keymap.del, 'n', 'gI')
   pcall(vim.keymap.del, 'n', 'gy')
+
+  -- Remove new default mappings from Neovim 0.11+
+  pcall(vim.keymap.del, 'n', 'grn')  -- Rename
+  pcall(vim.keymap.del, 'n', 'gra')  -- Code action
+  pcall(vim.keymap.del, 'n', 'grr')  -- References
+  pcall(vim.keymap.del, 'n', 'gri')  -- Implementation
+  pcall(vim.keymap.del, 'i', '<C-S>') -- Signature help
 end
 
 clean_lsp_mappings()

@@ -9,9 +9,11 @@ return {
     require("noice").setup({
       lsp = {
         -- override markdown rendering so that LSP and plugins use Treesitter
+        -- Note: Verified compatible with Neovim 0.11 LSP changes
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
           ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true,
         },
       },
       views = {
