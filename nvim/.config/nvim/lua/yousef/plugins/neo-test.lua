@@ -12,6 +12,7 @@ return {
 		"zidhuss/neotest-minitest",
 		"nvim-neotest/neotest-jest",
 		"nvim-neotest/neotest-go",
+		"nvim-neotest/neotest-plenary", -- Plenary adapter
 	},
 	config = function()
 		local neotest = require("neotest")
@@ -34,6 +35,7 @@ return {
 					end,
 				}),
 				require("neotest-go"),
+				require("neotest-plenary"),
 			},
 		})
 

@@ -31,4 +31,10 @@ return {
 	-- 	vim.opt.runtimepath:prepend("~/github/markdown-plus.nvim"),
 	-- 	require("markdown-plus").setup(),
 	-- },
+	{
+		"yousefhadder/markdown-plus.nvim",
+		config = function()
+			require("markdown-plus").setup({})
+		end,
+	},
 }
