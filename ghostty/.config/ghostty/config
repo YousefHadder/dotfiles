@@ -23,7 +23,7 @@ palette = 13=#ff00ff
 palette = 14=#00ffff
 palette = 15=#ffffff
 
-background-image = "~/dotfiles/assests/palestine.jpg"
+background-image = "~/dotfiles/assests/black.jpg"
 background-image-opacity = 0.15
 background-image-fit = cover
 
