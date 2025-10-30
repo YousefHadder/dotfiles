@@ -16,5 +16,15 @@ install_languages() {
     log "Rust & Cargo already installed: $(cargo --version)"
   fi
 
+  # -------------------------------
+  # Install GitHub Copilot CLI
+  # -------------------------------
+  if ! command -v copilot >/dev/null 2>&1; then
+    log "Installing GitHub Copilot CLI via npm..."
+    npm install -g @github/copilot
+  else
+    log "GitHub Copilot CLI already installed"
+  fi
+
   log "--- Language Tools Installation Complete ---"
 }
