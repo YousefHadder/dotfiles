@@ -11,7 +11,7 @@ filekinds:
   socket: {foreground: "#af87ff"}
   special: {foreground: "#d7d787"}
   executable: {foreground: "#00ff00"}
-  mount_point: {foreground: "#5f87d7"}
+  mount_point: {foreground: "#87d7ff"}
 
 perms:
   user_read: {foreground: "#ffffff"}
@@ -33,11 +33,11 @@ size:
   minor: {foreground: "#87d7ff"}
   number_byte: {foreground: "#ffffff"}
   number_kilo: {foreground: "#ffffff"}
-  number_mega: {foreground: "#5f87d7"}
+  number_mega: {foreground: "#87d7ff"}
   number_giga: {foreground: "#ff8787"}
   number_huge: {foreground: "#ff0000"}
   unit_byte: {foreground: "#af87ff"}
-  unit_kilo: {foreground: "#5f87d7"}
+  unit_kilo: {foreground: "#87d7ff"}
   unit_mega: {foreground: "#ff8787"}
   unit_giga: {foreground: "#ff0000"}
   unit_huge: {foreground: "#ff0000"}
@@ -65,7 +65,7 @@ git:
 
 git_repo:
   branch_main: {foreground: "#ffffff"}
-  branch_other: {foreground: "#5f87d7"}
+  branch_other: {foreground: "#87d7ff"}
   git_clean: {foreground: "#00ff00"}
   git_dirty: {foreground: "#ff0000"}
 
@@ -85,9 +85,9 @@ file_type:
   document: {foreground: "#ffffff"}
   compressed: {foreground: "#d7875f"}
   temp: {foreground: "#ffafaf"}
-  compiled: {foreground: "#5f87d7"}
+  compiled: {foreground: "#87d7ff"}
   build: {foreground: "#af87ff"}
-  source: {foreground: "#5f87d7"}
+  source: {foreground: "#87ceeb"}
 
 punctuation: {foreground: "#af87ff"}
 date: {foreground: "#ffd700"}
@@ -98,6 +98,6 @@ octal: {foreground: "#87d7ff"}
 flags: {foreground: "#d7d787"}
 
 symlink_path: {foreground: "#87d7ff"}
-control_char: {foreground: "#5f87d7"}
+control_char: {foreground: "#87d7ff"}
 broken_symlink: {foreground: "#ff0000"}
 broken_path_overlay: {foreground: "#af87ff"}

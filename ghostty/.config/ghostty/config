@@ -10,7 +10,7 @@ palette = 0=#000000
 palette = 1=#cd0000
 palette = 2=#00cd00
 palette = 3=#cdcd00
-palette = 4=#0000ee
+palette = 4=#0087ff
 palette = 5=#cd00cd
 palette = 6=#00cdcd
 palette = 7=#e5e5e5
@@ -18,7 +18,7 @@ palette = 8=#7f7f7f
 palette = 9=#ff0000
 palette = 10=#00ff00
 palette = 11=#ffff00
-palette = 12=#5c5cff
+palette = 12=#87d7ff
 palette = 13=#ff00ff
 palette = 14=#00ffff
 palette = 15=#ffffff
