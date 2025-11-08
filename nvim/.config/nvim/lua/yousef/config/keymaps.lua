@@ -247,6 +247,8 @@ keymap("n", "<leader>go", function()
 
 	vim.notify(("Opened %d file(s) from %s"):format(#files, root), vim.log.levels.INFO)
 end, { desc = "Open all changed/staged/untracked files (repo-root aware)" })
+
+-- Toggle boolean values and common operators
 vim.keymap.set("n", "<A-t>", function()
 	local word = vim.fn.expand("<cword>")
 
