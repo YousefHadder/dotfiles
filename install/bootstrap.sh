@@ -10,12 +10,16 @@ bootstrap_system() {
   if ! command -v zsh &>/dev/null; then
     log "zsh is not installed. Installing zsh..."
     if [ "$OS" == "Linux" ]; then
-      if command -v apt-get >/dev/null 2>&1; then
+      if command -v yay >/dev/null 2>&1; then
+        yay -S --noconfirm zsh
+      elif command -v pacman >/dev/null 2>&1; then
+        sudo pacman -S --noconfirm zsh
+      elif command -v apt-get >/dev/null 2>&1; then
         sudo apt-get install -y zsh
-      elif command -v yum >/dev/null 2>&1; then
-        sudo yum install -y zsh
       elif command -v dnf >/dev/null 2>&1; then
         sudo dnf install -y zsh
+      elif command -v yum >/dev/null 2>&1; then
+        sudo yum install -y zsh
       else
         log "ERROR: No supported package manager found for installing zsh on Linux."
         exit 1
@@ -46,7 +50,7 @@ bootstrap_system() {
     if command -v zsh >/dev/null 2>&1; then
       # Add zsh to /etc/shells if not already present
       if ! grep -q "$(command -v zsh)" /etc/shells; then
-        echo "$(command -v zsh)" | sudo tee -a /etc/shells >/dev/null
+        command -v zsh | sudo tee -a /etc/shells >/dev/null
       fi
       sudo chsh -s "$(command -v zsh)" "$USER"
       log "Default shell has been changed to zsh. The script will continue."
