@@ -36,12 +36,12 @@ return {
 		end,
 		ft = { "markdown" },
 	},
-	{
-		dir = "~/github/markdown-plus.nvim",
-		ft = { "markdown", "csv" },
-	},
 	-- {
-	-- 	"yousefhadder/markdown-plus.nvim",
-	-- 	branch = "fix/lazy-loading-basic",
+	-- 	dir = "~/github/markdown-plus.nvim",
+	-- 	ft = { "markdown", "csv" },
 	-- },
+	{
+		"yousefhadder/markdown-plus.nvim",
+		ft = { "markdown" },
+	},
 }
