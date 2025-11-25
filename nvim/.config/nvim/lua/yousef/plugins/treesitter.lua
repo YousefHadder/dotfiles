@@ -20,6 +20,8 @@ return {
 					"gitignore", "go", "html", "javascript", "json", "lua",
 					"markdown", "python", "regex", "ruby", "sql", "ssh_config",
 					"tmux", "toml", "tsx", "typescript", "vim", "yaml",
+					"hcl", "terraform",
+
 				},
 
 				incremental_selection = {

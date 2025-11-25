@@ -18,6 +18,9 @@ return {
 			bash = { "shellcheck" },
 			sh = { "shellcheck" },
 			zsh = { "shellcheck" },
+			terraform = { "tflint" },
+			tf = { "tflint" },
+
 		}
 
 		-- Create autocmd group for linting

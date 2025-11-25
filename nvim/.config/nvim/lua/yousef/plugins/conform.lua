@@ -48,6 +48,10 @@ return { -- Autoformat
 		sh = { "shfmt" },
 		bash = { "shfmt" },
 		zsh = { "shfmt" },
+		terraform = { "terraform_fmt" },
+		tf = { "terraform_fmt" },
+		hcl = { "terraform_fmt" },
+
 	},
 	init = function()
 		-- If you want the formatexpr, here is the place to set it

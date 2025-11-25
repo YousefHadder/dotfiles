@@ -231,6 +231,9 @@ return {
 
 			-- Markdown (using defaults)
 			marksman = {},
+
+			-- Terraform
+			terraformls = {},
 		}
 
 		---------------------------------------------------------------------------
@@ -248,6 +251,7 @@ return {
 			"eslint_d",
 			"shellcheck",
 			"golangci-lint",
+			"tflint",
 		})
 
 		require("mason-tool-installer").setup({

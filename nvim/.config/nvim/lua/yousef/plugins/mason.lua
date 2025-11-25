@@ -8,7 +8,7 @@ return {
 			"MasonInstall",
 			"MasonUninstall",
 			"MasonUninstallAll",
-			"MasonLog"
+			"MasonLog",
 		},
 		build = ":MasonUpdate",
 		config = function()
@@ -45,6 +45,7 @@ return {
 					"sorbet",
 					"stylelint-lsp",
 					"yaml-language-server",
+					"terraform-ls",
 					-- Linters
 					"eslint_d",
 					"golangci-lint",
