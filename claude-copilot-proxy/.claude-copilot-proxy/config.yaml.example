@@ -1,0 +1,76 @@
+model_list:
+  # Map Claude Opus 4.5 to Copilot's Claude Opus 4.5
+  - model_name: claude-opus-4-5-20251101
+    litellm_params:
+      model: github_copilot/claude-opus-4.5
+      extra_headers:
+        Editor-Version: "vscode/1.95.0"
+        Copilot-Integration-Id: "vscode-chat"
+
+  # Map Claude Sonnet 4.5 to GitHub Copilot's Claude Sonnet 4.5 (native!)
+  - model_name: claude-sonnet-4-5-20250929
+    litellm_params:
+      model: github_copilot/claude-sonnet-4.5
+      extra_headers:
+        Editor-Version: "vscode/1.95.0"
+        Copilot-Integration-Id: "vscode-chat"
+
+  # Map Claude Sonnet 4 to GitHub Copilot's Claude Sonnet 4
+  - model_name: claude-sonnet-4-20250514
+    litellm_params:
+      model: github_copilot/claude-sonnet-4
+      extra_headers:
+        Editor-Version: "vscode/1.95.0"
+        Copilot-Integration-Id: "vscode-chat"
+
+  # Map Claude Sonnet 3.5 to GitHub Copilot GPT-4o
+  - model_name: claude-3-5-sonnet-20241022
+    litellm_params:
+      model: github_copilot/gpt-4o
+      extra_headers:
+        Editor-Version: "vscode/1.95.0"
+        Copilot-Integration-Id: "vscode-chat"
+
+  # Map Claude Haiku to GitHub Copilot Claude Haiku 4.5
+  - model_name: claude-3-5-haiku-20241022
+    litellm_params:
+      model: github_copilot/claude-haiku-4.5
+      extra_headers:
+        Editor-Version: "vscode/1.95.0"
+        Copilot-Integration-Id: "vscode-chat"
+
+  # Map Claude Opus 4 to Claude Opus 41
+  - model_name: claude-opus-4-20250514
+    litellm_params:
+      model: github_copilot/claude-opus-41
+      extra_headers:
+        Editor-Version: "vscode/1.95.0"
+        Copilot-Integration-Id: "vscode-chat"
+
+general_settings:
+  # Master key for authenticating to the proxy
+  # Set via environment variable: LITELLM_MASTER_KEY
+  # Example: export LITELLM_MASTER_KEY="your-secret-key-here"
+  master_key: ${LITELLM_MASTER_KEY}
+
+  # Optional: Enable detailed logging
+  # set_verbose: true
+
+router_settings:
+  # Retry failed requests
+  num_retries: 2
+
+  # Timeout for requests (5 minutes)
+  timeout: 300
+
+  # Routing strategy
+  routing_strategy: simple-shuffle
+
+litellm_settings:
+  # Drop unsupported parameters when calling GitHub Copilot
+  drop_params: true
+
+  # Enable fallbacks if needed (optional)
+  # fallbacks:
+  #   - github_copilot/gpt-4o:
+  #     - github_copilot/gpt-4o-mini
