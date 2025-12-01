@@ -1,75 +1,79 @@
 return {
-	"saghen/blink.cmp",
-	dependencies = {
-		"rafamadriz/friendly-snippets",
-		"giuxtaposition/blink-cmp-copilot",
-	},
-	version = "*",
-	event = { "InsertEnter", "CmdlineEnter" },
-	build = "cargo build --release",
-	opts = {
-		keymap = {
-			preset = "default",
-			["<CR>"] = { "accept", "fallback" },
-			["<C-Space>"] = { "show", "show_documentation", "hide_documentation" },
+	{
+		"saghen/blink.cmp",
+		version = "*",
+		build = "cargo build --release",
+		dependencies = {
+			"rafamadriz/friendly-snippets",
 		},
+		event = { "InsertEnter", "CmdlineEnter" },
 
-		appearance = {
-			nerd_font_variant = "mono",
-		},
-
-		fuzzy = { implementation = "prefer_rust" },
-
-		completion = {
-			trigger = {
-				show_on_insert_on_trigger_character = false,
-				show_on_keyword = false,
+		---@module 'blink.cmp'
+		---@type blink.cmp.Config
+		opts = {
+			snippets = {
+				preset = "default",
 			},
 
-			list = { selection = { preselect = false, auto_insert = false } },
-
-			menu = {
-				border = "rounded",
-				auto_show = true,
+			appearance = {
+				-- sets the fallback highlight groups to nvim-cmp's highlight groups
+				-- useful for when your theme doesn't support blink.cmp
+				-- will be removed in a future release, assuming themes add support
+				use_nvim_cmp_as_default = false,
+				-- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+				-- adjusts spacing to ensure icons are aligned
+				nerd_font_variant = "mono",
 			},
-			documentation = {
-				auto_show = true,
-				auto_show_delay_ms = 500,
-				window = { max_width = 60, border = "rounded" },
-			},
-		},
 
-		signature = { enabled = false },
-
-		sources = {
-			default = { "lsp", "path", "snippets", "buffer", "copilot" },
-			providers = {
-				copilot = {
-					name = "copilot",
-					module = "blink-cmp-copilot",
-					score_offset = 100,
-					async = true,
+			completion = {
+				accept = {
+					-- experimental auto-brackets support
+					auto_brackets = {
+						enabled = true,
+					},
+				},
+				menu = {
+					draw = {
+						treesitter = { "lsp" },
+					},
+				},
+				documentation = {
+					auto_show = true,
+					auto_show_delay_ms = 200,
+				},
+				ghost_text = {
+					enabled = vim.g.ai_cmp,
 				},
 			},
-		},
 
-		cmdline = {
-			enabled = true,
-			keymap = { preset = "default" },
-		},
+			-- experimental signature help support
+			-- signature = { enabled = true },
 
+			sources = {
+				default = { "lsp", "path", "snippets", "buffer" },
+			},
+
+			cmdline = {
+				enabled = true,
+				keymap = {
+					preset = "cmdline",
+					["<Right>"] = false,
+					["<Left>"] = false,
+				},
+				completion = {
+					list = { selection = { preselect = false } },
+					menu = {
+						auto_show = function(ctx)
+							return vim.fn.getcmdtype() == ":"
+						end,
+					},
+					ghost_text = { enabled = true },
+				},
+			},
+			keymap = {
+				preset = "enter",
+				["<C-y>"] = { "select_and_accept" },
+			},
+		},
 	},
-
-	config = function(_, opts)
-		require("blink.cmp").setup(opts)
-
-		-- keep if you like these snippet jumps
-		vim.keymap.set({ "i", "s" }, "<C-j>", function()
-			if vim.snippet.active({ direction = 1 }) then vim.snippet.jump(1) end
-		end, { desc = "Jump to next snippet placeholder" })
-
-		vim.keymap.set({ "i", "s" }, "<C-k>", function()
-			if vim.snippet.active({ direction = -1 }) then vim.snippet.jump(-1) end
-		end, { desc = "Jump to previous snippet placeholder" })
-	end,
 }
