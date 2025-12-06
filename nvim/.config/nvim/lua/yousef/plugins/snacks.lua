@@ -1,5 +1,6 @@
 return {
-	"folke/snacks.nvim",
+	-- "folke/snacks.nvim",
+	dir = "~/github/snacks.nvim/",
 	priority = 1000,
 	lazy = false,
 	opts = {
