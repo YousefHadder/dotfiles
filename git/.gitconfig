@@ -57,3 +57,4 @@
 [alias]
 	cf = "!f() { git clone https://github.com/$1/$2; }; f"
 	co = "checkout"
+	push-empty = !git commit --allow-empty -m \"Empty commit\" && git push

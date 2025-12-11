@@ -11,5 +11,7 @@ return {
 				changedelete = { text = "~" },
 			},
 		})
+		vim.keymap.set("n", "]c", ":Gitsigns next_hunk<CR>", { desc = "Next hunk" })
+		vim.keymap.set("n", "[c", ":Gitsigns prev_hunk<CR>", { desc = "Previous hunk" })
 	end,
 }
