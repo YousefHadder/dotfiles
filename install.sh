@@ -47,8 +47,8 @@ source "${INSTALL_DIR}/symlinks.sh"
 # Execute installation steps in order
 bootstrap_system
 install_homebrew
-install_languages
 install_packages
+install_languages
 copy_scripts
 create_symlinks
 
