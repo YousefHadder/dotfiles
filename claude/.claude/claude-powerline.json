@@ -28,6 +28,9 @@
           "directory": {
             "enabled": true,
             "showBasename": false
+          },
+          "git": {
+            "enabled": true
           }
         }
       }

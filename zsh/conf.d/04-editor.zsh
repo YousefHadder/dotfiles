@@ -29,6 +29,3 @@ alias lg="lazygit"
 alias sourcezsh="omz reload && exec zsh"
 alias sourcetmux="tmux source-file ~/.tmux.conf"
 
-# Alias to start Claude Code → Copilot proxy
-alias claude-proxy="~/.claude-copilot-proxy/start-proxy.sh"
-alias claude-refresh="~/.claude-copilot-proxy/refresh-token.sh"

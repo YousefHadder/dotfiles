@@ -36,12 +36,12 @@ return {
 		end,
 		ft = { "markdown" },
 	},
-	-- {
-	-- 	dir = "~/github/markdown-plus.nvim",
-	-- 	ft = { "markdown", "csv" },
-	-- },
 	{
-		"yousefhadder/markdown-plus.nvim",
-		ft = { "markdown" },
+		dir = "~/github/markdown-plus.nvim",
+		ft = { "markdown", "csv" },
 	},
+	-- {
+	-- 	"yousefhadder/markdown-plus.nvim",
+	-- 	ft = { "markdown" },
+	-- },
 }

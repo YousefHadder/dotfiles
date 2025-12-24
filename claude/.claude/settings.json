@@ -4,5 +4,8 @@
     "type": "command",
     "command": "npx -y @owloops/claude-powerline@latest"
   },
-  "alwaysThinkingEnabled": true
+  "alwaysThinkingEnabled": true,
+  "enabledPlugins": {
+    "lua-lsp@claude-plugins-official": true
+  }
 }

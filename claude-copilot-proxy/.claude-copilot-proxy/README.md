@@ -21,23 +21,33 @@ Claude Code → LiteLLM Proxy (localhost:4000) → GitHub Copilot API → AI Mod
 
 ## Starting the Proxy
 
-### Option 1: Using the alias (Easiest)
+The proxy runs automatically via launchd - it starts on login and restarts if it crashes.
+
+### Checking Status
 ```bash
-claude-proxy
+launchctl list | grep claude
+lsof -i :4000
 ```
 
-### Option 2: Using the startup script directly
+### Manual Control
 ```bash
-~/.claude-copilot-proxy/start-proxy.sh
+# Stop the proxy
+launchctl stop com.claude-copilot-proxy
+
+# Start the proxy
+launchctl start com.claude-copilot-proxy
+
+# Disable auto-start
+launchctl unload ~/Library/LaunchAgents/com.claude-copilot-proxy.plist
+
+# Re-enable auto-start
+launchctl load ~/Library/LaunchAgents/com.claude-copilot-proxy.plist
 ```
 
-### Option 3: Manual start
+### Logs
 ```bash
-export GITHUB_TOKEN=$(gh auth token)
-litellm --config ~/.claude-copilot-proxy/config.yaml --port 4000 --host 0.0.0.0
+tail -f /tmp/claude-copilot-proxy.log
 ```
-
-The proxy must be running before you start Claude Code.
 
 ## Using Claude Code with the Proxy
 
@@ -82,8 +92,7 @@ export ANTHROPIC_AUTH_TOKEN="${LITELLM_MASTER_KEY}"
 
 - **Config Template**: `~/.claude-copilot-proxy/config.yaml.example` (committed to git)
 - **Active Config**: `~/.claude-copilot-proxy/config.yaml` (uses `${LITELLM_MASTER_KEY}` env var)
-- **Startup Script**: `~/.claude-copilot-proxy/start-proxy.sh`
-- **Token Refresh**: `~/.claude-copilot-proxy/refresh-token.sh`
+- **LaunchAgent**: `~/Library/LaunchAgents/com.claude-copilot-proxy.plist` (auto-start service)
 - **Environment Variables**: `~/dotfiles/zsh/conf.d/01-environment.zsh`
 - **Git Ignore**: `.gitignore` excludes `config.yaml` to protect sensitive keys
 
@@ -99,9 +108,10 @@ The config uses the `LITELLM_MASTER_KEY` environment variable, which is already 
 ## Troubleshooting
 
 ### Proxy won't start
-- Check Python version: `python3 --version` (should be 3.13.x)
-- Reinstall LiteLLM: `pipx reinstall litellm`
+- Check launchd status: `launchctl list | grep claude`
+- Check logs: `tail -50 /tmp/claude-copilot-proxy.log`
 - Check port availability: `lsof -i :4000`
+- Reinstall LiteLLM: `pipx reinstall litellm`
 
 ### Claude Code still uses Anthropic
 - Ensure proxy is running: `curl http://localhost:4000/health`
@@ -109,7 +119,8 @@ The config uses the `LITELLM_MASTER_KEY` environment variable, which is already 
 - Verify env vars: `echo $ANTHROPIC_BASE_URL`
 
 ### Authentication errors
-- Refresh GitHub token: `gh auth login`
+- Re-authenticate with GitHub: `gh auth login`
+- Check auth status: `gh auth status`
 - Check Copilot access: `gh api /user/copilot`
 
 ### No response from proxy
@@ -118,7 +129,14 @@ The config uses the `LITELLM_MASTER_KEY` environment variable, which is already 
 
 ## Stopping the Proxy
 
-Press `Ctrl+C` in the terminal where the proxy is running.
+```bash
+launchctl stop com.claude-copilot-proxy
+```
+
+To permanently disable:
+```bash
+launchctl unload ~/Library/LaunchAgents/com.claude-copilot-proxy.plist
+```
 
 ## Updating Models
 
