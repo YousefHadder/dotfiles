@@ -29,3 +29,9 @@ alias lg="lazygit"
 alias sourcezsh="omz reload && exec zsh"
 alias sourcetmux="tmux source-file ~/.tmux.conf"
 
+# Claude code/copilot cli
+alias ccd="claude --dangerously-skip-permissions"
+alias ccdr="claude --dangerously-skip-permissions --resume"
+alias ccrt="~/.claude-copilot-proxy/refresh-token.sh"
+alias cpa="copilot --allow-all-tools"
+alias cpar="copilot --allow-all-tools --resume"

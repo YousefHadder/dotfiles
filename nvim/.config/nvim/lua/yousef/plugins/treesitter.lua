@@ -1,6 +1,7 @@
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
+		branch = "master",
 		build = ":TSUpdate",
 		event = { "BufReadPost", "BufNewFile" },
 		dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
@@ -16,12 +17,33 @@ return {
 				context_commentstring = { enable = true, enable_autocmd = false },
 
 				ensure_installed = {
-					"bash", "c", "cpp", "css", "csv", "diff", "dockerfile",
-					"gitignore", "go", "html", "javascript", "json", "lua",
-					"markdown", "python", "regex", "ruby", "sql", "ssh_config",
-					"tmux", "toml", "tsx", "typescript", "vim", "yaml",
-					"hcl", "terraform",
-
+					"bash",
+					"c",
+					"cpp",
+					"css",
+					"csv",
+					"diff",
+					"dockerfile",
+					"gitignore",
+					"go",
+					"html",
+					"javascript",
+					"json",
+					"lua",
+					"markdown",
+					"python",
+					"regex",
+					"ruby",
+					"sql",
+					"ssh_config",
+					"tmux",
+					"toml",
+					"tsx",
+					"typescript",
+					"vim",
+					"yaml",
+					"hcl",
+					"terraform",
 				},
 
 				incremental_selection = {

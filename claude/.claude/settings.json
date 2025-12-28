@@ -7,5 +7,27 @@
   "alwaysThinkingEnabled": true,
   "enabledPlugins": {
     "lua-lsp@claude-plugins-official": true
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "permissions": {
+    "deny": [
+      "Bash(rm -rf ~:*)",
+      "Bash(rm -rf /:*)",
+      "Bash(rm -rf $HOME:*)",
+      "Bash(git push --force main:*)",
+      "Bash(git push --force master:*)",
+      "Bash(git push -f main:*)",
+      "Bash(git push -f master:*)",
+      "Bash(git clean -fd:*)",
+      "Bash(sudo rm:*)"
+    ],
+    "ask": [
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(gh pr create:*)"
+    ]
   }
 }

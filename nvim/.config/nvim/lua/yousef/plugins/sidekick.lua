@@ -4,8 +4,18 @@ return {
 		-- add any options here
 		cli = {
 			tools = {
-				-- Claude with dangerous permissions mode
-				claude = { cmd = { "claude", "--dangerously-skip-permissions" } },
+				-- Claude variants
+				claude = { cmd = { "claude" } },
+				claude_yolo = { cmd = { "claude", "--dangerously-skip-permissions" } },
+				claude_resume = { cmd = { "claude", "--resume" } },
+				claude_yolo_resume = { cmd = { "claude", "--dangerously-skip-permissions", "--resume" } },
+				-- Copilot variants
+				copilot = { cmd = { "copilot" } },
+				copilot_auto = { cmd = { "copilot", "--allow-all-tools" } },
+				copilot_resume = { cmd = { "copilot", "--resume" } },
+				copilot_auto_resume = { cmd = { "copilot", "--allow-all-tools", "--resume" } },
+				-- Codex
+				codex = { cmd = { "codex", "--full-auto" } },
 			},
 
 			mux = {
