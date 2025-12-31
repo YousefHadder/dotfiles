@@ -46,8 +46,8 @@ return {
 				},
 			},
 
-			-- experimental signature help support
-			-- signature = { enabled = true },
+			-- Signature help support (stable in 0.11+)
+			signature = { enabled = true },
 
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer" },

@@ -2,7 +2,7 @@ vim.opt.termguicolors = true
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
 	local success = pcall(vim.fn.system, {
 		"git",
 		"clone",

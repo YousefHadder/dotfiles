@@ -4,11 +4,8 @@ return {
 		dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
 		config = function()
 			require("render-markdown").setup({
-				completion = {
-					blink = {
-						enabled = true,
-					},
-				},
+				-- Disable LaTeX rendering (not installed)
+				latex = { enabled = false },
 			})
 
 			-- Customize colors for code blocks and inline code
@@ -39,6 +36,7 @@ return {
 	{
 		dir = "~/github/markdown-plus.nvim",
 		ft = { "markdown", "csv" },
+		opts = {},
 	},
 	-- {
 	-- 	"yousefhadder/markdown-plus.nvim",

@@ -33,6 +33,9 @@ opt.whichwrap = "b,s,h,l,[,]" -- Allow movement across lines with wrap
 opt.splitbelow = true -- Open horizontal splits below
 opt.splitright = true -- Open vertical splits to the right
 
+-- Tab options
+opt.tabclose = "left" -- Focus left tab when closing a tab (0.11+)
+
 -- Search options
 opt.ignorecase = true -- Ignore case in search
 opt.smartcase = true -- Case sensitive if uppercase present
@@ -49,26 +52,20 @@ opt.autoindent = true -- Auto indent new lines
 opt.smartindent = true -- Smart indentation
 
 -- Completion options
-opt.completeopt = { "menu", "menuone", "noselect" }
+opt.completeopt = { "menu", "menuone", "noselect", "fuzzy" }
 opt.pumheight = 10 -- Popup menu height
 
 -- Performance options
 opt.updatetime = 50 -- Faster completion
 opt.timeoutlen = 300 -- Faster key sequence completion
 
--- Folding options (defer to ensure Treesitter is available)
-vim.defer_fn(function()
-	if vim.treesitter.foldexpr then
-		opt.foldmethod = "expr"
-		opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-	else
-		opt.foldmethod = "indent"
-	end
-	opt.foldlevel = 99
-	opt.foldlevelstart = 99
-	opt.foldenable = true
-	opt.foldcolumn = "0"
-end, 100)
+-- Folding options (treesitter-based, async in 0.11+)
+opt.foldmethod = "expr"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.foldlevel = 99
+opt.foldlevelstart = 99
+opt.foldenable = true
+opt.foldcolumn = "0"
 
 -- Backspace options
 opt.backspace = { "start", "eol", "indent" }

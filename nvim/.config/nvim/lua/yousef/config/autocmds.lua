@@ -18,22 +18,14 @@ local help_group = augroup("HelpWindows", { clear = true })
 -- General Quality of Life
 -- ======================================================
 
--- Remember last editing position
-autocmd("BufReadPost", {
-	group = general_group,
-	pattern = "*",
-	callback = function()
-		if vim.fn.line("'\"") > 0 and vim.fn.line("'\"") <= vim.fn.line("$") then
-			vim.cmd('normal! g`"')
-		end
-	end,
-})
-
--- Remove trailing whitespace on save
+-- Remove trailing whitespace on save (skip non-modifiable buffers)
 autocmd("BufWritePre", {
 	group = general_group,
 	pattern = "*",
 	callback = function()
+		if not vim.bo.modifiable then
+			return
+		end
 		local save_cursor = vim.fn.getpos(".")
 		vim.cmd([[%s/\s\+$//e]])
 		vim.fn.setpos(".", save_cursor)
@@ -69,7 +61,7 @@ autocmd("TextYankPost", {
 	group = highlight_group,
 	pattern = "*",
 	callback = function()
-		vim.highlight.on_yank({ higroup = "IncSearch", timeout = 300 })
+		vim.hl.on_yank({ higroup = "IncSearch", timeout = 300 })
 	end,
 })
 
@@ -105,25 +97,20 @@ autocmd("VimResized", {
 -- Cursor Position and Movement
 -- ======================================================
 
--- Restore cursor position
+-- Restore cursor position (consolidated, excludes commit buffers)
 autocmd("BufReadPost", {
 	group = cursor_group,
 	callback = function()
+		-- Skip for commit messages and other special buffers
+		local dominated_fts = { "gitcommit", "gitrebase", "commit" }
+		if vim.tbl_contains(dominated_fts, vim.bo.filetype) then
+			return
+		end
+
 		local mark = vim.api.nvim_buf_get_mark(0, '"')
 		local lcount = vim.api.nvim_buf_line_count(0)
 		if mark[1] > 0 and mark[1] <= lcount then
 			pcall(vim.api.nvim_win_set_cursor, 0, mark)
-		end
-	end,
-})
-
--- Return to last edit position when opening files
-autocmd("BufRead", {
-	group = cursor_group,
-	callback = function()
-		local last_pos = vim.fn.line("'\"")
-		if last_pos > 0 and last_pos <= vim.fn.line("$") and vim.bo.filetype ~= "commit" then
-			vim.cmd("normal! g'\"")
 		end
 	end,
 })

@@ -1,13 +1,4 @@
 {
-  "model": "opus",
-  "statusLine": {
-    "type": "command",
-    "command": "npx -y @owloops/claude-powerline@latest"
-  },
-  "alwaysThinkingEnabled": true,
-  "enabledPlugins": {
-    "lua-lsp@claude-plugins-official": true
-  },
   "attribution": {
     "commit": "",
     "pr": ""
@@ -29,5 +20,14 @@
       "Bash(git push:*)",
       "Bash(gh pr create:*)"
     ]
-  }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "npx -y @owloops/claude-powerline@latest"
+  },
+  "enabledPlugins": {
+    "lua-lsp@claude-plugins-official": true
+  },
+  "alwaysThinkingEnabled": true,
+  "model": "opus"
 }
