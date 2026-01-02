@@ -4,6 +4,22 @@
     "pr": ""
   },
   "permissions": {
+    "allow": [
+      "Bash(brew uninstall:*)",
+      "Bash(rm:*)",
+      "Bash(rustup self:*)",
+      "Bash(echo:*)",
+      "Bash(fd:*)",
+      "Bash([ -d \"$HOME/.config/eza\" ])",
+      "Bash(claude mcp list:*)",
+      "Bash(claude mcp add:*)",
+      "Bash(sed:*)",
+      "mcp__github__get_issue",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:neovim.io)",
+      "Read(//Users/yousefhadder/Desktop/workspace/**)"
+    ],
     "deny": [
       "Bash(rm -rf ~:*)",
       "Bash(rm -rf /:*)",

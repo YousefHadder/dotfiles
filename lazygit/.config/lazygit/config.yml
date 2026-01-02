@@ -1,48 +1,144 @@
+git:
+  mainBranches:
+    - main
+    - master
+  branchLogCmd: git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium {{branchName}} --
+  overrideGpg: false
+  disableForcePushing: false
+  parseEmoji: false
+  log:
+    order: topo-order
+    showGraph: when-maximised
+    showWholeGraph: false
+  rebase:
+    dropMergeCommit: true
+  allBranchesLogCmds:
+    - git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium --all
 gui:
-    authorColors: {}
-    branchColors: {}
-    scrollHeight: 2
-    scrollPastBottom: true
-    mouseEvents: true
-    nerdFontsVersion: "3"
-    skipDiscardChangeWarning: false
-    skipStashWarning: false
-    sidePanelWidth: 0.3333
-    expandFocusedSidePanel: false
-    mainPanelSplitMode: flexible
-    language: auto
-    timeFormat: 02 Jan 06 15:04 MST
-    commitLength:
-        show: true
-    skipNoStagedFilesWarning: false
-    showListFooter: true
-    showFileTree: true
-    showRandomTip: true
-    showCommandLog: true
-    showBottomLine: true
-    commandLogSize: 8
-    theme:
-        activeBorderColor:
-          - "#d7875f"
-          - "bold"
-        inactiveBorderColor:
-          - "#666666"
-        searchingActiveBorderColor:
-          - "#d7875f"
-          - "bold"
-        optionsTextColor:
-          - "#5f87d7"
-        selectedLineBgColor:
-          - "#333333"
-        cherryPickedCommitFgColor:
-          - "#5f87d7"
-        cherryPickedCommitBgColor:
-          - "#87d7ff"
-        markedBaseCommitFgColor:
-          - "#5f87d7"
-        markedBaseCommitBgColor:
-          - "#d7d787"
-        unstagedChangesColor:
-          - "#ff8787"
-        defaultFgColor:
-          - "#ffffff"
+  authorColors: {}
+  branchColors: {}
+  scrollHeight: 2
+  scrollPastBottom: true
+  mouseEvents: true
+  nerdFontsVersion: "3"
+  skipDiscardChangeWarning: false
+  skipStashWarning: false
+  sidePanelWidth: 0.3333
+  expandFocusedSidePanel: false
+  mainPanelSplitMode: flexible
+  language: auto
+  timeFormat: 02 Jan 06 15:04 MST
+  commitLength:
+    show: true
+  skipNoStagedFilesWarning: false
+  showListFooter: true
+  showFileTree: true
+  showRandomTip: true
+  showCommandLog: true
+  showBottomLine: true
+  commandLogSize: 8
+  theme:
+    activeBorderColor:
+      - "#d7875f"
+      - "bold"
+    inactiveBorderColor:
+      - "#666666"
+    searchingActiveBorderColor:
+      - "#d7875f"
+      - "bold"
+    optionsTextColor:
+      - "#5f87d7"
+    selectedLineBgColor:
+      - "#333333"
+    cherryPickedCommitFgColor:
+      - "#5f87d7"
+    cherryPickedCommitBgColor:
+      - "#87d7ff"
+    markedBaseCommitFgColor:
+      - "#5f87d7"
+    markedBaseCommitBgColor:
+      - "#d7d787"
+    unstagedChangesColor:
+      - "#ff8787"
+    defaultFgColor:
+      - "#ffffff"
+customCommands: []
+os:
+  editPreset: ""
+refresher:
+  refreshInterval: 10
+  fetchInterval: 60
+update:
+  method: prompt
+  days: 14
+confirmOnQuit: false
+quitOnTopLevelReturn: false
+disableStartupPopups: false
+notARepository: prompt
+promptToReturnFromSubprocess: true
+keybinding:
+  universal:
+    quit: q
+    quit-alt1: <c-c>
+    return: <esc>
+    quitWithoutChangingDirectory: Q
+    togglePanel: <tab>
+    prevItem: <up>
+    nextItem: <down>
+    prevItem-alt: k
+    nextItem-alt: j
+    prevPage: ","
+    nextPage: .
+    gotoTop: "<"
+    gotoBottom: ">"
+    scrollLeft: H
+    scrollRight: L
+    prevBlock: <left>
+    nextBlock: <right>
+    prevBlock-alt: h
+    nextBlock-alt: l
+    jumpToBlock:
+      - "1"
+      - "2"
+      - "3"
+      - "4"
+      - "5"
+    nextMatch: "n"
+    prevMatch: "N"
+    optionMenu: x
+    optionMenu-alt1: "?"
+    select: <space>
+    goInto: <enter>
+    openRecentRepos: <c-r>
+    confirm: <enter>
+    remove: d
+    new: "n"
+    edit: e
+    openFile: o
+    scrollUpMain: <pgup>
+    scrollDownMain: <pgdown>
+    scrollUpMain-alt1: K
+    scrollDownMain-alt1: J
+    scrollUpMain-alt2: <c-u>
+    scrollDownMain-alt2: <c-d>
+    executeShellCommand: ":"
+    createRebaseOptionsMenu: m
+    pushFiles: P
+    pullFiles: p
+    refresh: R
+    createPatchOptionsMenu: <c-p>
+    nextTab: "]"
+    prevTab: "["
+    nextScreenMode: +
+    prevScreenMode: _
+    undo: z
+    redo: <c-z>
+    filteringMenu: <c-s>
+    diffingMenu: W
+    diffingMenu-alt: <c-e>
+    copyToClipboard: <c-o>
+    submitEditorText: <enter>
+    extrasMenu: "@"
+    toggleWhitespaceInDiffView: <c-w>
+    increaseContextInDiffView: "}"
+    decreaseContextInDiffView: "{"

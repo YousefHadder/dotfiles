@@ -1,7 +1,7 @@
-[mgr]
-# NOTE: can combined with tmTheme (sublime colorshceme file) for preview code highlight
-# syntect_theme = "path/to/tmTheme"
+# Custom theme overrides - inherits from default theme-dark.toml
+"$schema" = "https://yazi-rs.github.io/schemas/theme.json"
 
+[mgr]
 cwd = { fg = "#ffffff", italic = true }
 
 # Hovered
@@ -18,11 +18,6 @@ marker_cut      = { fg = "#ff0000", bg = "#ff0000" }
 marker_marked   = { fg = "#d7d787", bg = "#d7d787" }
 marker_selected = { fg = "#d7d787", bg = "#5f8700" }
 
-# Tab
-tab_active   = { fg = "#ffffff", bg = "#5f87d7" }
-tab_inactive = { fg = "#666666", bg = "#000000" }
-tab_width    = 1
-
 # Count
 count_copied   = { fg = "#ffffff", bg = "#00ff00" }
 count_cut      = { fg = "#ffffff", bg = "#ff0000" }
@@ -31,6 +26,10 @@ count_selected = { fg = "#ffffff", bg = "#5f8700" }
 # Border
 border_symbol = "│"
 border_style  = { fg = "#666666" }
+
+[tabs]
+active   = { fg = "#ffffff", bg = "#5f87d7" }
+inactive = { fg = "#666666", bg = "#000000" }
 
 [mode]
 normal_main = { fg = "#000000", bg = "#afaf87", bold = true }
@@ -43,9 +42,8 @@ unset_main  = { fg = "#000000", bg = "#ffafaf", bold = true }
 unset_alt   = { fg = "#ffafaf", bg = "#333333" }
 
 [status]
-separator_open    = ""
-separator_close   = ""
-# separator_style = { fg = "#3b4261", bg = "#3b4261" }
+sep_left  = { open = "", close = "" }
+sep_right = { open = "", close = "" }
 
 # Progress
 progress_label  = { fg = "#ffffff", bold = true }
@@ -61,33 +59,25 @@ perm_sep   = { fg = "#333333" }
 
 [pick]
 border   = { fg = "#5f87d7" }
-active   = { fg = "#ffffff",  bg = "#333333" }
+active   = { fg = "#ffffff", bg = "#333333" }
 inactive = { fg = "#ffffff" }
 
-# Input
 [input]
 border   = { fg = "#5f87d7" }
 title    = { fg = "#5f87d7" }
 value    = { fg = "#ffafaf" }
 selected = { bg = "#333333" }
 
-# Completion
-[completion]
+[cmp]
 border   = { fg = "#5f87d7" }
 active   = { fg = "#ffffff", bg = "#333333" }
 inactive = { fg = "#ffffff" }
 
-icon_file    = ""
-icon_folder  = ""
-icon_command = ""
-
-# Tasks
 [tasks]
 border  = { fg = "#5f87d7" }
 title   = { fg = "#5f87d7" }
-hovered = { fg = "#ffffff", bg="#333333" }
+hovered = { fg = "#ffffff", bg = "#333333" }
 
-# Which
 [which]
 cols            = 3
 mask            = { bg = "#000000" }
@@ -97,32 +87,20 @@ desc            = { fg = "#d7d787" }
 separator       = " ➜ "
 separator_style = { fg = "#666666" }
 
-# Confirm
 [confirm]
 border  = { fg = "#5f87d7" }
 title   = { fg = "#5f87d7" }
-content = {}
-list    = {}
 btn_yes = { bg = "#333333" }
-btn_no  = {}
-btn_labels = [ "  [Y]es  ", "  (N)o  " ]
 
-# Spot
 [spot]
-border  = { fg = "#5f87d7" }
-title   = { fg = "#5f87d7" }
+border = { fg = "#5f87d7" }
+title  = { fg = "#5f87d7" }
 
-# Notify
 [notify]
 title_info  = { fg = "#5f87d7" }
 title_warn  = { fg = "#ffd700" }
 title_error = { fg = "#ff0000" }
 
-icon_error = ""
-icon_warn = ""
-icon_info = ""
-
-# Help
 [help]
 on      = { fg = "#00ff00" }
 run     = { fg = "#d7d787" }
@@ -130,29 +108,13 @@ hovered = { bg = "#333333" }
 footer  = { fg = "#ffffff", bg = "#000000" }
 
 [filetype]
-
 rules = [
-	# Images
 	{ mime = "image/*", fg = "#ffd700" },
-
-	# Media
 	{ mime = "{audio,video}/*", fg = "#d7d787" },
-
-	# Archives
 	{ mime = "application/*zip", fg = "#ff0000" },
 	{ mime = "application/x-{tar,bzip*,7z-compressed,xz,rar}", fg = "#ff0000" },
-
-	# Documents
 	{ mime = "application/{pdf,doc,rtf,vnd.*}", fg = "#87d7ff" },
-
-	# Empty files
-	# { mime = "inode/x-empty", fg = "#ff0000" },
-
-	# Special files
-	{ name = "*", is = "orphan", bg = "#ff0000" },
-	{ name = "*", is = "exec"  , fg = "#00ff00" },
-
-	# Fallback
-	{ name = "*/", fg = "#5f87d7" }
+	{ url = "*", is = "orphan", bg = "#ff0000" },
+	{ url = "*", is = "exec", fg = "#00ff00" },
+	{ url = "*/", fg = "#5f87d7" }
 ]
-    
