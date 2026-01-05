@@ -1,7 +1,8 @@
 return {
 	"ibhagwan/fzf-lua",
 	dependencies = { "nvim-tree/nvim-web-devicons" },
-	cmd = "FzfLua",
+	lazy = false,
+	priority = 1000,
 	keys = {
 		-- Top level pickers
 		{

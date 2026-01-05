@@ -1,10 +1,9 @@
----@diagnostic disable: undefined-global
 return {
 	"CopilotC-Nvim/CopilotChat.nvim",
-	branch = "main",
 	dependencies = {
 		{ "zbirenbaum/copilot.lua" },
 		{ "nvim-lua/plenary.nvim" },
+		{ "ibhagwan/fzf-lua" },
 	},
 	build = "make tiktoken",
 	event = "VeryLazy",
@@ -16,8 +15,8 @@ return {
 			show_folds = false,
 			window = {
 				layout = "vertical",
-				width = 80,
-				height = 20,
+				width = 0.4,
+				height = 0.6,
 				border = "rounded",
 				zindex = 100,
 			},
@@ -27,7 +26,6 @@ return {
 			},
 			model = "claude-sonnet-4.5",
 		})
-		require("fzf-lua").register_ui_select()
 	end,
 	keys = {
 		{ "<leader>ax", "<cmd>CopilotChatStop<cr>", desc = "CopilotChat - Stop generating" },
@@ -57,29 +55,27 @@ return {
 			end,
 			desc = "Toggle Copilot Chat with buffer/visual context",
 		},
-		{ "<leader>ae", "<cmd>CopilotChatExplain<cr>", desc = "CopilotChat - Explain code" },
-		{ "<leader>ar", "<cmd>CopilotChatReview<cr>", desc = "CopilotChat - Review code" },
-		{ "<leader>af", "<cmd>CopilotChatFix<cr>", desc = "CopilotChat - Fix" },
-		{ "<leader>ao", "<cmd>CopilotChatOptimize<cr>", desc = "CopilotChat - Optimize" },
-		{ "<leader>ad", "<cmd>CopilotChatDocs<cr>", desc = "CopilotChat - Add Documentation" },
-		{ "<leader>at", "<cmd>CopilotChatTests<cr>", desc = "CopilotChat - Generate tests" },
+		{ "<leader>ae", "<cmd>CopilotChatExplain<cr>", desc = "CopilotChat - Explain code", mode = { "n", "x" } },
+		{ "<leader>ar", "<cmd>CopilotChatReview<cr>", desc = "CopilotChat - Review code", mode = { "n", "x" } },
+		{ "<leader>af", "<cmd>CopilotChatFix<cr>", desc = "CopilotChat - Fix", mode = { "n", "x" } },
+		{ "<leader>ao", "<cmd>CopilotChatOptimize<cr>", desc = "CopilotChat - Optimize", mode = { "n", "x" } },
+		{ "<leader>ad", "<cmd>CopilotChatDocs<cr>", desc = "CopilotChat - Add Documentation", mode = { "n", "x" } },
+		{ "<leader>at", "<cmd>CopilotChatTests<cr>", desc = "CopilotChat - Generate tests", mode = { "n", "x" } },
 		{ "<leader>ac", "<cmd>CopilotChatCommit<cr>", desc = "CopilotChat - Commit message" },
-		{ "<leader>as", "<cmd>CopilotChatCommitStaged<cr>", desc = "CopilotChat - Commit message (staged)" },
-		{ "<leader>am", "<cmd>CopilotChatModel<cr>", desc = "Copilot Chat Models" },
 		{
-			"<leader>ap",
+			"<leader>am",
 			function()
-				require("CopilotChat").select_prompt({ context = { "buffers" } })
+				require("CopilotChat").select_model()
 			end,
-			desc = "CopilotChat - Prompt actions",
+			desc = "Copilot Chat - Select model",
 		},
 		{
 			"<leader>ap",
 			function()
 				require("CopilotChat").select_prompt()
 			end,
-			mode = "x",
 			desc = "CopilotChat - Prompt actions",
+			mode = { "n", "x" },
 		},
 
 		{

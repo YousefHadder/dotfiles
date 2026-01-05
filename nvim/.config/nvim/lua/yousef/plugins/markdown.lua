@@ -1,19 +1,28 @@
+local use_local_markdown_plus = true
+
+local markdown_plus_spec = {
+	ft = { "markdown", "csv" },
+	opts = {},
+}
+
+if use_local_markdown_plus then
+	markdown_plus_spec.dir = "~/github/markdown-plus.nvim"
+else
+	markdown_plus_spec[1] = "yousefhadder/markdown-plus.nvim"
+end
+
 return {
 	{
 		"MeanderingProgrammer/render-markdown.nvim",
-		dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
+		dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" },
 		config = function()
 			require("render-markdown").setup({
-				-- Disable LaTeX rendering (not installed)
 				latex = { enabled = false },
 			})
 
-			-- Customize colors for code blocks and inline code
 			local function set_render_markdown_hl()
 				local ns = 0
-				-- Fenced code blocks
 				vim.api.nvim_set_hl(ns, "RenderMarkdownCode", { fg = "#c0caf5", bg = "#1f2335" })
-				-- Inline `code`
 				vim.api.nvim_set_hl(ns, "RenderMarkdownCodeInline", { fg = "#c0caf5", bg = "#1f2335" })
 			end
 
@@ -33,13 +42,5 @@ return {
 		end,
 		ft = { "markdown" },
 	},
-	{
-		dir = "~/github/markdown-plus.nvim",
-		ft = { "markdown", "csv" },
-		opts = {},
-	},
-	-- {
-	-- 	"yousefhadder/markdown-plus.nvim",
-	-- 	ft = { "markdown" },
-	-- },
+	markdown_plus_spec,
 }
