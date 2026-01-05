@@ -14,7 +14,6 @@ brew "eza"               # Better ls
 brew "fd"                # Better find
 brew "zoxide"            # Smart cd
 brew "tree"              # Directory tree viewer
-brew "pay-respects"      # Fun replacement for sl
 
 # File management and utilities
 brew "yazi"              # Terminal file manager
