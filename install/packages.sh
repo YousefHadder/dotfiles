@@ -13,7 +13,7 @@ install_packages() {
     essential_start=$(start_operation "Essential packages")
 
     # Try to install essential packages, but don't fail completely if some packages fail
-    if brew bundle --file="${DOTFILES_DIR}/Brewfile.essential" --no-lock 2>&1 | tee -a "$LOG_FILE"; then
+    if brew bundle --file="${DOTFILES_DIR}/Brewfile.essential" 2>&1 | tee -a "$LOG_FILE"; then
       log_with_timing "Essential packages" "$essential_start"
     else
       local exit_code=$?
@@ -37,7 +37,7 @@ install_packages() {
     # Use || true to prevent the background job from failing the entire installation
     (
       # Install packages, allowing failures
-      if brew bundle --file="${DOTFILES_DIR}/Brewfile.optional" --no-lock 2>&1 | while IFS= read -r line; do
+      if brew bundle --file="${DOTFILES_DIR}/Brewfile.optional" 2>&1 | while IFS= read -r line; do
         echo "[OPTIONAL] $line" >> "$LOG_FILE"
       done; then
         local optional_end=$(date +%s)
@@ -72,7 +72,7 @@ install_packages() {
     local single_start
     single_start=$(start_operation "Package installation")
 
-    if brew bundle --file="${DOTFILES_DIR}/Brewfile" --no-lock 2>&1 | tee -a "$LOG_FILE"; then
+    if brew bundle --file="${DOTFILES_DIR}/Brewfile" 2>&1 | tee -a "$LOG_FILE"; then
       log_with_timing "Package installation" "$single_start"
     else
       log_warning "Some packages failed to install - continuing anyway"
