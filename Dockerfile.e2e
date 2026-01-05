@@ -1,0 +1,30 @@
+FROM ubuntu:22.04
+
+# Prevent interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+ENV HOMEBREW_NO_INSTALL_CLEANUP=1
+ENV HOMEBREW_NO_ANALYTICS=1
+
+# Install basic dependencies including zsh
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    sudo \
+    build-essential \
+    file \
+    procps \
+    zsh \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create test user with sudo access
+RUN useradd -m -s /bin/bash testuser && \
+    echo "testuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+USER testuser
+WORKDIR /home/testuser
+
+# Copy dotfiles
+COPY --chown=testuser:testuser . /home/testuser/dotfiles
+WORKDIR /home/testuser/dotfiles
+
+CMD ["./install.sh"]

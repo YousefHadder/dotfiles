@@ -13,12 +13,22 @@ install_languages() {
     rust_start=$(start_operation "Rust installation (background)")
 
     (
-      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y 2>&1 | while IFS= read -r line; do
+      # Try to install Rust, but don't fail if it doesn't work
+      if curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y 2>&1 | while IFS= read -r line; do
         echo "[RUST] $line" >> "$LOG_FILE"
-      done
-      local rust_end=$(date +%s)
-      local rust_duration=$((rust_end - rust_start))
-      echo "[$(date '+%Y-%m-%d %H:%M:%S')] ✅ Rust installation (background) (${rust_duration}s)" >> "$LOG_FILE"
+      done; then
+        local rust_end=$(date +%s)
+        local rust_duration=$((rust_end - rust_start))
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] ✅ Rust installation (background) (${rust_duration}s)" >> "$LOG_FILE"
+        exit 0
+      else
+        local exit_code=$?
+        local rust_end=$(date +%s)
+        local rust_duration=$((rust_end - rust_start))
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] ⚠️  Rust installation failed (${rust_duration}s, exit: $exit_code)" >> "$LOG_FILE"
+        # Exit with 0 to prevent marking the entire job as failed
+        exit 0
+      fi
     ) &
 
     RUST_PID=$!
@@ -38,12 +48,22 @@ install_languages() {
       copilot_start=$(start_operation "Copilot CLI (background)")
 
       (
-        npm install -g @github/copilot 2>&1 | while IFS= read -r line; do
+        # Try to install Copilot CLI, but don't fail if it doesn't work
+        if npm install -g @github/copilot 2>&1 | while IFS= read -r line; do
           echo "[COPILOT] $line" >> "$LOG_FILE"
-        done
-        local copilot_end=$(date +%s)
-        local copilot_duration=$((copilot_end - copilot_start))
-        echo "[$(date '+%Y-%m-%d %H:%M:%S')] ✅ Copilot CLI (background) (${copilot_duration}s)" >> "$LOG_FILE"
+        done; then
+          local copilot_end=$(date +%s)
+          local copilot_duration=$((copilot_end - copilot_start))
+          echo "[$(date '+%Y-%m-%d %H:%M:%S')] ✅ Copilot CLI (background) (${copilot_duration}s)" >> "$LOG_FILE"
+          exit 0
+        else
+          local exit_code=$?
+          local copilot_end=$(date +%s)
+          local copilot_duration=$((copilot_end - copilot_start))
+          echo "[$(date '+%Y-%m-%d %H:%M:%S')] ⚠️  Copilot CLI installation failed (${copilot_duration}s, exit: $exit_code)" >> "$LOG_FILE"
+          # Exit with 0 to prevent marking the entire job as failed
+          exit 0
+        fi
       ) &
 
       COPILOT_PID=$!
