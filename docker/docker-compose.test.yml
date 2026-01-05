@@ -1,0 +1,17 @@
+services:
+  dotfiles-test:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.test
+    container_name: dotfiles-test
+    volumes:
+      # Mount dotfiles as read-write for testing
+      # This allows us to see changes without rebuilding
+      - ..:/home/testuser/dotfiles
+    environment:
+      - HOMEBREW_NO_INSTALL_CLEANUP=1
+      - HOMEBREW_NO_ANALYTICS=1
+      - DEBIAN_FRONTEND=noninteractive
+    # Keep container running for inspection
+    tty: true
+    stdin_open: true

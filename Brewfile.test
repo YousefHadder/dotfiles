@@ -1,0 +1,9 @@
+# Minimal Brewfile for Docker testing
+# This is used for Phase 1 testing to avoid long installation times
+# and Linux-incompatible packages
+
+# Essential tools for testing
+brew "stow"
+brew "fzf"
+brew "bat"
+brew "tree"

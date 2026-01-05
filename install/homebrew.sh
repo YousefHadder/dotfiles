@@ -2,7 +2,9 @@
 # Homebrew installation and setup
 
 install_homebrew() {
-  log "--- Starting Homebrew Installation ---"
+  log_section "PHASE: Homebrew Installation"
+  local start_time
+  start_time=$(start_operation "Homebrew installation")
 
   # -------------------------------
   # Install Homebrew if needed
@@ -26,5 +28,6 @@ install_homebrew() {
   log "Updating Homebrew and checking status..."
   brew update
 
-  log "--- Homebrew Installation Complete ---"
+  log_with_timing "Homebrew installation" "$start_time"
+  
 }

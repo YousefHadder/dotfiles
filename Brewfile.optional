@@ -1,0 +1,32 @@
+# Optional packages - nice-to-have tools
+# These can be installed in parallel or after essential packages
+
+# Additional taps
+tap "timescam/homebrew-tap"
+
+# Node.js and package manager
+brew "node"              # JavaScript runtime
+brew "nvm"               # Node version manager
+
+# Enhanced CLI tools - alternatives to standard commands
+brew "bat"               # Better cat
+brew "eza"               # Better ls
+brew "fd"                # Better find
+brew "zoxide"            # Smart cd
+brew "tree"              # Directory tree viewer
+brew "pay-respects"      # Fun replacement for sl
+
+# File management and utilities
+brew "yazi"              # Terminal file manager
+brew "yq"                # YAML processor
+
+# Lua development tools
+brew "lua"               # Lua interpreter
+brew "luajit"            # LuaJIT compiler
+brew "luarocks"          # Lua package manager
+
+# Development tools
+brew "prettier"          # Code formatter
+brew "make"              # Build tool
+brew "lazygit"           # Git TUI
+brew "tree-sitter"       # Parser generator

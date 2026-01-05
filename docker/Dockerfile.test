@@ -1,0 +1,38 @@
+# Docker test environment for dotfiles installation
+# Uses Ubuntu 22.04 (similar to GitHub Codespaces)
+
+FROM ubuntu:22.04
+
+# Prevent interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+ENV HOMEBREW_NO_INSTALL_CLEANUP=1
+ENV HOMEBREW_NO_ANALYTICS=1
+
+# Update package lists and install basic dependencies needed for the installation
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    sudo \
+    build-essential \
+    file \
+    procps \
+    zsh \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create a test user (similar to vscode user in Codespaces)
+RUN useradd -m -s /bin/bash testuser && \
+    echo "testuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+# Switch to test user
+USER testuser
+WORKDIR /home/testuser
+
+# Copy dotfiles into container
+# This will be overridden by volume mount in docker-compose for live testing
+COPY --chown=testuser:testuser . /home/testuser/dotfiles
+
+# Set working directory to dotfiles
+WORKDIR /home/testuser/dotfiles
+
+# Default command: run the installation script
+CMD ["./install.sh"]

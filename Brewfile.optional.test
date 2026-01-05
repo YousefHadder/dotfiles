@@ -1,0 +1,5 @@
+# Minimal optional packages for Docker testing
+# Nice-to-have tools for testing
+
+brew "bat"               # Better cat
+brew "tree"              # Directory tree viewer

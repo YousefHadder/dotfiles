@@ -1,0 +1,6 @@
+# Minimal essential packages for Docker testing
+# These are critical for core dotfiles functionality
+
+# Critical utilities
+brew "stow"              # Required for dotfiles symlinking
+brew "fzf"               # Fuzzy finder - used in shell configs

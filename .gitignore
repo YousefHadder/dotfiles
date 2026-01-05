@@ -3,3 +3,8 @@
 !claude/.claude/
 
 slate.vim
+
+# Installation logs and PID files
+*_install.log
+*_install.pid
+dotfiles_install.log
