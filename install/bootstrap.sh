@@ -2,7 +2,9 @@
 # Bootstrap system with zsh and Oh My Zsh
 
 bootstrap_system() {
-  log "--- Starting Bootstrap Phase ---"
+  log_section "PHASE 1: Bootstrap System"
+  local start_time
+  start_time=$(start_operation "Bootstrap phase")
 
   # -------------------------------
   # Install zsh using the OS package manager
@@ -52,7 +54,9 @@ bootstrap_system() {
       if ! grep -q "$(command -v zsh)" /etc/shells; then
         command -v zsh | sudo tee -a /etc/shells >/dev/null
       fi
-      sudo chsh -s "$(command -v zsh)" "$USER"
+      # Use whoami if USER is not set (Docker environments)
+      local username="${USER:-$(whoami)}"
+      sudo chsh -s "$(command -v zsh)" "$username"
       log "Default shell has been changed to zsh. The script will continue."
     else
       log "ERROR: zsh command not found, cannot change shell."
@@ -60,5 +64,5 @@ bootstrap_system() {
     fi
   fi
 
-  log "--- Bootstrap Phase Complete ---"
+  log_with_timing "Bootstrap phase" "$start_time"
 }

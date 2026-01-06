@@ -1,0 +1,8 @@
+# Logs directory for test results
+# Docker test logs will be saved here
+
+# Ignore all log files
+*.log
+
+# Keep the directory in git
+!.gitkeep

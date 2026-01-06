@@ -32,6 +32,22 @@ source "${INSTALL_DIR}/utils.sh"
 detect_os
 setup_dotfiles_dir
 
+# Initialize logging
+init_log_file
+
+# Welcome banner
+echo ""
+echo -e "${BOLD}${MAGENTA}╔════════════════════════════════════════════════════════════╗${NC}"
+echo -e "${BOLD}${MAGENTA}║                                                            ║${NC}"
+echo -e "${BOLD}${MAGENTA}║           🚀  DOTFILES INSTALLATION SYSTEM  🚀             ║${NC}"
+echo -e "${BOLD}${MAGENTA}║                                                            ║${NC}"
+echo -e "${BOLD}${MAGENTA}╚════════════════════════════════════════════════════════════╝${NC}"
+echo ""
+
+log "Starting dotfiles installation..."
+log_info "OS: $OS | User: $(whoami) | Directory: $DOTFILES_DIR"
+echo ""
+
 # Source all installation modules
 source "${INSTALL_DIR}/bootstrap.sh"
 source "${INSTALL_DIR}/homebrew.sh"
@@ -53,17 +69,39 @@ copy_scripts
 create_symlinks
 
 # ==============================================================================
-# PART 3: FINALIZATION
+# PART 3: WAIT FOR BACKGROUND JOBS
 # ==============================================================================
-log ""
-log "################################################################"
-log "#                                                              #"
-log "#  Dotfiles setup is complete.                                 #"
-log "#  Reloading shell to apply all changes...                     #"
-log "#                                                              #"
-log "################################################################"
-log ""
+
+# Wait for all background installations to complete
+wait_for_background_jobs
+
+# ==============================================================================
+# PART 4: FINALIZATION
+# ==============================================================================
+
+# Generate timing summary
+generate_timing_summary
+
+# Completion banner
+echo ""
+echo -e "${BOLD}${GREEN}╔════════════════════════════════════════════════════════════╗${NC}"
+echo -e "${BOLD}${GREEN}║                                                            ║${NC}"
+echo -e "${BOLD}${GREEN}║               ✨  INSTALLATION COMPLETE!  ✨              ║${NC}"
+echo -e "${BOLD}${GREEN}║                                                            ║${NC}"
+echo -e "${BOLD}${GREEN}╚════════════════════════════════════════════════════════════╝${NC}"
+echo ""
+
+log_success "Dotfiles setup is complete!"
+log_info "Installation log saved to: $LOG_FILE"
+echo ""
 
 # Replace the current shell with a new zsh login shell.
 # This is the crucial final step that makes all changes take effect.
-exec zsh -l
+# Only do this in interactive mode, not in CI/Docker environments
+if [ -t 0 ]; then
+  log_info "Reloading shell to apply all changes..."
+  exec zsh -l
+else
+  log_info "Non-interactive mode detected. Installation complete!"
+  log_info "Run 'zsh -l' manually to start using your new shell."
+fi

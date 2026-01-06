@@ -1,0 +1,21 @@
+# Essential packages required for core dotfiles functionality
+# These packages are installed first and must complete before symlinks are created
+
+# Taps needed for essential packages
+tap "FelixKratz/formulae"
+
+# Critical utilities - must install first
+brew "stow"              # Required for dotfiles symlinking
+
+# Core shell enhancements - needed for basic shell experience
+brew "fzf"               # Fuzzy finder - used extensively in shell configs
+brew "zsh-autosuggestions"  # Shell completion
+brew "zsh-syntax-highlighting"  # Shell syntax highlighting
+brew "starship"          # Shell prompt
+
+# Core editor and terminal - many dotfiles depend on these
+brew "neovim"            # Primary editor with extensive configs
+brew "tmux"              # Terminal multiplexer with configs
+
+# Essential search utility
+brew "ripgrep"           # Fast search - used by many tools
