@@ -58,7 +58,6 @@ create_symlinks() {
   stow_packages
 
   log_with_timing "Symlink creation" "$start_time"
-  
 }
 
 # Allow running this script directly for manual stowing
@@ -86,5 +85,4 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 
   log "--- Manual Stow Operation ---"
   stow_packages "$@"
-  
 fi

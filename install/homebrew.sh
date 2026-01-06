@@ -29,5 +29,4 @@ install_homebrew() {
   brew update
 
   log_with_timing "Homebrew installation" "$start_time"
-  
 }

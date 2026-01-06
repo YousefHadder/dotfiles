@@ -22,50 +22,72 @@ declare -A TIMING_DATA
 INSTALL_START_TIME=$(date +%s)
 LOG_FILE="${HOME}/dotfiles_install.log"
 
+# Internal helper: append a single line to the log file with file locking.
+# This prevents multiple background jobs from corrupting the log.
+_log_append() {
+  local line="$1"
+  {
+    flock -w 10 200 || return
+    printf '%s\n' "$line" >> "$LOG_FILE"
+  } 200>"${LOG_FILE}.lock"
+}
+
 # Initialize log file with header
 init_log_file() {
-  echo "=== Dotfiles Installation Log ===" > "$LOG_FILE"
-  echo "Started: $(date)" >> "$LOG_FILE"
-  echo "OS: $(uname)" >> "$LOG_FILE"
-  echo "User: $(whoami)" >> "$LOG_FILE"
-  echo "" >> "$LOG_FILE"
+  # Truncate existing log file (if any) once at the start
+  : > "$LOG_FILE"
+  _log_append "=== Dotfiles Installation Log ==="
+  _log_append "Started: $(date)"
+  _log_append "OS: $(uname)"
+  _log_append "User: $(whoami)"
+  _log_append ""
 }
 
 # Enhanced logging - writes to both console and file
 log() {
   local message="$*"
+  local timestamp
+  timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
   # Console output (with color)
-  echo -e "${CYAN}[ $(date '+%Y-%m-%d %H:%M:%S') ] $message${NC}"
-  # File output (no color codes)
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] $message" >> "$LOG_FILE"
+  echo -e "${CYAN}[ ${timestamp} ] $message${NC}"
+  # File output (no color codes, with locking)
+  _log_append "[${timestamp}] $message"
 }
 
 # Success logging with green color
 log_success() {
   local message="$*"
-  echo -e "${GREEN}[ $(date '+%Y-%m-%d %H:%M:%S') ] ✅ $message${NC}"
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] ✅ $message" >> "$LOG_FILE"
+  local timestamp
+  timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+  echo -e "${GREEN}[ ${timestamp} ] ✅ $message${NC}"
+  _log_append "[${timestamp}] ✅ $message"
 }
 
 # Warning logging with yellow color
 log_warning() {
   local message="$*"
-  echo -e "${YELLOW}[ $(date '+%Y-%m-%d %H:%M:%S') ] ⚠️  $message${NC}"
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] ⚠️  $message" >> "$LOG_FILE"
+  local timestamp
+  timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+  echo -e "${YELLOW}[ ${timestamp} ] ⚠️ $message${NC}"
+  _log_append "[${timestamp}] ⚠️ $message"
 }
 
 # Error logging with red color
 log_error() {
   local message="$*"
-  echo -e "${RED}[ $(date '+%Y-%m-%d %H:%M:%S') ] ❌ $message${NC}"
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] ❌ $message" >> "$LOG_FILE"
+  local timestamp
+  timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+  echo -e "${RED}[ ${timestamp} ] ❌ $message${NC}"
+  _log_append "[${timestamp}] ❌ $message"
 }
 
 # Info logging with blue color
 log_info() {
   local message="$*"
-  echo -e "${BLUE}[ $(date '+%Y-%m-%d %H:%M:%S') ] ℹ️  $message${NC}"
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] ℹ️  $message" >> "$LOG_FILE"
+  local timestamp
+  timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+  echo -e "${BLUE}[ ${timestamp} ] ℹ️ $message${NC}"
+  _log_append "[${timestamp}] ℹ️ $message"
 }
 
 # Section header with bold
@@ -76,11 +98,11 @@ log_section() {
   echo -e "${BOLD}${MAGENTA}  $message${NC}"
   echo -e "${BOLD}${MAGENTA}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
   echo ""
-  echo "" >> "$LOG_FILE"
-  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" >> "$LOG_FILE"
-  echo "  $message" >> "$LOG_FILE"
-  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" >> "$LOG_FILE"
-  echo "" >> "$LOG_FILE"
+  _log_append ""
+  _log_append "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  _log_append "  $message"
+  _log_append "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  _log_append ""
 }
 
 # Progress indicator
@@ -88,15 +110,19 @@ log_progress() {
   local current="$1"
   local total="$2"
   local message="$3"
+  local timestamp
+  timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
   local percent=$((current * 100 / total))
-  echo -e "${CYAN}[ $(date '+%Y-%m-%d %H:%M:%S') ] [${current}/${total}] (${percent}%) $message${NC}"
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] [${current}/${total}] (${percent}%) $message" >> "$LOG_FILE"
+  echo -e "${CYAN}[ ${timestamp} ] [${current}/${total}] (${percent}%) $message${NC}"
+  _log_append "[${timestamp}] [${current}/${total}] (${percent}%) $message"
 }
 
 # Start timing an operation
 start_operation() {
   local operation="$1"
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] 🔄 Starting: $operation" >> "$LOG_FILE"
+  local timestamp
+  timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+  _log_append "[${timestamp}] 🔄 Starting: $operation"
   date +%s  # Return current timestamp
 }
 
@@ -107,12 +133,14 @@ log_with_timing() {
   local end_time
   end_time=$(date +%s)
   local duration=$((end_time - start_time))
+  local timestamp
+  timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
 
   TIMING_DATA["$operation"]=$duration
 
   # Use green color for success
-  echo -e "${GREEN}[ $(date '+%Y-%m-%d %H:%M:%S') ] ✅ $operation (${duration}s)${NC}"
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] ✅ $operation (${duration}s)" >> "$LOG_FILE"
+  echo -e "${GREEN}[ ${timestamp} ] ✅ $operation (${duration}s)${NC}"
+  _log_append "[${timestamp}] ✅ $operation (${duration}s)"
 }
 
 # Generate timing summary at end
@@ -120,29 +148,25 @@ generate_timing_summary() {
   local total_time
   total_time=$(($(date +%s) - INSTALL_START_TIME))
 
-  {
-    echo ""
-    echo "=== TIMING SUMMARY ==="
-    echo "Total installation time: ${total_time}s ($((total_time / 60))m $((total_time % 60))s)"
-    echo ""
-    echo "Operations by duration (longest first):"
-  } >> "$LOG_FILE"
+  _log_append ""
+  _log_append "=== TIMING SUMMARY ==="
+  _log_append "Total installation time: ${total_time}s ($((total_time / 60))m $((total_time % 60))s)"
+  _log_append ""
+  _log_append "Operations by duration (longest first):"
 
   # Sort timing data by duration (longest first)
   for operation in "${!TIMING_DATA[@]}"; do
     echo "${TIMING_DATA[$operation]} $operation"
   done | sort -nr | while read -r duration op; do
     if [ "$duration" -ge 60 ]; then
-      echo "  $op: ${duration}s ($((duration / 60))m $((duration % 60))s)" >> "$LOG_FILE"
+      _log_append "  $op: ${duration}s ($((duration / 60))m $((duration % 60))s)"
     else
-      echo "  $op: ${duration}s" >> "$LOG_FILE"
+      _log_append "  $op: ${duration}s"
     fi
   done
 
-  {
-    echo ""
-    echo "=== PERFORMANCE INSIGHTS ==="
-  } >> "$LOG_FILE"
+  _log_append ""
+  _log_append "=== PERFORMANCE INSIGHTS ==="
 
   # Categorize slow operations
   local slow_ops=()
@@ -157,22 +181,22 @@ generate_timing_summary() {
   done
 
   if [ ${#slow_ops[@]} -gt 0 ]; then
-    {
-      echo "🐌 Operations taking >60s:"
-      printf '  %s\n' "${slow_ops[@]}"
-      echo ""
-    } >> "$LOG_FILE"
+    _log_append "🐌 Operations taking >60s:"
+    for op in "${slow_ops[@]}"; do
+      _log_append "  $op"
+    done
+    _log_append ""
   fi
 
   if [ ${#medium_ops[@]} -gt 0 ]; then
-    {
-      echo "⚠️  Operations taking 10-60s:"
-      printf '  %s\n' "${medium_ops[@]}"
-      echo ""
-    } >> "$LOG_FILE"
+    _log_append "⚠️ Operations taking 10-60s:"
+    for op in "${medium_ops[@]}"; do
+      _log_append "  $op"
+    done
+    _log_append ""
   fi
 
-  echo "Completed: $(date)" >> "$LOG_FILE"
+  _log_append "Completed: $(date)"
 
   # Also print summary to console
   echo ""
@@ -214,23 +238,18 @@ wait_for_background_jobs() {
 
   for pid in "${BACKGROUND_JOBS[@]}"; do
     local job_name="${BACKGROUND_JOB_NAMES[$pid]}"
-    log_progress $((completed + 1)) "$total" "Waiting for: $job_name"
+    log_progress "$((completed + 1))" "$total" "Waiting for: $job_name"
 
     if wait "$pid"; then
       completed=$((completed + 1))
       log_success "$job_name completed successfully"
     else
+      # Any non-zero exit from wait indicates that the job did not complete cleanly.
+      # Treat this as a warning while allowing the overall installation to continue.
       local exit_code=$?
       completed=$((completed + 1))
-
-      # Check if this was an intentional success (exit 0 from error handling)
-      # or a real failure (non-zero exit code)
-      if [ "$exit_code" -eq 0 ]; then
-        log_success "$job_name completed successfully"
-      else
-        log_warning "$job_name completed with warnings (some operations may have failed)"
-        failed_jobs+=("$job_name")
-      fi
+      log_warning "$job_name completed with warnings (exit code: $exit_code; some operations may have failed)"
+      failed_jobs+=("$job_name")
     fi
   done
 

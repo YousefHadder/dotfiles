@@ -9,23 +9,31 @@ install_languages() {
   # -------------------------------
   if ! command -v cargo >/dev/null 2>&1; then
     log "Installing Rust & Cargo in background..."
-    local rust_start
-    rust_start=$(start_operation "Rust installation (background)")
 
     (
+      # Calculate start time inside the subshell
+      local rust_start=$(date +%s)
+      local timestamp
+      timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+
+      # Source utils.sh to get access to _log_append function in subshell
+      source "${DOTFILES_DIR}/install/utils.sh"
+
       # Try to install Rust, but don't fail if it doesn't work
       if curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y 2>&1 | while IFS= read -r line; do
-        echo "[RUST] $line" >> "$LOG_FILE"
+        _log_append "[RUST] $line"
       done; then
         local rust_end=$(date +%s)
         local rust_duration=$((rust_end - rust_start))
-        echo "[$(date '+%Y-%m-%d %H:%M:%S')] ✅ Rust installation (background) (${rust_duration}s)" >> "$LOG_FILE"
+        timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+        _log_append "[${timestamp}] ✅ Rust installation (background) (${rust_duration}s)"
         exit 0
       else
         local exit_code=$?
         local rust_end=$(date +%s)
         local rust_duration=$((rust_end - rust_start))
-        echo "[$(date '+%Y-%m-%d %H:%M:%S')] ⚠️  Rust installation failed (${rust_duration}s, exit: $exit_code)" >> "$LOG_FILE"
+        timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+        _log_append "[${timestamp}] ⚠️ Rust installation failed (${rust_duration}s, exit: $exit_code)"
         # Exit with 0 to prevent marking the entire job as failed
         exit 0
       fi
@@ -44,23 +52,31 @@ install_languages() {
   if ! command -v copilot >/dev/null 2>&1; then
     if command -v npm >/dev/null 2>&1; then
       log "Installing GitHub Copilot CLI in background..."
-      local copilot_start
-      copilot_start=$(start_operation "Copilot CLI (background)")
 
       (
+        # Calculate start time inside the subshell
+        local copilot_start=$(date +%s)
+        local timestamp
+        timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+
+        # Source utils.sh to get access to _log_append function in subshell
+        source "${DOTFILES_DIR}/install/utils.sh"
+
         # Try to install Copilot CLI, but don't fail if it doesn't work
         if npm install -g @github/copilot 2>&1 | while IFS= read -r line; do
-          echo "[COPILOT] $line" >> "$LOG_FILE"
+          _log_append "[COPILOT] $line"
         done; then
           local copilot_end=$(date +%s)
           local copilot_duration=$((copilot_end - copilot_start))
-          echo "[$(date '+%Y-%m-%d %H:%M:%S')] ✅ Copilot CLI (background) (${copilot_duration}s)" >> "$LOG_FILE"
+          timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+          _log_append "[${timestamp}] ✅ Copilot CLI (background) (${copilot_duration}s)"
           exit 0
         else
           local exit_code=$?
           local copilot_end=$(date +%s)
           local copilot_duration=$((copilot_end - copilot_start))
-          echo "[$(date '+%Y-%m-%d %H:%M:%S')] ⚠️  Copilot CLI installation failed (${copilot_duration}s, exit: $exit_code)" >> "$LOG_FILE"
+          timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+          _log_append "[${timestamp}] ⚠️ Copilot CLI installation failed (${copilot_duration}s, exit: $exit_code)"
           # Exit with 0 to prevent marking the entire job as failed
           exit 0
         fi

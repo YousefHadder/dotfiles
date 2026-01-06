@@ -30,25 +30,32 @@ install_packages() {
   # -------------------------------
   if [ -f "${DOTFILES_DIR}/Brewfile.optional" ]; then
     log "Installing optional packages in background..."
-    local optional_start
-    optional_start=$(start_operation "Optional packages (background)")
 
     # Run optional package installation in background
-    # Use || true to prevent the background job from failing the entire installation
     (
+      # Calculate start time inside the subshell
+      local optional_start=$(date +%s)
+      local timestamp
+      timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+
+      # Source utils.sh to get access to _log_append function in subshell
+      source "${DOTFILES_DIR}/install/utils.sh"
+
       # Install packages, allowing failures
       if brew bundle --file="${DOTFILES_DIR}/Brewfile.optional" 2>&1 | while IFS= read -r line; do
-        echo "[OPTIONAL] $line" >> "$LOG_FILE"
+        _log_append "[OPTIONAL] $line"
       done; then
         local optional_end=$(date +%s)
         local optional_duration=$((optional_end - optional_start))
-        echo "[$(date '+%Y-%m-%d %H:%M:%S')] ✅ Optional packages (background) (${optional_duration}s)" >> "$LOG_FILE"
+        timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+        _log_append "[${timestamp}] ✅ Optional packages (background) (${optional_duration}s)"
         exit 0
       else
         local exit_code=$?
         local optional_end=$(date +%s)
         local optional_duration=$((optional_end - optional_start))
-        echo "[$(date '+%Y-%m-%d %H:%M:%S')] ⚠️  Optional packages completed with some failures (${optional_duration}s, exit: $exit_code)" >> "$LOG_FILE"
+        timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
+        _log_append "[${timestamp}] ⚠️ Optional packages completed with some failures (${optional_duration}s, exit: $exit_code)"
         # Exit with 0 to prevent marking the entire job as failed
         exit 0
       fi
