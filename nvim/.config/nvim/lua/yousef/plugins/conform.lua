@@ -38,7 +38,7 @@ return { -- Autoformat
 			typescriptreact = { "eslint_d", "prettier", stop_after_first = true },
 			css = { "prettier" },
 			html = { "prettier" },
-			json = { "prettier" },
+			json = { "jq" },
 			yaml = { "prettier" },
 			markdown = { "prettier" },
 			graphql = { "prettier" },
