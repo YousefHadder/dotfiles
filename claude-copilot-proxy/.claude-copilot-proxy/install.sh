@@ -126,9 +126,23 @@ install_dependencies() {
         if [[ "$OS" == "macos" ]]; then
             brew install pipx
         else
-            sudo apt install -y pipx || sudo yum install -y pipx || sudo dnf install -y pipx
+            # Try apt/yum/dnf first, fall back to pip if not available
+            if ! (sudo apt install -y pipx 2>/dev/null || sudo yum install -y pipx 2>/dev/null || sudo dnf install -y pipx 2>/dev/null); then
+                info "pipx not available in package manager, installing via pip..."
+                # Ensure pip is installed
+                if ! command_exists pip3 && ! command_exists pip; then
+                    sudo apt update >/dev/null 2>&1 && sudo apt install -y python3-pip >/dev/null 2>&1 || sudo yum install -y python3-pip 2>/dev/null || sudo dnf install -y python3-pip 2>/dev/null
+                fi
+                # Install pipx using pip (handle PEP 668 externally-managed environments)
+                if ! python3 -m pip install --user pipx 2>/dev/null; then
+                    # If that fails due to externally-managed environment, use --break-system-packages
+                    python3 -m pip install --user --break-system-packages pipx 2>/dev/null || pip3 install --user --break-system-packages pipx 2>/dev/null || pip install --user --break-system-packages pipx
+                fi
+            fi
         fi
-        pipx ensurepath
+        # Ensure pipx is in PATH
+        export PATH="$HOME/.local/bin:$PATH"
+        pipx ensurepath 2>/dev/null || python3 -m pipx ensurepath 2>/dev/null || true
         success "pipx installed"
     else
         success "pipx already installed"
@@ -163,7 +177,10 @@ install_dependencies() {
         if [[ "$OS" == "macos" ]]; then
             brew install jq
         else
-            sudo apt install -y jq || sudo yum install -y jq || sudo dnf install -y jq
+            if ! (sudo apt install -y jq 2>/dev/null || sudo yum install -y jq 2>/dev/null || sudo dnf install -y jq 2>/dev/null); then
+                error "Failed to install jq. Please install it manually."
+                exit 1
+            fi
         fi
         success "jq installed"
     else
@@ -173,7 +190,13 @@ install_dependencies() {
     # Install LiteLLM
     if ! command_exists litellm; then
         info "Installing LiteLLM..."
-        pipx install litellm
+        # Ensure pipx is in PATH
+        export PATH="$HOME/.local/bin:$PATH"
+        if command_exists pipx; then
+            pipx install litellm
+        else
+            python3 -m pipx install litellm
+        fi
         success "LiteLLM installed"
     else
         success "LiteLLM already installed"
@@ -525,6 +548,9 @@ print_next_steps() {
 
 # Main installation flow
 main() {
+    # Ensure .local/bin is in PATH for pipx and litellm
+    export PATH="$HOME/.local/bin:$PATH"
+
     print_banner
 
     detect_os
