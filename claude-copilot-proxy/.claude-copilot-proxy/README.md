@@ -21,35 +21,9 @@ Claude Code → LiteLLM Proxy (localhost:4000) → GitHub Copilot API → AI Mod
 
 ---
 
-## Quick Install (Automated)
+## Setup Instructions
 
-**For most users, use the automated installer:**
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/dotfiles/main/claude-copilot-proxy/.claude-copilot-proxy/install.sh | bash
-```
-
-Or if you have the dotfiles repo cloned:
-
-```bash
-bash ~/dotfiles/claude-copilot-proxy/.claude-copilot-proxy/install.sh
-```
-
-The installer will:
-- ✅ Install all required dependencies (pipx, litellm, gh, jq)
-- ✅ Authenticate with GitHub Copilot
-- ✅ Create all configuration files
-- ✅ Set up environment variables
-- ✅ Configure auto-start service (launchd/systemd)
-- ✅ Verify the installation
-
-**For manual installation, see the detailed steps below.**
-
----
-
-## Manual Installation
-
-Follow these steps to set up the proxy manually on a new machine.
+Follow these steps to set up the proxy on a new machine.
 
 ### Prerequisites
 
