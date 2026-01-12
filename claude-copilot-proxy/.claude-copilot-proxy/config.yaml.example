@@ -1,60 +1,17 @@
+# Claude Code -> GitHub Copilot Proxy Configuration
+# Uses wildcard routing with model aliases for flexibility
+# Example file - copy to config.yaml
+
 model_list:
-  # Map Claude Opus 4.5 to Copilot's Claude Opus 4.5
-  - model_name: claude-opus-4-5-20251101
+  # Wildcard catches all models and routes to GitHub Copilot
+  - model_name: "*"
     litellm_params:
-      model: github_copilot/claude-opus-4.5
-      extra_headers:
-        Editor-Version: "vscode/1.95.0"
-        Copilot-Integration-Id: "vscode-chat"
+      model: github_copilot/*
+      api_key: os.environ/GITHUB_TOKEN
 
-  # Map Claude Sonnet 4.5 to GitHub Copilot's Claude Sonnet 4.5 (native!)
-  - model_name: claude-sonnet-4-5-20250929
-    litellm_params:
-      model: github_copilot/claude-sonnet-4.5
-      extra_headers:
-        Editor-Version: "vscode/1.95.0"
-        Copilot-Integration-Id: "vscode-chat"
-
-  # Map Claude Sonnet 4 to GitHub Copilot's Claude Sonnet 4
-  - model_name: claude-sonnet-4-20250514
-    litellm_params:
-      model: github_copilot/claude-sonnet-4
-      extra_headers:
-        Editor-Version: "vscode/1.95.0"
-        Copilot-Integration-Id: "vscode-chat"
-
-  # Map Claude Sonnet 3.5 to GitHub Copilot GPT-4o
-  - model_name: claude-3-5-sonnet-20241022
-    litellm_params:
-      model: github_copilot/gpt-4o
-      extra_headers:
-        Editor-Version: "vscode/1.95.0"
-        Copilot-Integration-Id: "vscode-chat"
-
-  # Map Claude Haiku to GitHub Copilot Claude Haiku 4.5
-  - model_name: claude-3-5-haiku-20241022
-    litellm_params:
-      model: github_copilot/claude-haiku-4.5
-      extra_headers:
-        Editor-Version: "vscode/1.95.0"
-        Copilot-Integration-Id: "vscode-chat"
-
-  # Map Claude Opus 4 to Claude Opus 41
-  - model_name: claude-opus-4-20250514
-    litellm_params:
-      model: github_copilot/claude-opus-41
-      extra_headers:
-        Editor-Version: "vscode/1.95.0"
-        Copilot-Integration-Id: "vscode-chat"
-
-general_settings:
-  # Master key for authenticating to the proxy
-  # Set via environment variable: LITELLM_MASTER_KEY
-  # Example: export LITELLM_MASTER_KEY="your-secret-key-here"
-  master_key: ${LITELLM_MASTER_KEY}
-
-  # Optional: Enable detailed logging
-  # set_verbose: true
+litellm_settings:
+  # Drop unsupported parameters when calling GitHub Copilot
+  drop_params: true
 
 router_settings:
   # Retry failed requests
@@ -66,11 +23,29 @@ router_settings:
   # Routing strategy
   routing_strategy: simple-shuffle
 
-litellm_settings:
-  # Drop unsupported parameters when calling GitHub Copilot
-  drop_params: true
+  # Model aliases - map Claude Code model names to GitHub Copilot models
+  # Run ./update-models to refresh this list
+  model_group_alias:
+    # Supported models (synced by update-models script)
+    "claude-haiku-4.5": "claude-haiku-4.5"
+    "claude-opus-4.5": "claude-opus-4.5"
+    "claude-sonnet-4": "claude-sonnet-4"
+    "claude-sonnet-4.5": "claude-sonnet-4.5"
+    "gpt-4o": "gpt-4o"
+    # Claude Code compatibility aliases (map old model IDs to new ones)
+    "claude-3-5-haiku-20241022": "claude-haiku-4.5"
+    "claude-haiku-4-5-20251001": "claude-haiku-4.5"
+    "claude-sonnet-4-20250514": "claude-sonnet-4"
+    "claude-sonnet-4-5-20250929": "claude-sonnet-4.5"
+    "claude-opus-4-20250514": "claude-opus-4.5"
+    "claude-opus-4-5-20251101": "claude-opus-4.5"
+    "claude-3-5-sonnet-20241022": "claude-sonnet-4"
 
-  # Enable fallbacks if needed (optional)
-  # fallbacks:
-  #   - github_copilot/gpt-4o:
-  #     - github_copilot/gpt-4o-mini
+  # Default headers sent with all requests
+  default_litellm_params:
+    extra_headers:
+      Editor-Version: "vscode/1.95.0"
+      Editor-Plugin-Version: "copilot-chat/0.22.4"
+      Openai-Organization: "github-copilot"
+      Openai-Intent: "conversation-panel"
+      Copilot-Vision-Request: "true"
