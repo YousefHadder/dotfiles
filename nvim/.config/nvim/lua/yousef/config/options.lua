@@ -100,18 +100,7 @@ opt.termguicolors = true
 -- Set default border for all floating windows (Neovim 0.11+)
 opt.winborder = "rounded"
 
--- Set colorscheme
-cmd("colorscheme slate")
-
--- Make transparent
-cmd([[
-    hi Normal guibg=NONE ctermbg=NONE
-    hi EndOfBuffer guibg=NONE ctermbg=NONE
-    hi SignColumn guibg=NONE ctermbg=NONE
-    hi NormalFloat guibg=NONE ctermbg=NONE
-    hi Pmenu guibg=NONE ctermbg=NONE
-    hi FloatBorder guifg=#ffffff guibg=NONE ctermbg=NONE
-]])
+-- Colorscheme is set in plugins/bebop.lua with priority 1000
 
 -- Custom comment color - light gray/white for better visibility on dark background
 cmd([[hi Comment guifg=#e0e0e0 gui=italic]])
