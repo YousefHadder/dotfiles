@@ -8,6 +8,8 @@
 		prompt = true
 [diff]
 		tool = nvimdiff
+	renames = true
+	renamelimit = 5000
 [difftool "nvimdiff"]
 		cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 
