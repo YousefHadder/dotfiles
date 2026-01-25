@@ -2,6 +2,28 @@
 
 This setup routes Claude Code requests through GitHub Copilot, allowing you to use Claude Code's interface while leveraging your GitHub Copilot subscription.
 
+## Quick Start (Automated)
+
+```bash
+# Run the interactive setup script
+./setup.sh
+
+# Or for non-interactive setup
+./setup.sh --quiet
+```
+
+The setup script automatically:
+- Detects your environment (macOS/Linux/Container)
+- Installs dependencies (pipx, litellm, jq, prisma)
+- Guides you through PAT creation and secure storage
+- Configures shell environment variables
+- Sets up auto-start service (launchd/systemd)
+- Verifies the setup
+
+To uninstall: `./setup.sh --uninstall`
+
+---
+
 ## Architecture
 
 ```
@@ -11,12 +33,12 @@ Claude Code CLI
       ▼
 ┌─────────────────────────────────────────────┐
 │   LiteLLM Proxy (localhost:4000)            │
-│   - Wildcard model routing                  │
-│   - Model alias translation                 │
+│   - Model routing with aliases              │
 │   - Adds required Copilot headers           │
+│   - PAT from Keychain/env var               │
 └─────────────────────────────────────────────┘
       │
-      │ GitHub PAT (env var or Keychain)
+      │ GitHub PAT + Copilot headers
       ▼
 ┌─────────────────────────────────────────────┐
 │   GitHub Copilot API                        │
@@ -53,7 +75,17 @@ Run `./update-models` to refresh this list from the Copilot API.
 
 1. **GitHub Copilot subscription** (Individual or Enterprise)
 2. **macOS**, **Linux**, or **Container** (Codespaces, Docker, etc.)
-3. **Python 3.9+** with pip
+3. **Python 3.9-3.13** (Python 3.14 has compatibility issues with uvloop)
+
+### Automated Setup (Recommended)
+
+```bash
+./setup.sh
+```
+
+Follow the interactive prompts. The script handles everything below automatically.
+
+### Manual Setup
 
 ### Step 1: Install Required Tools
 
@@ -64,8 +96,11 @@ Run `./update-models` to refresh this list from the Copilot API.
 brew install pipx jq
 pipx ensurepath
 
-# Install LiteLLM with proxy dependencies
-pipx install 'litellm[proxy]'
+# Install LiteLLM with proxy dependencies (use Python 3.13, not 3.14)
+pipx install --python /opt/homebrew/opt/python@3.13/bin/python3.13 'litellm[proxy]'
+
+# Install prisma for auth handling
+~/.local/pipx/venvs/litellm/bin/python3 -m pip install prisma
 ```
 
 #### Linux (apt-based)
@@ -115,13 +150,13 @@ export LITELLM_TOKEN="ghp_YOUR_TOKEN_HERE"
 #### Option B: macOS Keychain
 
 ```bash
-security add-generic-password -s "litellm-copilot-token" -w "ghp_YOUR_TOKEN_HERE"
+security add-generic-password -s "litellm-copilot-token" -a "$USER" -w "ghp_YOUR_TOKEN_HERE"
 ```
 
 To verify:
 
 ```bash
-security find-generic-password -s "litellm-copilot-token" -w | head -c 10
+security find-generic-password -s "litellm-copilot-token" -a "$USER" -w | head -c 10
 # Should show: ghp_xxxxxx
 ```
 
@@ -140,9 +175,22 @@ secret-tool store --label="LiteLLM Copilot Token" service litellm-copilot-token 
 mkdir -p ~/.claude-copilot-proxy
 
 # Copy files from this repo (if tracking in dotfiles)
-cp config.yaml start-proxy.sh update-models ~/.claude-copilot-proxy/
+cp config.yaml.example ~/.claude-copilot-proxy/config.yaml
+cp start-proxy.sh update-models ~/.claude-copilot-proxy/
 chmod +x ~/.claude-copilot-proxy/start-proxy.sh
 chmod +x ~/.claude-copilot-proxy/update-models
+
+# Create LiteLLM api-key.json for GitHub Copilot auth
+mkdir -p ~/.config/litellm/github_copilot
+cat > ~/.config/litellm/github_copilot/api-key.json << EOF
+{
+  "token": "$(security find-generic-password -s litellm-copilot-token -a $USER -w 2>/dev/null || echo $LITELLM_TOKEN)",
+  "expires_at": 4102444800,
+  "endpoints": {
+    "api": "https://api.githubcopilot.com"
+  }
+}
+EOF
 ```
 
 ### Step 5: Configure Environment Variables
@@ -345,14 +393,24 @@ kill $(lsof -t -i:4000) && ~/.claude-copilot-proxy/start-proxy.sh &
 
 ```bash
 # Check if entry exists
-security find-generic-password -s "litellm-copilot-token" 2>&1
+security find-generic-password -s "litellm-copilot-token" -a "$USER" 2>&1
 
-# Re-add if missing
-security add-generic-password -s "litellm-copilot-token" -w "ghp_YOUR_TOKEN"
+# Re-add if missing (requires -a account parameter)
+security add-generic-password -s "litellm-copilot-token" -a "$USER" -w "ghp_YOUR_TOKEN"
 
 # Update existing token
-security delete-generic-password -s "litellm-copilot-token"
-security add-generic-password -s "litellm-copilot-token" -w "ghp_NEW_TOKEN"
+security delete-generic-password -s "litellm-copilot-token" -a "$USER"
+security add-generic-password -s "litellm-copilot-token" -a "$USER" -w "ghp_NEW_TOKEN"
+
+# Also update the LiteLLM api-key.json
+TOKEN=$(security find-generic-password -s "litellm-copilot-token" -a "$USER" -w)
+cat > ~/.config/litellm/github_copilot/api-key.json << EOF
+{
+  "token": "$TOKEN",
+  "expires_at": 4102444800,
+  "endpoints": {"api": "https://api.githubcopilot.com"}
+}
+EOF
 ```
 
 #### Linux / Containers (Environment Variable)
@@ -408,26 +466,44 @@ curl -H "Authorization: Bearer $LITELLM_TOKEN" \
 # If unauthorized, create a new PAT with copilot scope
 ```
 
-### "No connected db" Error
+### "No connected db" or "prisma" Error
 
-This happens when LiteLLM tries to validate API keys against a database. Add this to your `config.yaml`:
+This happens when LiteLLM tries to validate API keys. Fix:
+
+```bash
+# Install prisma in litellm venv
+~/.local/pipx/venvs/litellm/bin/python3 -m pip install prisma
+
+# Ensure config.yaml has:
+# general_settings:
+#   allow_requests_on_db_unavailable: true
+```
+
+### Missing Copilot-Integration-Id Header
+
+If you see `missing required Copilot-Integration-Id header`, ensure your `config.yaml` has `extra_headers` defined for each model:
 
 ```yaml
-general_settings:
-  allow_requests_on_db_unavailable: true
+litellm_params:
+  model: github_copilot/claude-sonnet-4
+  extra_headers:
+    Editor-Version: "vscode/1.95.0"
+    Editor-Plugin-Version: "copilot-chat/0.22.4"
+    Copilot-Integration-Id: "vscode-chat"
 ```
 
 ---
 
 ## File Inventory
 
-| File                  | Purpose                                    |
-| --------------------- | ------------------------------------------ |
-| `config.yaml`         | LiteLLM wildcard routing + model aliases   |
-| `config.yaml.example` | Git-safe template                          |
-| `start-proxy.sh`      | Startup script (fetches PAT, runs LiteLLM) |
-| `update-models`       | Syncs available models from Copilot API    |
-| `README.md`           | This documentation                         |
+| File                  | Purpose                                              |
+| --------------------- | ---------------------------------------------------- |
+| `setup.sh`            | Automated interactive setup script                   |
+| `config.yaml`         | LiteLLM routing config with model aliases            |
+| `config.yaml.example` | Git-safe template (copy to config.yaml)              |
+| `start-proxy.sh`      | Startup script (fetches PAT, runs LiteLLM)           |
+| `update-models`       | Syncs available models from Copilot API              |
+| `README.md`           | This documentation                                   |
 
 ---
 
@@ -449,12 +525,18 @@ When your PAT expires:
 ```bash
 # 1. Create new PAT at https://github.com/settings/tokens/new?scopes=copilot
 # 2. Delete old Keychain entry
-security delete-generic-password -s "litellm-copilot-token"
+security delete-generic-password -s "litellm-copilot-token" -a "$USER"
 
 # 3. Add new token
-security add-generic-password -s "litellm-copilot-token" -w "ghp_NEW_TOKEN"
+security add-generic-password -s "litellm-copilot-token" -a "$USER" -w "ghp_NEW_TOKEN"
 
-# 4. Restart proxy
+# 4. Update LiteLLM api-key.json
+TOKEN=$(security find-generic-password -s "litellm-copilot-token" -a "$USER" -w)
+cat > ~/.config/litellm/github_copilot/api-key.json << EOF
+{"token": "$TOKEN", "expires_at": 4102444800, "endpoints": {"api": "https://api.githubcopilot.com"}}
+EOF
+
+# 5. Restart proxy
 launchctl kickstart -k gui/$(id -u)/com.claude-copilot-proxy
 ```
 
@@ -474,10 +556,11 @@ systemctl --user restart claude-copilot-proxy  # or kill & restart manually
 
 ## Changelog
 
-| Date         | Change                                                                 |
-| ------------ | ---------------------------------------------------------------------- |
-| Jan 24, 2026 | Added Linux, systemd, and container support; fixed config for PAT auth |
-| Jan 12, 2026 | Hybrid approach: PAT auth + wildcard config + update-models script     |
-| Jan 7, 2026  | Comprehensive fresh machine setup guide                                |
-| Nov 30, 2025 | Environment variable migration                                         |
-| Nov 26, 2025 | Initial setup                                                          |
+| Date         | Change                                                                      |
+| ------------ | --------------------------------------------------------------------------- |
+| Jan 25, 2026 | Added setup.sh automated installer; fixed Keychain -a param; added prisma   |
+| Jan 24, 2026 | Added Linux, systemd, and container support; fixed config for PAT auth      |
+| Jan 12, 2026 | Hybrid approach: PAT auth + wildcard config + update-models script          |
+| Jan 7, 2026  | Comprehensive fresh machine setup guide                                     |
+| Nov 30, 2025 | Environment variable migration                                              |
+| Nov 26, 2025 | Initial setup                                                               |
