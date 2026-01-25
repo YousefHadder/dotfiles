@@ -1,38 +1,71 @@
 # Claude Code -> GitHub Copilot Proxy Configuration
-# Uses wildcard routing with model aliases for flexibility
-# Example file - copy to config.yaml
 
 model_list:
-  # Wildcard catches all models and routes to GitHub Copilot
+  # Explicit Claude models
+  - model_name: "claude-sonnet-4"
+    litellm_params:
+      model: github_copilot/claude-sonnet-4
+      extra_headers:
+        Editor-Version: "vscode/1.95.0"
+        Editor-Plugin-Version: "copilot-chat/0.22.4"
+        Copilot-Integration-Id: "vscode-chat"
+
+  - model_name: "claude-sonnet-4.5"
+    litellm_params:
+      model: github_copilot/claude-sonnet-4.5
+      extra_headers:
+        Editor-Version: "vscode/1.95.0"
+        Editor-Plugin-Version: "copilot-chat/0.22.4"
+        Copilot-Integration-Id: "vscode-chat"
+
+  - model_name: "claude-haiku-4.5"
+    litellm_params:
+      model: github_copilot/claude-haiku-4.5
+      extra_headers:
+        Editor-Version: "vscode/1.95.0"
+        Editor-Plugin-Version: "copilot-chat/0.22.4"
+        Copilot-Integration-Id: "vscode-chat"
+
+  - model_name: "claude-opus-4.5"
+    litellm_params:
+      model: github_copilot/claude-opus-4.5
+      extra_headers:
+        Editor-Version: "vscode/1.95.0"
+        Editor-Plugin-Version: "copilot-chat/0.22.4"
+        Copilot-Integration-Id: "vscode-chat"
+
+  - model_name: "gpt-4o"
+    litellm_params:
+      model: github_copilot/gpt-4o
+      extra_headers:
+        Editor-Version: "vscode/1.95.0"
+        Editor-Plugin-Version: "copilot-chat/0.22.4"
+        Copilot-Integration-Id: "vscode-chat"
+
+  # Wildcard fallback for any other models
   - model_name: "*"
     litellm_params:
       model: github_copilot/*
-      api_key: os.environ/GITHUB_TOKEN
+      extra_headers:
+        Editor-Version: "vscode/1.95.0"
+        Editor-Plugin-Version: "copilot-chat/0.22.4"
+        Copilot-Integration-Id: "vscode-chat"
 
 litellm_settings:
-  # Drop unsupported parameters when calling GitHub Copilot
   drop_params: true
 
+general_settings:
+  allow_requests_on_db_unavailable: true
+
+server_settings:
+  port: 4000
+  host: "0.0.0.0"
+
 router_settings:
-  # Retry failed requests
   num_retries: 2
-
-  # Timeout for requests (5 minutes)
   timeout: 300
-
-  # Routing strategy
-  routing_strategy: simple-shuffle
-
-  # Model aliases - map Claude Code model names to GitHub Copilot models
-  # Run ./update-models to refresh this list
   model_group_alias:
-    # Supported models (synced by update-models script)
-    "claude-haiku-4.5": "claude-haiku-4.5"
-    "claude-opus-4.5": "claude-opus-4.5"
-    "claude-sonnet-4": "claude-sonnet-4"
-    "claude-sonnet-4.5": "claude-sonnet-4.5"
-    "gpt-4o": "gpt-4o"
-    # Claude Code compatibility aliases (map old model IDs to new ones)
+    # Map Claude Code dated model names to simple names
     "claude-3-5-haiku-20241022": "claude-haiku-4.5"
     "claude-haiku-4-5-20251001": "claude-haiku-4.5"
     "claude-sonnet-4-20250514": "claude-sonnet-4"
@@ -40,12 +73,3 @@ router_settings:
     "claude-opus-4-20250514": "claude-opus-4.5"
     "claude-opus-4-5-20251101": "claude-opus-4.5"
     "claude-3-5-sonnet-20241022": "claude-sonnet-4"
-
-  # Default headers sent with all requests
-  default_litellm_params:
-    extra_headers:
-      Editor-Version: "vscode/1.95.0"
-      Editor-Plugin-Version: "copilot-chat/0.22.4"
-      Openai-Organization: "github-copilot"
-      Openai-Intent: "conversation-panel"
-      Copilot-Vision-Request: "true"
