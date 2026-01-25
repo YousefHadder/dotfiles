@@ -6,10 +6,10 @@ This setup routes Claude Code requests through GitHub Copilot, allowing you to u
 
 ```bash
 # Run the interactive setup script
-./setup.sh
+./bin/setup.sh
 
 # Or for non-interactive setup
-./setup.sh --quiet
+./bin/setup.sh --quiet
 ```
 
 The setup script automatically:
@@ -21,7 +21,7 @@ The setup script automatically:
 - Sets up auto-start service (launchd/systemd)
 - Verifies the setup
 
-To uninstall: `./setup.sh --uninstall`
+To uninstall: `./bin/uninstall.sh`
 
 ---
 
@@ -47,6 +47,44 @@ Claude Code CLI
 └─────────────────────────────────────────────┘
 ```
 
+## Directory Structure
+
+```
+~/.claude-copilot-proxy/
+├── config.yaml                 # LiteLLM routing config
+├── config.yaml.example         # Template
+├── README.md                   # This file
+│
+├── bin/                        # Executable scripts
+│   ├── setup.sh                # Main installer
+│   ├── start-proxy.sh          # Startup script
+│   ├── update-models.sh        # Model sync script
+│   └── uninstall.sh            # Uninstaller
+│
+└── lib/                        # Library modules
+    ├── common.sh               # Colors, logging, prompts
+    ├── detect.sh               # Platform detection
+    ├── config.sh               # Directory/shell config
+    │
+    ├── token/                  # Token management
+    │   ├── main.sh             # Dispatcher
+    │   ├── macos.sh            # macOS Keychain
+    │   ├── linux.sh            # GNOME Keyring
+    │   └── env.sh              # Environment variable
+    │
+    ├── deps/                   # Dependency installation
+    │   ├── main.sh             # Dispatcher
+    │   ├── brew.sh             # Homebrew
+    │   ├── apt.sh              # apt-get
+    │   └── pip.sh              # pip fallback
+    │
+    └── service/                # Service management
+        ├── main.sh             # Dispatcher
+        ├── launchd.sh          # macOS launchd
+        ├── systemd.sh          # Linux systemd
+        └── manual.sh           # Manual/container
+```
+
 ## Supported Models
 
 Last updated: 2026-01-12
@@ -66,7 +104,7 @@ Last updated: 2026-01-12
 | `gpt-5-mini`             | Azure OpenAI | lightweight |
 | `grok-code-fast-1`       | xAI          | lightweight |
 
-Run `./update-models` to refresh this list from the Copilot API.
+Run `./bin/update-models.sh` to refresh this list from the Copilot API.
 
 ---
 
@@ -81,7 +119,7 @@ Run `./update-models` to refresh this list from the Copilot API.
 ### Automated Setup (Recommended)
 
 ```bash
-./setup.sh
+./bin/setup.sh
 ```
 
 Follow the interactive prompts. The script handles everything below automatically.
@@ -169,32 +207,7 @@ sudo apt install -y libsecret-tools
 secret-tool store --label="LiteLLM Copilot Token" service litellm-copilot-token username token <<< "ghp_YOUR_TOKEN"
 ```
 
-### Step 4: Create Directory Structure
-
-```bash
-# Create proxy configuration directory
-mkdir -p ~/.claude-copilot-proxy
-
-# Copy files from this repo (if tracking in dotfiles)
-cp config.yaml.example ~/.claude-copilot-proxy/config.yaml
-cp start-proxy.sh update-models ~/.claude-copilot-proxy/
-chmod +x ~/.claude-copilot-proxy/start-proxy.sh
-chmod +x ~/.claude-copilot-proxy/update-models
-
-# Create LiteLLM api-key.json for GitHub Copilot auth
-mkdir -p ~/.config/litellm/github_copilot
-cat > ~/.config/litellm/github_copilot/api-key.json << EOF
-{
-  "token": "$(security find-generic-password -s litellm-copilot-token -a $USER -w 2>/dev/null || echo $LITELLM_TOKEN)",
-  "expires_at": 4102444800,
-  "endpoints": {
-    "api": "https://api.githubcopilot.com"
-  }
-}
-EOF
-```
-
-### Step 5: Configure Environment Variables
+### Step 4: Configure Environment Variables
 
 Add to your shell configuration (`~/.zshrc` or `~/.bashrc`):
 
@@ -213,7 +226,7 @@ Reload:
 source ~/.zshrc  # or ~/.bashrc
 ```
 
-### Step 6: Set Up Auto-Start Service
+### Step 5: Set Up Auto-Start Service
 
 #### macOS (launchd)
 
@@ -231,7 +244,7 @@ cat > ~/Library/LaunchAgents/com.claude-copilot-proxy.plist << EOF
     <string>com.claude-copilot-proxy</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/$USERNAME/.claude-copilot-proxy/start-proxy.sh</string>
+        <string>/Users/$USERNAME/.claude-copilot-proxy/bin/start-proxy.sh</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
@@ -269,7 +282,7 @@ After=network.target
 [Service]
 Type=simple
 Environment="LITELLM_TOKEN=${LITELLM_TOKEN}"
-ExecStart=%h/.claude-copilot-proxy/start-proxy.sh
+ExecStart=%h/.claude-copilot-proxy/bin/start-proxy.sh
 Restart=always
 RestartSec=5
 StandardOutput=journal
@@ -291,13 +304,13 @@ For environments without systemd (Docker, Codespaces, WSL1):
 
 ```bash
 # Start manually as background process
-nohup ~/.claude-copilot-proxy/start-proxy.sh > /tmp/claude-copilot-proxy.log 2>&1 &
+nohup ~/.claude-copilot-proxy/bin/start-proxy.sh > /tmp/claude-copilot-proxy.log 2>&1 &
 
 # For Codespaces: add to .devcontainer/postStartCommand or ~/.bashrc
-echo 'pgrep -f "litellm" || ~/.claude-copilot-proxy/start-proxy.sh &' >> ~/.bashrc
+echo 'pgrep -f "litellm" || ~/.claude-copilot-proxy/bin/start-proxy.sh &' >> ~/.bashrc
 ```
 
-### Step 7: Verify Setup
+### Step 6: Verify Setup
 
 ```bash
 # Check if proxy is running
@@ -320,7 +333,7 @@ curl -X POST http://localhost:4000/chat/completions \
   -d '{"model": "claude-sonnet-4", "messages": [{"role": "user", "content": "Say hello"}]}'
 ```
 
-### Step 8: Use with Claude Code
+### Step 7: Use with Claude Code
 
 ```bash
 # Open a NEW terminal to pick up environment variables
@@ -359,21 +372,21 @@ All Claude Code requests will now route through GitHub Copilot!
 
 ### Containers / Manual
 
-| Action | Command                                         |
-| ------ | ----------------------------------------------- |
-| Start  | `~/.claude-copilot-proxy/start-proxy.sh &`      |
-| Stop   | `pkill -f litellm` or `kill $(lsof -t -i:4000)` |
-| Status | `lsof -i :4000`                                 |
-| Logs   | `tail -f /tmp/claude-copilot-proxy.log`         |
+| Action | Command                                                |
+| ------ | ------------------------------------------------------ |
+| Start  | `~/.claude-copilot-proxy/bin/start-proxy.sh &`         |
+| Stop   | `pkill -f litellm` or `kill $(lsof -t -i:4000)`        |
+| Status | `lsof -i :4000`                                        |
+| Logs   | `tail -f /tmp/claude-copilot-proxy.log`                |
 
 ### Update Available Models
 
 ```bash
 # Dry run (show what would change)
-~/.claude-copilot-proxy/update-models --dry-run
+~/.claude-copilot-proxy/bin/update-models.sh --dry-run
 
 # Update config.yaml with working models
-~/.claude-copilot-proxy/update-models
+~/.claude-copilot-proxy/bin/update-models.sh
 
 # Restart proxy to pick up changes
 # macOS:
@@ -381,7 +394,7 @@ launchctl kickstart -k gui/$(id -u)/com.claude-copilot-proxy
 # Linux:
 systemctl --user restart claude-copilot-proxy
 # Containers:
-kill $(lsof -t -i:4000) && ~/.claude-copilot-proxy/start-proxy.sh &
+kill $(lsof -t -i:4000) && ~/.claude-copilot-proxy/bin/start-proxy.sh &
 ```
 
 ---
@@ -436,7 +449,7 @@ which litellm
 litellm --version
 
 # Test startup script manually
-~/.claude-copilot-proxy/start-proxy.sh
+~/.claude-copilot-proxy/bin/start-proxy.sh
 
 # Check port availability
 lsof -i :4000
@@ -519,14 +532,16 @@ If you see `gcc-12 not found` errors when installing `litellm[proxy]`, the envir
 
 ## File Inventory
 
-| File                  | Purpose                                    |
-| --------------------- | ------------------------------------------ |
-| `setup.sh`            | Automated interactive setup script         |
-| `config.yaml`         | LiteLLM routing config with model aliases  |
-| `config.yaml.example` | Git-safe template (copy to config.yaml)    |
-| `start-proxy.sh`      | Startup script (fetches PAT, runs LiteLLM) |
-| `update-models`       | Syncs available models from Copilot API    |
-| `README.md`           | This documentation                         |
+| File                       | Purpose                                     |
+| -------------------------- | ------------------------------------------- |
+| `bin/setup.sh`             | Automated interactive setup script          |
+| `bin/start-proxy.sh`       | Startup script (fetches PAT, runs LiteLLM)  |
+| `bin/update-models.sh`     | Syncs available models from Copilot API     |
+| `bin/uninstall.sh`         | Remove proxy and all components             |
+| `config.yaml`              | LiteLLM routing config with model aliases   |
+| `config.yaml.example`      | Git-safe template (copy to config.yaml)     |
+| `lib/`                     | Modular library code (token, deps, service) |
+| `README.md`                | This documentation                          |
 
 ---
 
@@ -579,11 +594,12 @@ systemctl --user restart claude-copilot-proxy  # or kill & restart manually
 
 ## Changelog
 
-| Date         | Change                                                                    |
-| ------------ | ------------------------------------------------------------------------- |
+| Date         | Change                                                                     |
+| ------------ | -------------------------------------------------------------------------- |
+| Jan 25, 2026 | Refactored to modular structure (bin/ and lib/ directories)               |
 | Jan 25, 2026 | Added setup.sh automated installer; fixed Keychain -a param; added prisma |
 | Jan 24, 2026 | Added Linux, systemd, and container support; fixed config for PAT auth    |
 | Jan 12, 2026 | Hybrid approach: PAT auth + wildcard config + update-models script        |
 | Jan 7, 2026  | Comprehensive fresh machine setup guide                                   |
 | Nov 30, 2025 | Environment variable migration                                            |
-| Nov 26, 2025 | Initial setup                                                             |
+| Nov 26, 2025 | Initial setup                                                              |
