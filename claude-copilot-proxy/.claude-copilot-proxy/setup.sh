@@ -174,6 +174,30 @@ detect_environment() {
 # Step 1: Install Dependencies
 # =============================================================================
 
+# Helper function to install litellm with pip (used as fallback when pipx fails)
+install_litellm_with_pip() {
+    # Core packages
+    local packages=(
+        litellm fastapi uvicorn orjson apscheduler cryptography
+        email-validator websockets prisma httpx aiohttp
+        # Proxy-specific dependencies often missing from base install
+        backoff python-multipart fastapi-sso pyjwt
+    )
+
+    info "Installing litellm and proxy dependencies with pip..."
+    if pip3 install --user --break-system-packages "${packages[@]}" 2>/dev/null; then
+        success "Installed with --break-system-packages"
+    elif pip3 install --user "${packages[@]}" 2>/dev/null; then
+        success "Installed with --user"
+    else
+        error "pip install failed"
+        return 1
+    fi
+
+    # Try uvloop if available as prebuilt wheel (skip if would require compilation)
+    pip3 install --user --break-system-packages --only-binary :all: uvloop 2>/dev/null || true
+}
+
 install_dependencies() {
     echo -e "\n${BOLD}[1/6] Installing dependencies...${NC}"
 
@@ -208,22 +232,19 @@ install_dependencies() {
 
             info "Installing litellm with pipx..."
             pipx install 'litellm[proxy]' || {
-                warn "pipx install failed, trying pip fallback..."
-                pip3 install --user litellm fastapi uvicorn orjson apscheduler cryptography
+                warn "pipx install failed (uvloop build requires gcc), trying pip fallback..."
+                install_litellm_with_pip
             }
 
-            # Install prisma for auth handling
-            info "Installing prisma..."
-            "$HOME/.local/pipx/venvs/litellm/bin/python3" -m pip install prisma 2>/dev/null || true
+            # Install prisma for auth handling (only if pipx venv exists)
+            if [[ -d "$HOME/.local/pipx/venvs/litellm" ]]; then
+                info "Installing prisma..."
+                "$HOME/.local/pipx/venvs/litellm/bin/python3" -m pip install prisma 2>/dev/null || true
+            fi
             ;;
         pip)
             info "Installing litellm with pip (container mode)..."
-            pip3 install --user --break-system-packages litellm fastapi uvicorn orjson \
-                apscheduler cryptography email-validator websockets prisma 2>/dev/null ||
-                pip3 install --user litellm fastapi uvicorn orjson apscheduler cryptography prisma
-
-            # Try uvloop if available as wheel
-            pip3 install --user --only-binary :all: uvloop 2>/dev/null || true
+            install_litellm_with_pip
             ;;
         esac
 

@@ -13,6 +13,7 @@ This setup routes Claude Code requests through GitHub Copilot, allowing you to u
 ```
 
 The setup script automatically:
+
 - Detects your environment (macOS/Linux/Container)
 - Installs dependencies (pipx, litellm, jq, prisma)
 - Guides you through PAT creation and secure storage
@@ -492,18 +493,40 @@ litellm_params:
     Copilot-Integration-Id: "vscode-chat"
 ```
 
+### Missing Module Errors (ModuleNotFoundError)
+
+If the proxy fails with `ModuleNotFoundError` for packages like `backoff`, `fastapi_sso`, or `python-multipart`, install the missing proxy dependencies:
+
+```bash
+pip3 install --user --break-system-packages \
+    backoff python-multipart fastapi-sso pyjwt httpx aiohttp
+```
+
+This commonly happens when:
+
+- pipx fails to build `uvloop` (requires gcc) and falls back to pip
+- The base `litellm` package is installed without the `[proxy]` extras
+
+### uvloop Build Failures
+
+If you see `gcc-12 not found` errors when installing `litellm[proxy]`, the environment lacks a C compiler. Solutions:
+
+1. **Skip uvloop** (recommended for containers): The proxy works fine with asyncio
+2. **Install gcc**: `sudo apt install build-essential` (if you have root)
+3. **Use prebuilt wheel only**: `pip3 install --only-binary :all: uvloop`
+
 ---
 
 ## File Inventory
 
-| File                  | Purpose                                              |
-| --------------------- | ---------------------------------------------------- |
-| `setup.sh`            | Automated interactive setup script                   |
-| `config.yaml`         | LiteLLM routing config with model aliases            |
-| `config.yaml.example` | Git-safe template (copy to config.yaml)              |
-| `start-proxy.sh`      | Startup script (fetches PAT, runs LiteLLM)           |
-| `update-models`       | Syncs available models from Copilot API              |
-| `README.md`           | This documentation                                   |
+| File                  | Purpose                                    |
+| --------------------- | ------------------------------------------ |
+| `setup.sh`            | Automated interactive setup script         |
+| `config.yaml`         | LiteLLM routing config with model aliases  |
+| `config.yaml.example` | Git-safe template (copy to config.yaml)    |
+| `start-proxy.sh`      | Startup script (fetches PAT, runs LiteLLM) |
+| `update-models`       | Syncs available models from Copilot API    |
+| `README.md`           | This documentation                         |
 
 ---
 
@@ -556,11 +579,11 @@ systemctl --user restart claude-copilot-proxy  # or kill & restart manually
 
 ## Changelog
 
-| Date         | Change                                                                      |
-| ------------ | --------------------------------------------------------------------------- |
-| Jan 25, 2026 | Added setup.sh automated installer; fixed Keychain -a param; added prisma   |
-| Jan 24, 2026 | Added Linux, systemd, and container support; fixed config for PAT auth      |
-| Jan 12, 2026 | Hybrid approach: PAT auth + wildcard config + update-models script          |
-| Jan 7, 2026  | Comprehensive fresh machine setup guide                                     |
-| Nov 30, 2025 | Environment variable migration                                              |
-| Nov 26, 2025 | Initial setup                                                               |
+| Date         | Change                                                                    |
+| ------------ | ------------------------------------------------------------------------- |
+| Jan 25, 2026 | Added setup.sh automated installer; fixed Keychain -a param; added prisma |
+| Jan 24, 2026 | Added Linux, systemd, and container support; fixed config for PAT auth    |
+| Jan 12, 2026 | Hybrid approach: PAT auth + wildcard config + update-models script        |
+| Jan 7, 2026  | Comprehensive fresh machine setup guide                                   |
+| Nov 30, 2025 | Environment variable migration                                            |
+| Nov 26, 2025 | Initial setup                                                             |
