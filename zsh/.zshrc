@@ -16,3 +16,9 @@ for config_file in "$ZSHRC_DIR"/conf.d/*.zsh; do
 done
 
 unset config_file ZSHRC_DIR
+
+# Claude Code -> GitHub Copilot Proxy
+export ANTHROPIC_BASE_URL="http://localhost:4000"
+
+# Claude Code -> GitHub Copilot Proxy
+export ANTHROPIC_AUTH_TOKEN="fake-key"
