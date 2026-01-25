@@ -11,9 +11,13 @@ export PATH="/opt/homebrew/bin:/usr/local/bin:$HOME/.local/bin:$PATH"
 get_token() {
     local token=""
 
-    # Try macOS Keychain
+    # Try macOS Keychain (with account first, then legacy without account)
     if command -v security &>/dev/null; then
         token=$(security find-generic-password -s "litellm-copilot-token" -a "$USER" -w 2>/dev/null) || true
+        # Fallback: try without account for legacy tokens
+        if [[ -z "$token" ]]; then
+            token=$(security find-generic-password -s "litellm-copilot-token" -w 2>/dev/null) || true
+        fi
     fi
 
     # Try Linux secret-tool

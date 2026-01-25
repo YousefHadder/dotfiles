@@ -1,48 +1,8 @@
 # Claude Code -> GitHub Copilot Proxy Configuration
+# Uses wildcard routing - automatically handles all models
 
 model_list:
-  # Explicit Claude models
-  - model_name: "claude-sonnet-4"
-    litellm_params:
-      model: github_copilot/claude-sonnet-4
-      extra_headers:
-        Editor-Version: "vscode/1.95.0"
-        Editor-Plugin-Version: "copilot-chat/0.22.4"
-        Copilot-Integration-Id: "vscode-chat"
-
-  - model_name: "claude-sonnet-4.5"
-    litellm_params:
-      model: github_copilot/claude-sonnet-4.5
-      extra_headers:
-        Editor-Version: "vscode/1.95.0"
-        Editor-Plugin-Version: "copilot-chat/0.22.4"
-        Copilot-Integration-Id: "vscode-chat"
-
-  - model_name: "claude-haiku-4.5"
-    litellm_params:
-      model: github_copilot/claude-haiku-4.5
-      extra_headers:
-        Editor-Version: "vscode/1.95.0"
-        Editor-Plugin-Version: "copilot-chat/0.22.4"
-        Copilot-Integration-Id: "vscode-chat"
-
-  - model_name: "claude-opus-4.5"
-    litellm_params:
-      model: github_copilot/claude-opus-4.5
-      extra_headers:
-        Editor-Version: "vscode/1.95.0"
-        Editor-Plugin-Version: "copilot-chat/0.22.4"
-        Copilot-Integration-Id: "vscode-chat"
-
-  - model_name: "gpt-4o"
-    litellm_params:
-      model: github_copilot/gpt-4o
-      extra_headers:
-        Editor-Version: "vscode/1.95.0"
-        Editor-Plugin-Version: "copilot-chat/0.22.4"
-        Copilot-Integration-Id: "vscode-chat"
-
-  # Wildcard fallback for any other models
+  # Wildcard routes all models to GitHub Copilot
   - model_name: "*"
     litellm_params:
       model: github_copilot/*
