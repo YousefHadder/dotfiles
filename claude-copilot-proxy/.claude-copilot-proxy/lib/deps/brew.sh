@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # lib/deps/brew.sh - Homebrew dependency installation (macOS)
+#
+# Requires: lib/common.sh must be sourced first (provides info, success, warn, error, command_exists)
 
 # Install dependencies using Homebrew
 install_with_brew() {

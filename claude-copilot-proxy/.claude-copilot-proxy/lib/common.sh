@@ -1,5 +1,18 @@
 #!/usr/bin/env bash
-# lib/common.sh - Shared utilities: colors, logging, prompts
+# lib/common.sh - Shared utilities: colors, logging, prompts, constants
+
+# =============================================================================
+# Constants
+# =============================================================================
+
+KEYCHAIN_SERVICE="${KEYCHAIN_SERVICE:-litellm-copilot-token}"
+LAUNCHD_LABEL="${LAUNCHD_LABEL:-com.claude-copilot-proxy}"
+SYSTEMD_SERVICE="${SYSTEMD_SERVICE:-claude-copilot-proxy}"
+PROXY_PORT="${PROXY_PORT:-4000}"
+
+# =============================================================================
+# Colors
+# =============================================================================
 
 # Colors (with fallback for non-color terminals)
 if [[ -t 1 ]] && [[ "${TERM:-}" != "dumb" ]]; then

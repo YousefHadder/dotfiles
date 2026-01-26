@@ -70,6 +70,11 @@ done
 # Detect platform first (quiet mode - no output)
 detect_platform_quiet
 
+# Ensure platform detection succeeded
+if [[ -z "${PLATFORM:-}" ]]; then
+    fatal "Unable to detect platform. Cannot retrieve GitHub token."
+fi
+
 GITHUB_TOKEN=$(get_token)
 
 if [[ -z "$GITHUB_TOKEN" ]]; then

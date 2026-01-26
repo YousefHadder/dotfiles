@@ -3,7 +3,8 @@
 
 set -euo pipefail
 
-KEYCHAIN_SERVICE="litellm-copilot-token"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_DIR}/../lib/common.sh"
 
 get_token() {
     local token=""

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # lib/deps/pip.sh - pip dependency installation (fallback for all platforms)
+#
+# Requires: lib/common.sh must be sourced first (provides info, success, warn, error)
 
 # Install litellm and dependencies with pip
 # Used when pipx fails (e.g., uvloop build requires gcc) or in containers

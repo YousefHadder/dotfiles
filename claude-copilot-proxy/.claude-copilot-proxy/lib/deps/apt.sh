@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # lib/deps/apt.sh - apt dependency installation (Linux)
+#
+# Requires: lib/common.sh must be sourced first (provides info, success, warn, error, command_exists)
 
 # Install dependencies using apt
 install_with_apt() {

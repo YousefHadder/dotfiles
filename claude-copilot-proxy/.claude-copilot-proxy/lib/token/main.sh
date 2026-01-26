@@ -2,6 +2,8 @@
 # lib/token/main.sh - Token management dispatcher
 #
 # Provides unified interface for token get/store/validate across platforms
+#
+# Requires: lib/common.sh and lib/config.sh must be sourced first
 
 PROXY_DIR="${PROXY_DIR:-$HOME/.claude-copilot-proxy}"
 
