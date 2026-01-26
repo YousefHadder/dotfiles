@@ -14,9 +14,8 @@ export PROXY_DIR
 
 # Source required modules
 source "${PROXY_DIR}/lib/common.sh"
-source "${PROXY_DIR}/lib/token/macos.sh"
-source "${PROXY_DIR}/lib/token/linux.sh"
-source "${PROXY_DIR}/lib/token/env.sh"
+source "${PROXY_DIR}/lib/detect.sh"
+source "${PROXY_DIR}/lib/token/main.sh"
 
 # Configuration
 CONFIG_FILE="$PROXY_DIR/config.yaml"
@@ -65,18 +64,13 @@ for cmd in jq curl; do
 done
 
 # =============================================================================
-# Get Token
+# Get Token (uses shared lib/token/main.sh)
 # =============================================================================
 
-get_github_token() {
-    local token=""
-    token=$(keychain_get 2>/dev/null) || true
-    [[ -z "$token" ]] && token=$(secret_tool_get 2>/dev/null) || true
-    [[ -z "$token" ]] && token=$(env_get)
-    echo "$token"
-}
+# Detect platform first (quiet mode - no output)
+detect_platform_quiet
 
-GITHUB_TOKEN=$(get_github_token)
+GITHUB_TOKEN=$(get_token)
 
 if [[ -z "$GITHUB_TOKEN" ]]; then
     fatal "GitHub PAT not found. Run bin/setup.sh first."

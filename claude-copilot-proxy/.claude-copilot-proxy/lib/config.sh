@@ -66,7 +66,10 @@ setup_directory() {
     fi
 
     # Ensure bin scripts are executable
-    chmod +x "$PROXY_DIR/bin/"*.sh 2>/dev/null || true
+    for script in "$PROXY_DIR/bin/"*.sh; do
+        [[ -e "$script" ]] || break
+        chmod +x "$script"
+    done
 
     success "Configuration files ready"
 }

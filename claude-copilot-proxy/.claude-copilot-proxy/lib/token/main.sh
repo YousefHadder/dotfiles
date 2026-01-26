@@ -22,11 +22,11 @@ get_token() {
     # Try platform-specific secure storage first
     case "${PLATFORM:-}" in
         macos)
-            token=$(keychain_get)
+            token=$(keychain_get 2>/dev/null)
             [[ -n "$token" ]] && TOKEN_SOURCE="macOS Keychain"
             ;;
         linux)
-            token=$(secret_tool_get)
+            token=$(secret_tool_get 2>/dev/null)
             [[ -n "$token" ]] && TOKEN_SOURCE="GNOME Keyring"
             ;;
     esac

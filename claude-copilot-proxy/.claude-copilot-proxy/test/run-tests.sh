@@ -6,6 +6,8 @@
 #   ./test/run-tests.sh --quick   # Skip slow tests (API calls)
 #   ./test/run-tests.sh --verbose # Show detailed output
 
+# Note: -e (errexit) is intentionally omitted - we want to continue running
+# tests even when individual tests fail, and report results at the end.
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -79,7 +81,6 @@ run_test() {
     log_test "$name"
 
     local output
-    local exit_code
 
     if $VERBOSE; then
         if "${cmd[@]}"; then
@@ -88,9 +89,8 @@ run_test() {
             log_fail "$name"
         fi
     else
-        output=$("${cmd[@]}" 2>&1) || true
-        exit_code=$?
-        if [[ $exit_code -eq 0 ]]; then
+        # Capture exit code before || true consumes it
+        if output=$("${cmd[@]}" 2>&1); then
             log_pass "$name"
         else
             log_fail "$name"
