@@ -4,6 +4,9 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROXY_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+export PROXY_DIR
+
 source "${SCRIPT_DIR}/../lib/common.sh"
 
 get_token() {
@@ -26,6 +29,13 @@ get_token() {
     # Try environment variable
     if [[ -z "$token" ]]; then
         token="${LITELLM_TOKEN:-}"
+    fi
+
+    # Try LiteLLM api-key.json (fallback for systems where token was stored via setup)
+    if [[ -z "$token" ]] && [[ -f "$HOME/.config/litellm/github_copilot/api-key.json" ]]; then
+        if command -v jq &>/dev/null; then
+            token=$(jq -r '.token // empty' "$HOME/.config/litellm/github_copilot/api-key.json" 2>/dev/null) || true
+        fi
     fi
 
     echo "$token"
