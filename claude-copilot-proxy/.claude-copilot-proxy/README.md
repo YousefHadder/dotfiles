@@ -61,33 +61,45 @@ Claude Code CLI
 │   ├── update-models.sh        # Model sync script
 │   └── uninstall.sh            # Uninstaller
 │
-└── lib/                        # Library modules
-    ├── common.sh               # Colors, logging, prompts
-    ├── detect.sh               # Platform detection
-    ├── config.sh               # Directory/shell config
-    │
-    ├── token/                  # Token management
-    │   ├── main.sh             # Dispatcher
-    │   ├── macos.sh            # macOS Keychain
-    │   ├── linux.sh            # GNOME Keyring
-    │   └── env.sh              # Environment variable
-    │
-    ├── deps/                   # Dependency installation
-    │   ├── main.sh             # Dispatcher
-    │   ├── brew.sh             # Homebrew
-    │   ├── apt.sh              # apt-get
-    │   └── pip.sh              # pip fallback
-    │
-    └── service/                # Service management
-        ├── main.sh             # Dispatcher
-        ├── launchd.sh          # macOS launchd
-        ├── systemd.sh          # Linux systemd
-        └── manual.sh           # Manual/container
+├── lib/                        # Library modules
+│   ├── common.sh               # Colors, logging, prompts
+│   ├── detect.sh               # Platform detection
+│   ├── config.sh               # Directory/shell config
+│   │
+│   ├── token/                  # Token management
+│   │   ├── main.sh             # Dispatcher
+│   │   ├── macos.sh            # macOS Keychain
+│   │   ├── linux.sh            # GNOME Keyring
+│   │   └── env.sh              # Environment variable
+│   │
+│   ├── deps/                   # Dependency installation
+│   │   ├── main.sh             # Dispatcher
+│   │   ├── brew.sh             # Homebrew
+│   │   ├── apt.sh              # apt-get
+│   │   └── pip.sh              # pip fallback
+│   │
+│   └── service/                # Service management
+│       ├── main.sh             # Dispatcher
+│       ├── launchd.sh          # macOS launchd
+│       ├── systemd.sh          # Linux systemd
+│       └── manual.sh           # Manual/container
+│
+└── test/                       # Test suite
+    ├── run-tests.sh            # Main test runner
+    ├── check-file.sh           # File existence tests
+    ├── check-syntax.sh         # Bash syntax validation
+    ├── check-command.sh        # Dependency checks
+    ├── check-token.sh          # Token storage tests
+    ├── check-token-api.sh      # API validation tests
+    ├── check-env.sh            # Environment variable tests
+    ├── check-port.sh           # Port listening tests
+    ├── check-health.sh         # Proxy health tests
+    └── check-model.sh          # Model request tests
 ```
 
 ## Supported Models
 
-Last updated: 2026-01-12
+Last updated: 2026-01-26
 
 | Model                    | Vendor       | Category    |
 | ------------------------ | ------------ | ----------- |
@@ -101,7 +113,14 @@ Last updated: 2026-01-12
 | `gpt-4.1`                | Azure OpenAI | versatile   |
 | `gpt-4o`                 | Azure OpenAI | versatile   |
 | `gpt-5`                  | Azure OpenAI | versatile   |
+| `gpt-5-codex`            | Azure OpenAI | versatile   |
 | `gpt-5-mini`             | Azure OpenAI | lightweight |
+| `gpt-5.1`                | Azure OpenAI | versatile   |
+| `gpt-5.1-codex`          | Azure OpenAI | versatile   |
+| `gpt-5.1-codex-max`      | Azure OpenAI | powerful    |
+| `gpt-5.1-codex-mini`     | Azure OpenAI | lightweight |
+| `gpt-5.2`                | Azure OpenAI | versatile   |
+| `gpt-5.2-codex`          | Azure OpenAI | versatile   |
 | `grok-code-fast-1`       | xAI          | lightweight |
 
 Run `./bin/update-models.sh` to refresh this list from the Copilot API.
@@ -174,7 +193,7 @@ sudo apt install -y jq || brew install jq
 1. Go to: https://github.com/settings/tokens/new?scopes=copilot&description=LiteLLM%20Copilot%20Proxy
 2. Set expiration (90 days recommended)
 3. Click **Generate token**
-4. Copy the token (starts with `ghp_...`)
+4. Copy the token (starts with `ghp_...` for classic tokens or `github_pat_...` for fine-grained tokens)
 
 ### Step 3: Store PAT Securely
 
@@ -257,7 +276,7 @@ cat > ~/Library/LaunchAgents/com.claude-copilot-proxy.plist << EOF
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>
-        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <string>/opt/homebrew/bin:/usr/local/bin:$HOME/.local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
     </dict>
 </dict>
 </plist>
@@ -313,6 +332,9 @@ echo 'pgrep -f "litellm" || ~/.claude-copilot-proxy/bin/start-proxy.sh &' >> ~/.
 ### Step 6: Verify Setup
 
 ```bash
+# Quick health check
+curl http://localhost:4000/health
+
 # Check if proxy is running
 lsof -i :4000
 
@@ -331,6 +353,9 @@ curl -X POST http://localhost:4000/chat/completions \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer fake-key' \
   -d '{"model": "claude-sonnet-4", "messages": [{"role": "user", "content": "Say hello"}]}'
+
+# Run the full test suite
+./test/run-tests.sh
 ```
 
 ### Step 7: Use with Claude Code
@@ -396,6 +421,47 @@ systemctl --user restart claude-copilot-proxy
 # Containers:
 kill $(lsof -t -i:4000) && ~/.claude-copilot-proxy/bin/start-proxy.sh &
 ```
+
+---
+
+## Running Tests
+
+Verify your setup with the included test suite:
+
+```bash
+# Run all tests
+./test/run-tests.sh
+
+# Run quick tests (skip API calls)
+./test/run-tests.sh --quick
+
+# Run with detailed output
+./test/run-tests.sh --verbose
+```
+
+The test suite checks:
+- File structure and permissions
+- Bash syntax for all scripts
+- Dependencies (jq, curl, litellm)
+- Token storage accessibility
+- Environment variables
+- Proxy port and health endpoint
+- API token validation
+- Model request through proxy
+
+---
+
+## Environment Variables
+
+| Variable              | Default                    | Description                              |
+| --------------------- | -------------------------- | ---------------------------------------- |
+| `ANTHROPIC_BASE_URL`  | (none)                     | Must be set to `http://localhost:4000`   |
+| `ANTHROPIC_AUTH_TOKEN`| (none)                     | Any value (e.g., `fake-key`)             |
+| `LITELLM_TOKEN`       | (none)                     | GitHub PAT (fallback if not in Keychain) |
+| `PROXY_PORT`          | `4000`                     | Port the proxy listens on                |
+| `KEYCHAIN_SERVICE`    | `litellm-copilot-token`    | Keychain/secret-tool service name        |
+| `LAUNCHD_LABEL`       | `com.claude-copilot-proxy` | macOS launchd service label              |
+| `SYSTEMD_SERVICE`     | `claude-copilot-proxy`     | Linux systemd service name               |
 
 ---
 
@@ -487,24 +553,35 @@ This happens when LiteLLM tries to validate API keys. Fix:
 ```bash
 # Install prisma in litellm venv
 ~/.local/pipx/venvs/litellm/bin/python3 -m pip install prisma
+```
 
-# Ensure config.yaml has:
-# general_settings:
-#   allow_requests_on_db_unavailable: true
+Also ensure your `config.yaml` has:
+
+```yaml
+general_settings:
+  allow_requests_on_db_unavailable: true
 ```
 
 ### Missing Copilot-Integration-Id Header
 
-If you see `missing required Copilot-Integration-Id header`, ensure your `config.yaml` has `extra_headers` defined for each model:
+If you see `missing required Copilot-Integration-Id header`, ensure your `config.yaml` has `extra_headers` defined inside `litellm_params`:
 
 ```yaml
-litellm_params:
-  model: github_copilot/claude-sonnet-4
-  extra_headers:
-    Editor-Version: "vscode/1.95.0"
-    Editor-Plugin-Version: "copilot-chat/0.22.4"
-    Copilot-Integration-Id: "vscode-chat"
+model_list:
+  - model_name: "*"
+    litellm_params:
+      model: github_copilot/*
+      api_key: os.environ/GITHUB_TOKEN
+      extra_headers:
+        Editor-Version: "vscode/1.95.0"
+        Editor-Plugin-Version: "copilot-chat/0.22.4"
+        Copilot-Integration-Id: "vscode-chat"
+        Openai-Organization: "github-copilot"
+        Openai-Intent: "conversation-panel"
+        Copilot-Vision-Request: "true"
 ```
+
+**Note:** Headers must be inside `litellm_params`, not in `router_settings`.
 
 ### Missing Module Errors (ModuleNotFoundError)
 
@@ -541,13 +618,14 @@ If you see `gcc-12 not found` errors when installing `litellm[proxy]`, the envir
 | `config.yaml`              | LiteLLM routing config with model aliases   |
 | `config.yaml.example`      | Git-safe template (copy to config.yaml)     |
 | `lib/`                     | Modular library code (token, deps, service) |
+| `test/run-tests.sh`        | Test suite runner (--quick, --verbose)      |
 | `README.md`                | This documentation                          |
 
 ---
 
 ## Security Notes
 
-- **Local-only proxy**: Runs on `localhost:4000`, not exposed to internet
+- **Local-only by default**: Proxy runs on port 4000. The default config binds to `0.0.0.0` for container compatibility; change to `127.0.0.1` in `config.yaml` if you want localhost-only access
 - **PAT storage**: Use Keychain (macOS), Secret Service (Linux), or environment variables
 - **Minimal PAT scope**: Only `copilot` scope needed
 - **No secrets in config**: `config.yaml` references `os.environ/GITHUB_TOKEN`
@@ -596,6 +674,7 @@ systemctl --user restart claude-copilot-proxy  # or kill & restart manually
 
 | Date         | Change                                                                     |
 | ------------ | -------------------------------------------------------------------------- |
+| Jan 26, 2026 | Fixed extra_headers location in config.yaml; added test suite docs        |
 | Jan 25, 2026 | Refactored to modular structure (bin/ and lib/ directories)               |
 | Jan 25, 2026 | Added setup.sh automated installer; fixed Keychain -a param; added prisma |
 | Jan 24, 2026 | Added Linux, systemd, and container support; fixed config for PAT auth    |
