@@ -160,17 +160,19 @@ setup_pat() {
     if [[ -n "$existing_token" ]]; then
         info "Found existing token in $TOKEN_SOURCE"
 
-        if verify_token_storage "$TOKEN_SOURCE"; then
-            if validate_token "$existing_token"; then
-                if prompt_yes_no "Use existing token from $TOKEN_SOURCE?"; then
-                    success "Using existing token from $TOKEN_SOURCE"
-                    return 0
-                fi
-            else
-                warn "Existing token is invalid (API check failed)"
-            fi
+        # Silently validate and use if it works
+        if validate_token "$existing_token" 2>/dev/null; then
+            success "Using existing valid token from $TOKEN_SOURCE"
+            # Ensure api-key.json exists even if token was already stored
+            create_api_key_file "$existing_token"
+            return 0
         else
-            warn "Token storage verification failed"
+            warn "Existing token in $TOKEN_SOURCE is invalid or expired"
+            if ! prompt_yes_no "Enter a new token?"; then
+                info "Keeping existing token (may not work)"
+                create_api_key_file "$existing_token"
+                return 0
+            fi
         fi
     fi
 
