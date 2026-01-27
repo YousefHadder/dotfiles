@@ -53,10 +53,11 @@
 	email = yousefhadder@github.com
 [credential]
 	interactive = true
-	helper = /usr/local/bin/git-credential-manager
-[credential "https://dev.azure.com"]
-	useHttpPath = true
+	helper = 
+	helper = /usr/local/share/gcm-core/git-credential-manager
 [alias]
 	cf = "!f() { git clone https://github.com/$1/$2; }; f"
 	co = "checkout"
 	push-empty = !git commit --allow-empty -m \"Empty commit\" && git push
+[credential "https://dev.azure.com"]
+	useHttpPath = true
