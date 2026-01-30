@@ -35,3 +35,5 @@ alias ccdr="claude --dangerously-skip-permissions --resume"
 alias ccrt="~/.claude-copilot-proxy/refresh-token.sh"
 alias cpa="copilot --yolo"
 alias cpar="copilot --yolo --resume"
+
+alias pbcopy='printf "\033]52;c;$(base64 | tr -d "\n")\a"'

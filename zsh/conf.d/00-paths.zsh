@@ -8,5 +8,5 @@ if [ -n "$BREW_HOME" ]; then
   export PATH="$BREW_HOME/opt/ruby@3.3/bin:$PATH"
 fi
 export GOPATH=$HOME/go
-export GOROOT=/usr/local/go
+export GOROOT=$HOME/go-sdk/go
 export PATH=$PATH:$GOPATH/bin:$GOROOT/bin

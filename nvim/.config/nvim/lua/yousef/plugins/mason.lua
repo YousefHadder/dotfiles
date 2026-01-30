@@ -51,7 +51,7 @@ return {
 					"golangci-lint",
 					"jsonlint",
 					"markdownlint",
-					"rubocop",
+					-- "rubocop", -- Use rbenv-managed version for per-project compatibility
 					"shellcheck",
 					"pylint",
 					"revive",
