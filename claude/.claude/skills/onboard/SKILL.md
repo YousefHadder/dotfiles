@@ -9,17 +9,29 @@ Deep-dive into the current working directory to fully understand the codebase ar
 
 ## Execution Strategy
 
-**Use parallel subagents** to analyze different aspects simultaneously. This cuts onboarding time from ~5 min to ~1-2 min.
+### Step 1: Check for Existing CLAUDE.md
 
-### Step 1: Quick Initial Scan (do this first, sequentially)
+First, check if `CLAUDE.md` exists in the project root.
+
+**If CLAUDE.md exists:**
+1. Read the CLAUDE.md file
+2. Summarize key points for the user (stack, commands, conventions)
+3. Confirm you're ready to work on the codebase
+4. **Skip all remaining steps** - you're onboarded!
+
+**If CLAUDE.md does NOT exist:** Continue to Step 2.
+
+### Step 2: Quick Initial Scan
 Read these files if they exist to understand project basics:
-- README.md, CLAUDE.md, CONTRIBUTING.md
+- README.md, CONTRIBUTING.md
 - package.json, go.mod, Gemfile, Cargo.toml, pyproject.toml, etc.
 - Top-level directory listing
 
-### Step 2: Spawn Parallel Subagents
+### Step 3: Spawn Parallel Subagents
 
-Launch these 4 subagents simultaneously using the Task tool with `subagent_type: "Explore"`:
+**Use parallel subagents** to analyze different aspects simultaneously. This cuts onboarding time from ~5 min to ~1-2 min.
+
+Launch these 4 subagents simultaneously using the Task tool with `subagent_type: "Explore"` and `model: "haiku"`:
 
 **Agent 1: Structure & Entry Points**
 ```
@@ -63,9 +75,19 @@ Prompt: "Find the development workflow for this codebase:
 Return a concise summary."
 ```
 
-### Step 3: Synthesize Results
+### Step 4: Synthesize Results
 
 Combine all subagent findings into a unified summary.
+
+### Step 5: Generate CLAUDE.md
+
+After completing the analysis, **create a CLAUDE.md file** in the project root with:
+- Build/test/lint commands
+- Key architectural decisions
+- Coding conventions specific to this project
+- Important gotchas or non-obvious patterns
+
+Keep it under 100 lines. Only include what Claude needs to know that isn't obvious from the code itself.
 
 ## Output Format
 
@@ -90,13 +112,3 @@ Combine all subagent findings into a unified summary.
 ### Ready to work on
 - {what kinds of tasks I can now handle}
 ```
-
-## CLAUDE.md Generation
-
-If no CLAUDE.md exists in the project root, offer to create one with:
-- Build/test/lint commands
-- Key architectural decisions
-- Coding conventions specific to this project
-- Important gotchas or non-obvious patterns
-
-Keep it under 100 lines. Only include what Claude needs to know that isn't obvious from the code itself.

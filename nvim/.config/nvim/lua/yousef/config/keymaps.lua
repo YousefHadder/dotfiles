@@ -141,6 +141,24 @@ keymap("n", "<leader>cp", function()
 	print("File path copied to clipboard: " .. filePath)
 end, { desc = "Copy file path to clipboard" })
 
+-- Copy file:line to clipboard (relative path)
+keymap("n", "<leader>ly", function()
+	local path = vim.fn.expand("%:.") -- relative path from cwd
+	local line = vim.fn.line(".")
+	local result = string.format("%s:%d", path, line)
+	vim.fn.setreg("+", result)
+	vim.notify("Copied: " .. result)
+end, { desc = "Copy file:line to clipboard" })
+
+-- Copy file:line to clipboard (absolute path)
+keymap("n", "<leader>lY", function()
+	local path = vim.fn.expand("%:p") -- absolute path
+	local line = vim.fn.line(".")
+	local result = string.format("%s:%d", path, line)
+	vim.fn.setreg("+", result)
+	vim.notify("Copied: " .. result)
+end, { desc = "Copy absolute file:line to clipboard" })
+
 -- Copy diagnostics of current line to clipboard
 keymap("n", "<leader>cd", function()
 	local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line(".") - 1 })
