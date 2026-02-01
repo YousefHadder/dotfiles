@@ -59,5 +59,7 @@
 	cf = "!f() { git clone https://github.com/$1/$2; }; f"
 	co = "checkout"
 	push-empty = !git commit --allow-empty -m \"Empty commit\" && git push
+[credential "https://github.com"]
+	username = YousefHadder
 [credential "https://dev.azure.com"]
 	useHttpPath = true
