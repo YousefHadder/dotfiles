@@ -1,30 +1,28 @@
-# My Dotfiles 🚀
+# My Dotfiles
 
 A carefully curated collection of configuration files and scripts for a streamlined development environment across macOS and Linux systems.
 
 # Table of Contents
 
-- [My Dotfiles 🚀](#my-dotfiles)
+- [My Dotfiles](#my-dotfiles)
 - [Table of Contents](#table-of-contents)
-  - [🎯 Overview](#overview)
+  - [Overview](#overview)
     - [Key Features](#key-features)
-  - [🛠 What's Included](#whats-included)
-    - [Shell & Terminal](#shell-terminal)
+  - [What's Included](#whats-included)
+    - [Shell \& Terminal](#shell--terminal)
     - [Development Tools](#development-tools)
-    - [Utilities & Enhancements](#utilities-enhancements)
+    - [AI Integrations](#ai-integrations)
+    - [Utilities \& Enhancements](#utilities--enhancements)
     - [Package Management](#package-management)
-  - [🚀 Quick Start](#quick-start)
-- [Clone the repository](#clone-the-repository)
-- [Navigate to the directory](#navigate-to-the-directory)
-- [Run the installation script](#run-the-installation-script)
+  - [Quick Start](#quick-start)
     - [GitHub Codespaces Support](#github-codespaces-support)
-  - [📁 Repository Structure](#repository-structure)
-  - [📖 Installation Guide](#installation-guide)
+  - [Repository Structure](#repository-structure)
+  - [Installation Guide](#installation-guide)
     - [Prerequisites](#prerequisites)
     - [Detailed Installation Steps](#detailed-installation-steps)
     - [What Gets Installed](#what-gets-installed)
     - [Manual Installation (Alternative)](#manual-installation-alternative)
-  - [⚙️ Configuration Details](#configuration-details)
+  - [Configuration Details](#configuration-details)
     - [Zsh Configuration](#zsh-configuration)
     - [Neovim Setup (Comprehensive Development Environment)](#neovim-setup-comprehensive-development-environment)
     - [Tmux Setup](#tmux-setup)
@@ -32,85 +30,95 @@ A carefully curated collection of configuration files and scripts for a streamli
     - [Starship Prompt](#starship-prompt)
     - [Ghostty Terminal](#ghostty-terminal)
     - [Claude AI Configuration](#claude-ai-configuration)
-  - [🎨 Customization](#customization)
+    - [Yazi File Manager](#yazi-file-manager)
+    - [Lazygit Configuration](#lazygit-configuration)
+    - [LunarVim Configuration (lvim)](#lunarvim-configuration-lvim)
+    - [Claude-Copilot Proxy](#claude-copilot-proxy)
+    - [Copilot CLI Configuration](#copilot-cli-configuration)
+    - [Eza Theme](#eza-theme)
+  - [Customization](#customization)
     - [Adding New Packages](#adding-new-packages)
     - [Modifying Existing Configurations](#modifying-existing-configurations)
     - [Neovim Plugin Management](#neovim-plugin-management)
     - [Environment-Specific Settings](#environment-specific-settings)
-- [In .zshrc - automatic platform detection](#in-zshrc-automatic-platform-detection)
     - [Stow Package Management](#stow-package-management)
-  - [🔧 Troubleshooting](#troubleshooting)
+  - [Troubleshooting](#troubleshooting)
     - [Common Issues](#common-issues)
-- [Remove plugin cache and restart](#remove-plugin-cache-and-restart)
-- [Manually install TPM and plugins](#manually-install-tpm-and-plugins)
     - [Getting Help](#getting-help)
-  - [🚀 Key Features & Shortcuts](#key-features-shortcuts)
-    - [Neovim Shortcuts (Some Highlights)](#neovim-shortcuts-some-highlights)
+  - [Key Features \& Shortcuts](#key-features--shortcuts)
+    - [Neovim Shortcuts (Highlights)](#neovim-shortcuts-highlights)
     - [Tmux Shortcuts](#tmux-shortcuts)
     - [Zsh Aliases](#zsh-aliases)
-  - [🤝 Contributing](#contributing)
+  - [Contributing](#contributing)
     - [How to Contribute](#how-to-contribute)
     - [Guidelines](#guidelines)
     - [Areas for Contribution](#areas-for-contribution)
     - [Reporting Issues](#reporting-issues)
-  - [📄 License](#license)
-  - [🙏 Acknowledgments](#acknowledgments)
-  - [🔗 Related Projects](#related-projects)
+  - [License](#license)
+  - [Acknowledgments](#acknowledgments)
+  - [Related Projects](#related-projects)
 
-
-
-## 🎯 Overview
+## Overview
 
 This dotfiles repository contains my personal development environment configuration, optimized for productivity and efficiency. It includes configurations for modern terminal tools, editors, version control, and development utilities with full **GitHub Codespaces** support.
 
 ### Key Features
 - **Modular Architecture**: Organized installation scripts and Zsh configuration for maintainability
-- **Automated Installation**: One-command setup with comprehensive `install.sh`
+- **Automated Installation**: One-command setup with comprehensive `install.sh` using parallel background jobs
 - **Cross-Platform**: Works on macOS, Linux, and GitHub Codespaces
 - **Modern Tools**: Curated selection of powerful CLI utilities
 - **Organized Structure**: Clean organization using GNU Stow
-- **Developer-Focused**: Optimized for coding with LSP, Copilot, and modern workflows
-- **Extensive Neovim Setup**: Complete Lua-based configuration with 30+ plugins
+- **Developer-Focused**: Optimized for coding with LSP, AI assistants, and modern workflows
+- **Extensive Neovim Setup**: Complete Lua-based configuration with 38+ plugins
+- **AI-First Development**: Deep integration with Copilot, Claude, and MCP servers
 
-## 🛠 What's Included
+## What's Included
 
 ### Shell & Terminal
 - **Zsh**: Enhanced shell with Oh My Zsh framework and modern plugins
 - **Starship**: Fast, customizable prompt with Dracula theme
-- **Tmux**: Terminal multiplexer with Catppuccin theme and productivity plugins
-- **Ghostty**: High-performance terminal emulator configuration
+- **Tmux**: Terminal multiplexer with Catppuccin theme and 14 productivity plugins
+- **Ghostty**: High-performance terminal emulator with custom Slate colorscheme
 
 ### Development Tools
 - **Neovim**: Comprehensive Lua configuration with:
-  - LSP integration (Mason, nvim-lspconfig)
-  - GitHub Copilot and CopilotChat
-  - MCPHub integration for enhanced AI capabilities
-  - Modern completion with blink.cmp
-  - File management with Neo-tree and fzf-lua
-  - Testing framework (Neotest)
-  - Session persistence and much more
-- **Git**: Optimized configuration with helpful aliases
-- **Lazygit**: Beautiful terminal Git UI with custom configuration
-- **FZF**: Fuzzy finder with Git integration scripts
-- **Claude**: AI assistant configuration with custom powerline and global code instructions
+  - LSP integration (Mason, nvim-lspconfig) for 10+ languages
+  - 38+ lazy-loaded plugins via lazy.nvim
+  - Treesitter for syntax highlighting
+  - blink.cmp for fast completion
+  - Neotest for testing frameworks
+  - Conform for code formatting
+  - nvim-lint for async linting
+- **LunarVim (lvim)**: Alternative Neovim configuration based on LazyVim
+- **Git**: Optimized configuration with Delta pager for diffs
+- **Lazygit**: Beautiful terminal Git UI with vim-style keybindings
+- **FZF**: Fuzzy finder with custom previews using bat and eza
+
+### AI Integrations
+- **GitHub Copilot**: Code suggestions with CopilotChat using claude-sonnet-4.5
+- **Claude Code**: AI assistant with custom skills and powerline status
+- **Claude-Copilot Proxy**: Route Claude Code through GitHub Copilot API
+- **Copilot CLI**: Terminal-based Copilot with custom skills
+- **MCPHub**: Model Context Protocol server integration
+- **Sidekick.nvim**: Claude/Copilot/Codex CLI wrapper in Neovim
 
 ### Utilities & Enhancements
-- **Yazi**: Modern file manager with custom themes and keymaps
+- **Yazi**: Modern file manager with MIME-based coloring and previews
+- **Eza**: Modern `ls` replacement with custom 256-color theme
 - **Bat**: Syntax-highlighted `cat` replacement
-- **Eza**: Modern `ls` replacement with icons
 - **Ripgrep**: Ultra-fast text search
 - **Zoxide**: Smart directory jumping (`cd` replacement)
 - **Tree-sitter**: Advanced syntax highlighting
 - **fd**: Fast alternative to `find`
 - **pay-respects**: Command correction tool
-- **yq**: YAML/JSON processor
 
 ### Package Management
-- **Homebrew**: Package manager with comprehensive Brewfile
-- **NVM**: Node.js version management
+- **Homebrew**: Package manager with split Brewfiles (essential/optional)
+- **NVM**: Node.js version management (lazy-loaded)
+- **rbenv**: Ruby version management
 - **Lua/LuaJIT**: For Neovim configuration and tools
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # Clone the repository
@@ -124,106 +132,138 @@ cd ~/dotfiles
 ```
 
 The installation script will:
-1. **Bootstrap Phase**: Update system, install Zsh and Oh My Zsh
-2. **Installation Phase**: Install Homebrew and all packages from Brewfile
-3. **Configuration Phase**: Copy scripts and create symlinks using GNU Stow
-4. **Finalization**: Switch to new Zsh shell with all configurations active
-
-The `install.sh` script is now modular and organized into separate components in the `install/` directory for better maintainability.
+1. **Bootstrap Phase**: Install Zsh and Oh My Zsh
+2. **Homebrew Phase**: Install Homebrew package manager
+3. **Package Phase**: Install essential packages (blocking) and optional packages (background)
+4. **Languages Phase**: Install Rust and Copilot CLI (background)
+5. **Scripts Phase**: Copy utility scripts to ~/scripts
+6. **Symlinks Phase**: Create symlinks using GNU Stow
+7. **Finalization**: Wait for background jobs, generate timing summary, reload shell
 
 ### GitHub Codespaces Support
 This repository is fully configured for GitHub Codespaces with automatic environment detection and non-interactive installation.
 
-## 📁 Repository Structure
+## Repository Structure
+
+<details>
+<summary><strong>Click to expand full directory tree</strong></summary>
 
 ```
 dotfiles/
-├── Brewfile                 # Homebrew package definitions
-├── install.sh              # Main installation script
-├── README.md               # This comprehensive guide
-├── .gitignore              # Git ignore patterns
-├── .stowrc                 # GNU Stow configuration
-├── .luarc.json             # Lua LSP configuration
+├── Brewfile                 # Complete package definitions (fallback)
+├── Brewfile.essential       # Core packages (blocking install)
+├── Brewfile.optional        # Extended tools (background install)
+├── install.sh               # Main installation script
+├── README.md                # This comprehensive guide
+├── .stowrc                  # GNU Stow configuration
 │
-├── install/               # Modular installation scripts
-│   ├── bootstrap.sh       # System bootstrap and Zsh setup
-│   ├── homebrew.sh        # Homebrew installation
-│   ├── languages.sh       # Programming language setup
-│   ├── packages.sh        # Package installation via Homebrew
-│   ├── scripts.sh         # Script copying and permissions
-│   ├── symlinks.sh        # GNU Stow symlink creation
-│   └── utils.sh           # Utility functions and helpers
+├── install/                 # Modular installation scripts
+│   ├── bootstrap.sh         # System bootstrap and Zsh setup
+│   ├── homebrew.sh          # Homebrew installation
+│   ├── languages.sh         # Rust, Copilot CLI (async)
+│   ├── packages.sh          # Package installation via Homebrew
+│   ├── scripts.sh           # Script copying and permissions
+│   ├── symlinks.sh          # GNU Stow symlink creation
+│   └── utils.sh             # Utility functions, logging, job tracking
 │
-├── claude/                 # Claude AI configuration
+├── assests/                 # Assets (background images, etc.)
+│
+├── claude/                  # Claude AI configuration
 │   └── .claude/
-│       ├── CLAUDE.md       # Global Claude code instructions
-│       ├── settings.json   # Claude status line settings
-│       └── claude-powerline.json  # Powerline theme configuration
+│       ├── CLAUDE.md        # Global Claude code instructions
+│       ├── settings.json    # Claude settings (model, permissions)
+│       ├── claude-powerline.json  # Powerline theme & budget config
+│       └── skills/          # Custom skills (branch-and-pr, review-pr, etc.)
+│
+├── claude-copilot-proxy/    # Claude Code → GitHub Copilot router
+│   └── .claude-copilot-proxy/
+│       ├── config.yaml      # LiteLLM routing configuration
+│       ├── bin/             # Setup, start, update scripts
+│       ├── lib/             # Token management, service handlers
+│       └── test/            # Health checks, API tests
+│
+├── copilot-cli/             # GitHub Copilot CLI configuration
+│   └── .config/.copilot/
+│       ├── config.json      # CLI settings (model, logging)
+│       ├── copilot-instructions.md  # Global instructions
+│       └── skills/          # Custom skills (code-review, etc.)
+│
+├── eza/                     # Eza (ls replacement) configuration
+│   └── .config/eza/
+│       └── theme.yml        # 256-color theme definition
 │
 ├── git/
-│   └── .gitconfig          # Git configuration and aliases
+│   └── .gitconfig           # Git config with Delta pager
 │
-├── ghostty/                # Ghostty terminal configuration
+├── ghostty/                 # Ghostty terminal configuration
 │   └── .config/ghostty/
-│       └── config          # Terminal settings
+│       └── config           # Terminal settings, Slate theme
 │
-├── lazygit/               # Lazygit UI configuration
+├── lazygit/                 # Lazygit UI configuration
 │   └── .config/lazygit/
-│       └── config.yml     # Lazygit settings
+│       └── config.yml       # Lazygit settings, keybindings
 │
-├── nvim/                  # Neovim configuration (30+ plugins)
+├── lvim/                    # LunarVim/Neovim alt config
+│   └── .config/lvim/
+│       ├── init.lua         # Entry point
+│       └── lua/config/      # Options, keymaps, autocmds
+│
+├── nvim/                    # Primary Neovim configuration (38+ plugins)
 │   └── .config/nvim/
-│       ├── init.lua       # Main entry point
-│       └── lua/yousef/    # Personal configuration modules
-│           ├── config/    # Core settings (options, keymaps, autocmds)
-│           ├── plugins/   # Plugin configurations (LSP, Copilot, etc.)
-│           └── lazy.lua   # Lazy.nvim plugin manager setup
+│       ├── init.lua         # Main entry point
+│       └── lua/yousef/      # Personal configuration modules
+│           ├── config/      # Core settings (options, keymaps, autocmds)
+│           ├── plugins/     # Plugin configurations
+│           └── lazy.lua     # Lazy.nvim plugin manager setup
 │
-├── scripts/               # Utility scripts
-│   ├── custom_modules/    # Custom tmux status modules
-│   │   ├── ctp_battery.conf   # Battery status
-│   │   ├── ctp_cpu.conf       # CPU monitoring
-│   │   ├── ctp_memory.conf    # Memory usage
-│   │   ├── pane_size.conf     # Pane size indicator
-│   │   └── primary_ip.conf    # IP address display
-│   └── fzf-git.sh        # Enhanced git operations with fzf
+├── scripts/                 # Utility scripts
+│   ├── custom_modules/      # Custom tmux status modules
+│   │   ├── ctp_battery.conf
+│   │   ├── ctp_cpu.conf
+│   │   ├── ctp_memory.conf
+│   │   ├── pane_size.conf
+│   │   ├── primary_ip.conf
+│   │   └── ...
+│   └── fzf-git.sh           # Enhanced git operations with fzf
 │
-├── starship/              # Starship prompt configuration
+├── starship/                # Starship prompt configuration
 │   └── .config/
-│       └── starship.toml  # Custom prompt with Dracula theme
+│       └── starship.toml    # Dracula theme, multi-line format
 │
 ├── tmux/
-│   └── .tmux.conf         # Tmux configuration with Catppuccin theme
+│   └── .tmux.conf           # Tmux with Catppuccin, 14 plugins
 │
 ├── vim/
-│   └── .vimrc             # Vim configuration (fallback)
+│   └── .vimrc               # Vim configuration (fallback)
 │
-├── yazi/                  # Yazi file manager configuration
+├── yazi/                    # Yazi file manager configuration
 │   └── .config/yazi/
-│       ├── keymaps.toml   # Custom key bindings
-│       ├── theme.toml     # Visual theme
-│       └── yazi.toml      # Main configuration
+│       ├── yazi.toml        # Main configuration
+│       ├── theme.toml       # Visual theme
+│       └── keymap.toml      # Custom keybindings
 │
 └── zsh/
-    ├── .zshrc             # Main Zsh configuration
-    └── conf.d/            # Modular Zsh configuration files
-        ├── 00-paths.zsh   # PATH and environment paths
-        ├── 01-environment.zsh  # Environment variables
-        ├── 02-homebrew.zsh     # Homebrew configuration
-        ├── 03-oh-my-zsh.zsh    # Oh My Zsh setup and plugins
-        ├── 04-editor.zsh       # Editor preferences
-        ├── 05-tools.zsh        # Tool-specific configurations
-        ├── 06-fzf.zsh          # FZF fuzzy finder setup
-        ├── 07-plugins.zsh      # Additional Zsh plugins
-        └── 08-functions.zsh    # Custom shell functions
+    ├── .zshrc               # Main Zsh configuration
+    └── conf.d/              # Modular Zsh configuration files
+        ├── 00-paths.zsh     # PATH and environment paths
+        ├── 01-environment.zsh   # Environment variables
+        ├── 02-homebrew.zsh      # Homebrew configuration
+        ├── 03-oh-my-zsh.zsh     # Oh My Zsh setup and plugins
+        ├── 04-editor.zsh        # Editor preferences, aliases
+        ├── 05-tools.zsh         # Tool initializations
+        ├── 06-fzf.zsh           # FZF fuzzy finder setup
+        ├── 07-plugins.zsh       # Zsh plugins
+        └── 08-functions.zsh     # Custom shell functions
 ```
 
-## 📖 Installation Guide
+</details>
+
+## Installation Guide
 
 ### Prerequisites
 
 - **macOS**: Xcode Command Line Tools (automatically installed by script)
-- **Linux**: `curl`, `git`, and system package manager (apt, yum, or dnf)
+- **Linux**: `curl`, `git`, and system package manager (apt, yum, dnf, pacman)
 - **GitHub Codespaces**: Ready to use (no additional setup required)
 - **Both**: Internet connection for downloading packages
 
@@ -235,28 +275,33 @@ dotfiles/
    cd ~/dotfiles
    ```
 
-2. **Review the Brewfile** (optional):
+1. **Review the Brewfile** (optional):
    ```bash
-   cat Brewfile
+   cat Brewfile.essential  # Core packages
+   cat Brewfile.optional   # Extended tools
    ```
 
-3. **Run Installation**:
+1. **Run Installation**:
    ```bash
    chmod +x install.sh
    ./install.sh
    ```
 
-4. **Automatic Shell Switch**: The script automatically switches to Zsh with all configurations loaded
+1. **Automatic Shell Switch**: The script automatically reloads Zsh with all configurations
 
 ### What Gets Installed
 
-The Brewfile includes these essential packages:
-- **Core Tools**: `stow`, `fzf`, `bat`, `eza`, `ripgrep`, `fd`, `tree`, `yq`
-- **Development**: `node`, `nvm`, `lua`, `luajit`, `luarocks`, `prettier`, `make`
-- **Terminal**: `tmux`, `neovim`, `starship`, `tree-sitter`
-- **Git Tools**: `lazygit`
-- **Navigation**: `yazi`, `zoxide`, `pay-respects`
-- **Shell**: `zsh-autosuggestions`, `zsh-syntax-highlighting`
+**Essential Packages** (blocking, must complete):
+- `stow`, `fzf`, `neovim`, `tmux`, `starship`, `ripgrep`
+- `zsh-autosuggestions`, `zsh-syntax-highlighting`
+
+**Optional Packages** (background, non-blocking):
+- `node`, `nvm`, `bat`, `eza`, `fd`, `zoxide`, `tree`, `yazi`, `yq`
+- `lua`, `luajit`, `luarocks`, `prettier`, `make`, `lazygit`, `tree-sitter`
+
+**Language Tools** (background):
+- Rust & Cargo
+- GitHub Copilot CLI
 
 ### Manual Installation (Alternative)
 
@@ -267,150 +312,385 @@ If you prefer manual control:
    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
    ```
 
-2. Install packages:
+1. Install packages:
    ```bash
-   brew bundle --file=Brewfile
+   brew bundle --file=Brewfile.essential
+   brew bundle --file=Brewfile.optional
    ```
 
-3. Install GNU Stow:
+1. Stow individual packages:
    ```bash
-   brew install stow
+   stow zsh tmux nvim git starship lazygit yazi eza claude copilot-cli
    ```
 
-4. Stow individual packages:
-   ```bash
-   stow zsh tmux nvim git starship lazygit yazi
-   ```
+## Configuration Details
 
-## ⚙️ Configuration Details
+<details>
+<summary><strong>Zsh Configuration</strong></summary>
 
-### Zsh Configuration
-The Zsh configuration is now **modular and organized** into separate files in `zsh/conf.d/` for better maintainability:
+The Zsh configuration is **modular and organized** into separate files in `zsh/conf.d/`:
 
-- **Modular Structure**: Configuration split into logical components (paths, environment, tools, etc.)
-- **Load Order**: Files are loaded in numerical order (00-08) for proper dependency management
-- **Oh My Zsh**: Framework with Git and rbenv plugins configured in `03-oh-my-zsh.zsh`
-- **Modern Aliases**: Defined in various files based on functionality
-  - `ls` → `eza --icons=always` with variants (`ll`, `la`, `lt`)
-  - `cd` → `z` (zoxide smart jumping)
-  - `vim` → `nvim`
-- **Environment Variables**: Optimized PATH, GOPATH, and tool configurations in dedicated files
-- **Functions**: Custom shell functions in `zsh/conf.d/08-functions.zsh`:
-  - `y()`: Yazi file manager with directory change support
-  - `gpp <file.cpp>`: Compile C++ files with optimal settings
-  - `grun <file.cpp>`: Compile and run C++ files in one command
+**Files loaded in order:**
+| File | Purpose |
+|------|---------|
+| `00-paths.zsh` | PATH configuration (Go, Ruby, Homebrew) |
+| `01-environment.zsh` | Environment variables (XDG, NVM, etc.) |
+| `02-homebrew.zsh` | Homebrew initialization (cross-platform) |
+| `03-oh-my-zsh.zsh` | Oh My Zsh with git and rbenv plugins |
+| `04-editor.zsh` | Editor preferences and core aliases |
+| `05-tools.zsh` | Tool initializations (starship, zoxide, rbenv) |
+| `06-fzf.zsh` | FZF configuration with custom previews |
+| `07-plugins.zsh` | Zsh autosuggestions and syntax highlighting |
+| `08-functions.zsh` | Custom functions (y, gpp, grun) |
 
-### Neovim Setup (Comprehensive Development Environment)
-- **Plugin Manager**: Lazy.nvim for fast, lazy-loaded plugins
-- **LSP Integration**:
-  - Mason for LSP server management
-  - Full language support with nvim-lspconfig
-  - Intelligent completion with blink.cmp
-- **AI Integration**:
-  - GitHub Copilot for code suggestions
-  - CopilotChat for AI conversations
-  - MCPHub for Model Context Protocol server integration
-- **File Management**:
-  - Snacks Explorer for fast project exploration with hidden file support
-  - Neo-tree for detailed project exploration (when needed)
-  - Snacks Pickers for smart file finding, grep, and navigation
-- **Development Tools**:
-  - Treesitter for syntax highlighting
-  - Which-key for keybinding discovery
-  - Neotest for testing frameworks
-  - Conform for code formatting
-- **UI Enhancements**:
-  - Lualine for statusline
-  - Bufferline for tab management
-  - Alpha dashboard with custom Palestine flag theme
-  - Noice for enhanced command line UI with rounded borders
-  - Snacks for notifications, zen mode, and terminal management
+**Key Aliases:**
+| Alias | Command | Description |
+|-------|---------|-------------|
+| `l`, `ls` | `eza --icons=always` | Modern file listing |
+| `ll`, `la` | `eza -lg`, `eza -lag` | Long format with icons |
+| `lt`, `lt2-4` | `eza -lTg` | Tree view with depth limits |
+| `cd` | `z` | Zoxide smart jumping |
+| `n`, `vim` | `nvim` | Neovim aliases |
+| `lg` | `lazygit` | Git TUI |
+| `ccd` | `claude --dangerously-skip-permissions` | Claude Code shortcut |
+| `cpa` | `copilot --yolo` | Copilot CLI shortcut |
 
-### Tmux Setup
-- **Theme**: Catppuccin Mocha with custom styling
-- **Plugin Manager**: TPM with automatic installation
-- **Key Plugins**:
-  - Vim navigation integration (christoomey/vim-tmux-navigator)
-  - System monitoring (CPU, battery, memory)
-  - Enhanced copy/paste with tmux-yank
-  - Session management with sessionx
-  - Text extraction with extrakto
-  - Window naming with nerd font support
+**Custom Functions:**
+- `y()`: Yazi file manager with directory change support
+- `gpp <file.cpp>`: Compile C++ with g++17 and auto-detect g++ version
+- `grun <file.cpp>`: Compile and run C++ in one command
 
-### Git Configuration
-- **Editor Integration**: Neovim as default editor
-- **LFS Support**: Large file handling enabled
-- **Cross-Platform**: Proper line ending handling
-- **Performance**: Optimized with useful aliases
+</details>
 
-### Starship Prompt
-- **Theme**: Custom Dracula palette
-- **Modules**: OS, directory, Git status, Node.js, AWS, execution time
-- **Layout**: Two-line format with comprehensive information display
+<details>
+<summary><strong>Neovim Setup (38+ plugins)</strong></summary>
 
-### Ghostty Terminal
-- **Performance**: High-performance terminal emulator with GPU acceleration
-- **Theme**: Custom Slate colorscheme matching Neovim configuration
-- **Background Images**: Support for background images with configurable opacity
-  - Background image path: configurable in `ghostty/.config/ghostty/config`
-  - Opacity control: `background-image-opacity = 0.15`
-  - Fit mode: `background-image-fit = cover`
-- **Font**: Hack Nerd Font Mono for consistent icon rendering
-- **macOS Integration**: Native titlebar styling and Option key as Alt
+**Plugin Manager**: Lazy.nvim with 38+ lazy-loaded plugins
 
-### Claude AI Configuration
-- **Global Instructions**: Comprehensive coding standards and tool preferences (CLAUDE.md)
-- **Powerline Integration**: Custom status line configuration with usage tracking
-- **Theme**: Custom color scheme for better visibility and modern appearance
-- **Features**: Session tracking, token usage monitoring, and budget management
+**LSP & Language Support:**
+| Language | Server | Formatter | Linter |
+|----------|--------|-----------|--------|
+| Go | gopls | goimports, gofmt | golangci-lint, revive |
+| TypeScript/JS | ts_ls, eslint | prettier, eslint_d | eslint |
+| Ruby | ruby_lsp | rubocop | rubocop |
+| Python | pyright | isort, black | pylint |
+| Lua | lua_ls | stylua | luacheck |
+| Bash/Zsh | bashls | shfmt | shellcheck |
+| Terraform | terraformls | terraform_fmt | tflint |
+| Markdown | marksman | prettier | - |
 
-## 🎨 Customization
+**AI Integration:**
+| Plugin | Purpose | Key |
+|--------|---------|-----|
+| copilot.lua | Code suggestions | `<S-Tab>` accept |
+| CopilotChat.nvim | AI chat (claude-sonnet-4.5) | `<leader>aa` |
+| mcphub.nvim | MCP server integration | `<leader>Mh` |
+| sidekick.nvim | Claude/Copilot/Codex CLI | `<C-.>` toggle |
 
-### Adding New Packages
+**File Navigation:**
+| Plugin | Purpose | Key |
+|--------|---------|-----|
+| fzf-lua | Fuzzy finder | `<leader><space>`, `<leader>ff/fg` |
+| snacks.nvim | Explorer, terminal, zen | `<leader>e`, `<C-/>`, `<leader>z` |
+| yazi.nvim | File manager | `<leader>y` |
+
+**Testing (neotest):**
+- Adapters: rspec, minitest, jest, go, plenary
+- Keys: `<leader>tn` nearest, `<leader>tf` file, `<leader>ts` summary
+
+**UI/Theme:**
+- Colorscheme: bebop.nvim (spike preset, transparent)
+- Statusline: lualine with custom slate theme
+- Bufferline: Ordinal numbering with LSP diagnostics
+- Header: incline.nvim with navic breadcrumbs
+- Dashboard: alpha-nvim with custom ASCII art
+
+</details>
+
+<details>
+<summary><strong>Tmux Setup (14 plugins)</strong></summary>
+
+**Theme**: Catppuccin Mocha with custom styling
+**Plugin Manager**: TPM with 14 plugins
+
+**Key Plugins:**
+| Plugin | Purpose |
+|--------|---------|
+| vim-tmux-navigator | Seamless `<C-h/j/k/l>` navigation |
+| tmux-sessionx | Session management (`Prefix + o`) |
+| tmux-yank | Enhanced copy/paste |
+| extrakto | Text extraction |
+| catppuccin/tmux | Theme with custom modules |
+
+**Status Bar Modules:**
+- CPU, battery, memory monitoring
+- Primary IP address display
+- Pane size indicator
+- Git integration
+
+**Key Bindings:**
+| Key | Action |
+|-----|--------|
+| `Prefix` | `Ctrl+b` |
+| `Prefix + \|` | Vertical split |
+| `Prefix + -` | Horizontal split |
+| `<C-h/j/k/l>` | Vim-style navigation |
+| `Prefix + o` | Session manager |
+
+</details>
+
+<details>
+<summary><strong>Git Configuration</strong></summary>
+
+**Core Settings:**
+- Editor: Neovim
+- Pager: Delta with side-by-side diff
+- LFS: Enabled
+- Push strategy: Simple
+
+**Delta Pager:**
+- Side-by-side view with line numbers
+- Color-coded: Deletions (dark red), Additions (dark green)
+- File headers: Bold yellow with underline
+
+**Aliases:**
+| Alias | Command |
+|-------|---------|
+| `co` | checkout |
+| `cf` | Clone fork |
+| `push-empty` | Create empty commit for CI triggers |
+
+</details>
+
+<details>
+<summary><strong>Starship Prompt</strong></summary>
+
+**Theme**: Custom Dracula palette
+
+**Modules (left to right):**
+1. OS symbol
+2. Directory (4 levels max)
+3. Git branch and status
+4. Fill spacer
+5. Runtime versions (Node, Bun, Deno)
+6. AWS profile
+7. Command duration (>500ms)
+8. Time (HH:MM)
+9. Character (success/error indicator)
+
+**Layout**: Two-line format with box-drawing decorations
+
+</details>
+
+<details>
+<summary><strong>Ghostty Terminal</strong></summary>
+
+**Theme**: Custom Slate colorscheme
+**Font**: Hack Nerd Font Mono, 15px
+**Cursor**: Underline (non-blinking)
+**Background**: Custom image at 15% opacity
+**Window**: Frameless with macOS tabs
+
+</details>
+
+<details>
+<summary><strong>Claude AI Configuration</strong></summary>
+
+**Global Instructions (CLAUDE.md):**
+- TDD-first workflow with verification protocol
+- Language-specific idioms (Go, Ruby, JS, Lua, Bash)
+- Conventional commits, no AI attribution
+- Security-focused with explicit permission model
+
+**Settings:**
+- Model: Opus with Extended Thinking
+- Permissions: Allow/ask/deny lists
+- Plugins: lua-lsp, clangd-lsp
+
+**Powerline:**
+- 2-line status with 10-color palette
+- Budget tracking: $5/day, 20M tokens/block
+- 80% usage warnings
+
+**Skills:**
+| Skill | Purpose |
+|-------|---------|
+| `branch-and-pr` | Feature workflow automation |
+| `review-pr-comments` | PR feedback analysis |
+| `onboard` | Auto-generate project CLAUDE.md |
+| `skill-creator` | Build new skills |
+| `zendesk-markdown` | Markdown → HTML converter |
+
+**Commands:**
+- `/diary`: Capture session context
+- `/reflect`: Synthesize patterns to REFLECTIONS.md
+
+</details>
+
+<details>
+<summary><strong>Yazi File Manager</strong></summary>
+
+**Layout**: 1:4:3 pane ratio
+**Sorting**: Alphabetical, directories first
+**Theme**: Dark with custom color scheme
+- Directories: Light blue
+- Executables: Green
+- Archives: Red
+- Media: Yellow/gold
+
+**Features:**
+- MIME-based file coloring
+- Git status highlighting
+- Permission color-coding
+
+</details>
+
+<details>
+<summary><strong>Lazygit Configuration</strong></summary>
+
+**Theme**: Custom dark with orange/blue accents
+**Layout**: 33% side panel, Nerd Fonts v3
+**Navigation**: Full vim-style keybindings
+
+**Key Bindings:**
+| Key | Action |
+|-----|--------|
+| `j/k` | Navigate up/down |
+| `h/l` | Navigate panels |
+| `Space` | Stage/unstage |
+| `c` | Commit |
+| `P/p` | Push/Pull |
+| `z` | Undo |
+
+</details>
+
+<details>
+<summary><strong>LunarVim Configuration (lvim)</strong></summary>
+
+**Base**: LazyVim starter template
+**Colorscheme**: Slate (dark, transparent)
+
+**Features:**
+- Relative + absolute line numbers
+- 2-space indentation
+- Smart case search
+- Treesitter folding
+- Persistent undo
+- Transparent background
+
+**Key Bindings:**
+| Key | Action |
+|-----|--------|
+| `<leader>go` | Open all git changed files |
+| `<leader>rw` | Global find/replace word |
+| `<leader>tt/tv` | Terminal (window/split) |
+| `<A-j/k>` | Move line up/down |
+
+</details>
+
+<details>
+<summary><strong>Claude-Copilot Proxy</strong></summary>
+
+Routes Claude Code API requests through GitHub Copilot API.
+
+**Architecture:**
+- Proxy: LiteLLM on `localhost:4000`
+- Authentication: GitHub PAT with copilot scope
+- Token storage: macOS Keychain / Linux Secret Service
+- Auto-start: launchd (macOS) / systemd (Linux)
+
+**Supported Models:**
+- Claude: haiku-4.5, sonnet-4/4.5, opus-4.5
+- Google: gemini-2.5-pro, gemini-3-pro/flash
+- OpenAI: gpt-4.1, gpt-4o, gpt-5
+- xAI: grok-code-fast-1
+
+</details>
+
+<details>
+<summary><strong>Copilot CLI Configuration</strong></summary>
+
+**Default Model**: claude-opus-4.5
+**Features**: Markdown rendering, full logging
+
+**Skills:**
+| Skill | Purpose |
+|-------|---------|
+| `code-review` | Review local changes against main |
+| `skill-creator` | Template for new skills |
+
+</details>
+
+<details>
+<summary><strong>Eza Theme</strong></summary>
+
+Custom 256-color theme for file listing with:
+- **File kinds**: 15 color categories (directories, executables, symlinks, etc.)
+- **Permissions**: Read (white), Write (gold), Execute (green)
+- **Sizes**: Color intensity by size (bytes to giga)
+- **Git status**: New (green), Modified (gold), Deleted (red)
+- **File types**: Image, video, music, document categories
+
+</details>
+
+## Customization
+
+<details>
+<summary><strong>Adding New Packages</strong></summary>
 
 1. **Add to Brewfile**:
    ```ruby
+   # Essential (blocking)
+   # Add to Brewfile.essential
    brew "package-name"
-   # or for GUI applications
-   cask "app-name"
+
+   # Optional (background)
+   # Add to Brewfile.optional
+   brew "optional-package"
    ```
 
-2. **Install the package**:
+1. **Install the package**:
    ```bash
-   brew bundle --file=Brewfile
+   brew bundle --file=Brewfile.essential
    ```
 
-3. **Create configuration directory** (if needed):
+1. **Create configuration directory** (if needed):
    ```bash
    mkdir package-name
    # Add your config files
    ```
 
-4. **Stow the configuration**:
+1. **Stow the configuration**:
    ```bash
    stow package-name
    ```
 
-### Modifying Existing Configurations
+</details>
+
+<details>
+<summary><strong>Modifying Existing Configurations</strong></summary>
 
 1. **Edit files directly** in their respective directories:
    ```bash
-   # Example: Edit Neovim config
+   # Neovim config
    nvim nvim/.config/nvim/lua/yousef/config/options.lua
 
-   # Example: Edit Zsh environment variables
+   # Zsh environment
    nvim zsh/conf.d/01-environment.zsh
 
-   # Example: Edit installation script component
+   # Installation module
    nvim install/packages.sh
    ```
 
-2. **Re-stow if needed**:
+1. **Re-stow if needed**:
    ```bash
    stow -R package-name
    ```
 
-### Neovim Plugin Management
+</details>
+
+<details>
+<summary><strong>Neovim Plugin Management</strong></summary>
 
 Add new plugins to the appropriate file in `nvim/.config/nvim/lua/yousef/plugins/`:
 ```lua
@@ -422,11 +702,14 @@ return {
 }
 ```
 
-### Environment-Specific Settings
+</details>
 
-The configurations include cross-platform compatibility:
+<details>
+<summary><strong>Environment-Specific Settings</strong></summary>
+
+Cross-platform compatibility is built-in:
 ```bash
-# In .zshrc - automatic platform detection
+# In conf.d/02-homebrew.zsh
 if [ "$(uname)" = "Darwin" ]; then
   BREW_HOME="/opt/homebrew"
 elif [ "$(uname)" = "Linux" ]; then
@@ -434,20 +717,23 @@ elif [ "$(uname)" = "Linux" ]; then
 fi
 ```
 
-### Stow Package Management
+</details>
 
-The `.stowrc` file automatically ignores certain files:
-- `.stowrc` itself
-- `DS_Store` files
-- `Brewfile`
-- `install.sh`
-- `scripts` directory
+<details>
+<summary><strong>Stow Package Management</strong></summary>
 
-**Note**: The `git`, `ghostty`, and `claude` packages are intentionally skipped during automated stowing in the install script when running in GitHub Codespaces.
+The `.stowrc` file automatically ignores:
+- `.stowrc`, `DS_Store`, `Brewfile*`, `install.sh`, `scripts/`, `install/`
 
-## 🔧 Troubleshooting
+**Excluded packages** during automated stowing (Codespaces):
+- `git`, `ghostty`, `claude`
 
-### Common Issues
+</details>
+
+## Troubleshooting
+
+<details>
+<summary><strong>Common Issues & Solutions</strong></summary>
 
 **Stow conflicts**:
 ```bash
@@ -477,24 +763,26 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 
 **Neovim plugins not loading**:
 ```bash
-# Remove plugin cache and restart
 rm -rf ~/.local/share/nvim
 nvim --headless "+Lazy! sync" +qa
 ```
 
 **Tmux plugins not working**:
 ```bash
-# Manually install TPM and plugins
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ~/.tmux/plugins/tpm/bin/install_plugins
 ```
 
-**GitHub Codespaces specific issues**:
-- The dotfiles are automatically copied to `/workspaces/.codespaces/.persistedshare/dotfiles`
-- Environment variables are automatically configured for Codespaces
-- No manual intervention required during installation
+**View installation log**:
+```bash
+cat ~/dotfiles_install.log
+tail -f ~/dotfiles_install.log  # Watch in real-time
+```
 
-### Getting Help
+</details>
+
+<details>
+<summary><strong>Getting Help</strong></summary>
 
 1. Check the [Issues](https://github.com/YousefHadder/dotfiles/issues) page
 2. Review individual tool documentation:
@@ -503,42 +791,70 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
    - [Oh My Zsh](https://ohmyz.sh/)
    - [Starship](https://starship.rs/)
 3. Test configurations in isolation
-4. Check plugin-specific documentation for Neovim issues
 
-## 🚀 Key Features & Shortcuts
+</details>
 
-### Neovim Shortcuts (Some Highlights)
-- **Leader Key**: `<Space>`
-- **File Explorer**: `<leader>e` (Snacks Explorer with hidden files)
-- **Smart Find**: `<leader><space>` (smart find files)
-- **Find Files**: `<leader>ff` (Snacks picker files)
-- **Find Text**: `<leader>fg` (Snacks picker grep)
-- **Git Status**: `<leader>gs` (Snacks picker git status)
-- **Recent Files**: `<leader>fr` (Snacks picker recent)
-- **Copilot Chat**: `<leader>aa`
-- **Format Code**: `<leader>cf` (code format)
-- **LSP Actions**: `<leader>ca` (code actions)
-- **Terminal**: `<Ctrl-/>` (Snacks terminal toggle)
-- **Zen Mode**: `<leader>z` (Snacks zen mode)
+## Key Features & Shortcuts
+
+### Neovim Shortcuts (Highlights)
+
+| Category | Key | Action |
+|----------|-----|--------|
+| **Navigation** | `<C-h/j/k/l>` | Window navigation (tmux-aware) |
+| | `<C-d/u>` | Scroll (centered) |
+| **Files** | `<leader>e` | File explorer |
+| | `<leader><space>` | Smart find files |
+| | `<leader>ff/fg` | Find files / Live grep |
+| | `<leader>y` | Open Yazi |
+| **Git** | `<leader>gs` | Git status |
+| | `<leader>gg` | Lazygit |
+| | `<leader>gb/gc` | Git branches / commits |
+| **LSP** | `<leader>ca` | Code actions |
+| | `<leader>cf` | Format buffer |
+| | `gd/gr` | Go to definition / references |
+| **AI** | `<leader>aa` | Toggle CopilotChat |
+| | `<leader>ae/r/f` | Explain / Review / Fix |
+| | `<C-.>` | Toggle Sidekick |
+| | `<leader>Mh` | MCP Hub |
+| **Testing** | `<leader>tn/tf` | Test nearest / file |
+| | `<leader>ts` | Test summary |
+| **UI** | `<leader>z` | Zen mode |
+| | `<C-/>` | Toggle terminal |
+| | `<leader>n` | Notification history |
 
 ### Tmux Shortcuts
-- **Prefix**: `Ctrl+b`
-- **Split Horizontal**: `Prefix + |`
-- **Split Vertical**: `Prefix + -`
-- **Vim Navigation**: `Ctrl+h/j/k/l`
-- **Session Manager**: `Prefix + o` (sessionx)
+
+| Key | Action |
+|-----|--------|
+| `Prefix` | `Ctrl+b` |
+| `Prefix + \|` | Split horizontal |
+| `Prefix + -` | Split vertical |
+| `<C-h/j/k/l>` | Vim navigation |
+| `Prefix + o` | Session manager (sessionx) |
+| `Prefix + R` | Reload config |
 
 ### Zsh Aliases
-- **Enhanced ls**: `l`, `ll`, `la`, `lt` (with icons)
-- **Smart cd**: `z <directory>` (zoxide)
-- **Git shortcuts**: Provided by Oh My Zsh git plugin
-- **C++ compilation**: `gpp <file.cpp>` (compile), `grun <file.cpp>` (compile and run)
 
-## 🤝 Contributing
+| Category | Alias | Command |
+|----------|-------|---------|
+| **Listing** | `l`, `ls` | `eza --icons=always` |
+| | `ll`, `la` | Long format / All files |
+| | `lt`, `lt2-4` | Tree view with depth |
+| **Navigation** | `z <dir>` | Smart directory jump |
+| **Editor** | `n`, `vim` | Neovim |
+| | `lvim` | LunarVim config |
+| **Git** | `lg` | Lazygit |
+| **AI** | `ccd` | Claude Code (skip perms) |
+| | `cpa` | Copilot CLI (yolo) |
+| **C++** | `gpp <file>` | Compile with g++17 |
+| | `grun <file>` | Compile and run |
+
+## Contributing
+
+<details>
+<summary><strong>How to Contribute</strong></summary>
 
 This repository is in active development and contributions are welcome!
-
-### How to Contribute
 
 1. **Fork the repository**
 2. **Create a feature branch**:
@@ -550,76 +866,61 @@ This repository is in active development and contributions are welcome!
 5. **Update documentation** if adding new features
 6. **Submit a pull request**
 
-### Guidelines
+**Guidelines:**
+- Maintain cross-platform compatibility (macOS, Linux, Codespaces)
+- Document new features in the README
+- Test installation script changes thoroughly
+- Follow existing code style and organization
+- Use proper Stow structure for new configurations
+- Add to appropriate Brewfile (essential vs optional)
 
-- **Maintain cross-platform compatibility** (macOS, Linux, Codespaces)
-- **Document new features** or significant changes in the README
-- **Test installation script changes** thoroughly
-- **Follow existing code style** and organization
-- **Add appropriate comments** for complex configurations
-- **Update Brewfile** when adding new packages
-- **Use proper Stow structure** for new configurations
+**Areas for Contribution:**
+- New tool configurations (following existing patterns)
+- Neovim plugin additions with proper configuration
+- Tmux enhancements
+- Shell improvements (new aliases or functions)
+- Cross-platform compatibility fixes
+- Documentation improvements
+- Installation script enhancements
 
-### Areas for Contribution
-
-- **New tool configurations** (following existing patterns)
-- **Neovim plugin additions** (with proper configuration)
-- **Tmux enhancements** (new plugins or themes)
-- **Shell improvements** (new aliases or functions)
-- **Cross-platform compatibility** fixes
-- **Documentation improvements**
-- **Installation script enhancements**
-
-### Reporting Issues
-
+**Reporting Issues:**
 When reporting issues, please include:
-- **Operating system** and version (macOS/Linux/Codespaces)
-- **Terminal emulator** being used
-- **Complete error messages** (with full stack traces)
-- **Steps to reproduce** the problem
-- **Expected vs actual behavior**
-- **Relevant configuration files** that might be involved
+- Operating system and version
+- Terminal emulator being used
+- Complete error messages
+- Steps to reproduce
+- Relevant configuration files
 
-## 📄 License
+</details>
+
+## License
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
-This dotfiles repository is built on the shoulders of giants. Special thanks to:
+Special thanks to:
 
-- **Framework Creators**:
-  - [Oh My Zsh](https://ohmyz.sh/) community for shell enhancement
-  - [Lazy.nvim](https://github.com/folke/lazy.nvim) for plugin management
-  - [Starship](https://starship.rs/) for the amazing prompt
+- **Framework Creators**: Oh My Zsh, Lazy.nvim, Starship
+- **Package Managers**: Homebrew, GNU Stow
+- **Theme Authors**: Catppuccin, Dracula, Bebop
+- **Tool Creators**: eza, bat, ripgrep, fd, yazi, fzf, delta
+- **AI Tools**: GitHub Copilot, Anthropic Claude
 
-- **Package Managers**:
-  - [Homebrew](https://brew.sh/) maintainers for cross-platform packages
-  - [GNU Stow](https://www.gnu.org/software/stow/) developers for symlink management
+## Related Projects
 
-- **Theme & Plugin Authors**:
-  - [Catppuccin](https://github.com/catppuccin) for beautiful terminal themes
-  - All Neovim plugin authors for extending editor capabilities
-  - Tmux plugin ecosystem contributors
-
-- **Tool Creators**:
-  - Modern CLI tool authors (eza, bat, ripgrep, fd, yazi, etc.)
-  - [fzf](https://github.com/junegunn/fzf) and related fuzzy finder tools
-
-## 🔗 Related Projects
-
-- **Neovim Configurations**: [LazyVim](https://github.com/LazyVim/LazyVim), [NvChad](https://github.com/NvChad/NvChad)
-- **Dotfiles Inspiration**: [GitHub does dotfiles](https://dotfiles.github.io/)
-- **Terminal Themes**: [Catppuccin](https://github.com/catppuccin/catppuccin)
+- [LazyVim](https://github.com/LazyVim/LazyVim) - Neovim configuration
+- [GitHub does dotfiles](https://dotfiles.github.io/) - Dotfiles inspiration
+- [Catppuccin](https://github.com/catppuccin/catppuccin) - Terminal themes
 
 ---
 
-**Happy coding!** 🎉
+**Happy coding!**
 
 If you find these dotfiles helpful, please consider:
-- ⭐ **Starring the repository**
-- 🍴 **Forking for your own use**
-- 🐛 **Reporting issues** you encounter
-- 💡 **Contributing improvements**
+- Starring the repository
+- Forking for your own use
+- Reporting issues you encounter
+- Contributing improvements
 
-*Built with ❤️ for developers who value productivity and beautiful terminals.*
+*Built with care for developers who value productivity and beautiful terminals.*
