@@ -99,12 +99,13 @@ Claude Code CLI
 
 ## Supported Models
 
-Last updated: 2026-01-26
+Last updated: 2026-02-05
 
 | Model                    | Vendor       | Category    |
 | ------------------------ | ------------ | ----------- |
 | `claude-haiku-4.5`       | Anthropic    | versatile   |
 | `claude-opus-4.5`        | Anthropic    | powerful    |
+| `claude-opus-4.6`        | Anthropic    | powerful    |
 | `claude-sonnet-4`        | Anthropic    | versatile   |
 | `claude-sonnet-4.5`      | Anthropic    | versatile   |
 | `gemini-2.5-pro`         | Google       | powerful    |
@@ -674,6 +675,7 @@ systemctl --user restart claude-copilot-proxy  # or kill & restart manually
 
 | Date         | Change                                                                     |
 | ------------ | -------------------------------------------------------------------------- |
+| Feb 5, 2026  | Added claude-opus-4.6 model support                                        |
 | Jan 26, 2026 | Fixed extra_headers location in config.yaml; added test suite docs        |
 | Jan 25, 2026 | Refactored to modular structure (bin/ and lib/ directories)               |
 | Jan 25, 2026 | Added setup.sh automated installer; fixed Keychain -a param; added prisma |

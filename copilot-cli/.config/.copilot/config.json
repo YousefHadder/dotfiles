@@ -4,9 +4,10 @@
     "host": "https://github.com",
     "login": "YousefHadder"
   },
-  "model": "claude-opus-4.5",
+  "model": "claude-opus-4.6",
   "render_markdown": true,
   "theme": "auto",
   "staff": true,
-  "log_level": "all"
+  "log_level": "all",
+  "reasoning_effort": "high"
 }

@@ -18,7 +18,6 @@ done
 unset config_file ZSHRC_DIR
 
 # Claude Code -> GitHub Copilot Proxy
-export ANTHROPIC_BASE_URL="http://localhost:4000"
-
-# Claude Code -> GitHub Copilot Proxy
-export ANTHROPIC_AUTH_TOKEN="fake-key"
+export ANTHROPIC_BASE_URL=$(security find-generic-password -a "$USER" -s "ANTHROPIC_BASE_URL" -w)
+export ANTHROPIC_AUTH_TOKEN=$(security find-generic-password -a "$USER" -s "ANTHROPIC_AUTH_TOKEN" -w)
+export GITHUB_COPILOT_TOKEN=$(security find-generic-password -a "$USER" -s "GITHUB_COPILOT_TOKEN" -w)
