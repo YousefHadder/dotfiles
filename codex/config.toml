@@ -1,0 +1,13 @@
+model_provider = "copilot-api"
+model = "gpt-5.2-codex"
+model_reasoning_effort = "xhigh"
+web_search = "disabled"
+
+[model_providers.copilot-api]
+name = "Copilot API"
+base_url = "https://api.githubcopilot.com"
+env_key = "GITHUB_COPILOT_TOKEN"
+wire_api = "responses"
+
+[projects."/Users/yousefhadder/.codex"]
+trust_level = "trusted"
