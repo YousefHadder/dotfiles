@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# tn - tmux session launcher using zoxide + fzf
+# Quickly create or switch to a tmux session for any project directory.
+# Usage: tn [query]   - jump directly if zoxide has a match
+#        tn           - fuzzy pick from zoxide history
+
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+for cmd in tmux zoxide fzf awk; do
+    if ! command_exists "$cmd"; then
+        echo "Error: Required command '$cmd' not found." >&2
+        exit 1
+    fi
+done
+
+if [ $# -eq 1 ]; then
+    selected=$(zoxide query "$1")
+else
+    selected=$(zoxide query -l | fzf --height 40% --border | awk '{print $NF}')
+fi
+
+if [ -z "$selected" ]; then
+    exit 0
+fi
+
+selected_name="$(basename "$selected" | tr . _)"
+
+# Create the session if it doesn't exist
+if ! tmux has-session -t="$selected_name" 2>/dev/null; then
+    tmux new-session -ds "$selected_name" -c "$selected"
+fi
+
+# Inside tmux: switch client. Outside tmux: attach.
+if [ -n "$TMUX" ]; then
+    tmux switch-client -t "$selected_name"
+else
+    tmux attach-session -t "$selected_name"
+fi

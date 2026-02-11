@@ -22,4 +22,4 @@ export ANTHROPIC_BASE_URL=$(security find-generic-password -a "$USER" -s "ANTHRO
 export ANTHROPIC_AUTH_TOKEN=$(security find-generic-password -a "$USER" -s "ANTHROPIC_AUTH_TOKEN" -w)
 export GITHUB_COPILOT_TOKEN=$(security find-generic-password -a "$USER" -s "GITHUB_COPILOT_TOKEN" -w)
 export CATALOG_TOKEN=$(security find-generic-password -a "$USER" -s "CATALOG_TOKEN" -w)
-
+# export ANTHROPIC_BASE_URL="http://localhost:4000"

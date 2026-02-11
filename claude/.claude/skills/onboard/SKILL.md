@@ -13,13 +13,9 @@ Deep-dive into the current working directory to fully understand the codebase ar
 
 First, check if `CLAUDE.md` exists in the project root.
 
-**If CLAUDE.md exists:**
-1. Read the CLAUDE.md file
-2. Summarize key points for the user (stack, commands, conventions)
-3. Confirm you're ready to work on the codebase
-4. **Skip all remaining steps** - you're onboarded!
+**If CLAUDE.md exists:** Read it and note the contents, then continue to Step 2. The existing file will be validated and updated if needed after the analysis.
 
-**If CLAUDE.md does NOT exist:** Continue to Step 2.
+**If CLAUDE.md does NOT exist:** Continue to Step 2 (a new one will be generated in Step 5).
 
 ### Step 2: Quick Initial Scan
 Read these files if they exist to understand project basics:
@@ -79,13 +75,22 @@ Return a concise summary."
 
 Combine all subagent findings into a unified summary.
 
-### Step 5: Generate CLAUDE.md
+### Step 5: Generate or Update CLAUDE.md
 
-After completing the analysis, **create a CLAUDE.md file** in the project root with:
+**If CLAUDE.md does NOT exist:** Create a new `CLAUDE.md` in the project root with:
 - Build/test/lint commands
 - Key architectural decisions
 - Coding conventions specific to this project
 - Important gotchas or non-obvious patterns
+
+**If CLAUDE.md already exists:** Compare the analysis findings against the existing content. Update CLAUDE.md when:
+- Commands are outdated (build, test, lint scripts changed)
+- New architectural patterns or conventions were adopted that aren't documented
+- Key directories or entry points changed
+- Dependencies or tooling shifted (e.g., migrated from Jest to Vitest)
+- Sections are missing that would meaningfully help Claude work in this codebase
+
+Make **targeted edits** to the relevant sections only — do not rewrite content that is still accurate. If the existing CLAUDE.md is complete and accurate, leave it untouched and tell the user no changes were needed.
 
 Keep it under 100 lines. Only include what Claude needs to know that isn't obvious from the code itself.
 
