@@ -4,23 +4,29 @@ return {
 	config = function()
 		local lint = require("lint")
 
+		-- Only include a linter if its binary is available
+		local function available(linters)
+			return vim.tbl_filter(function(name)
+				return vim.fn.executable(name) == 1
+			end, linters)
+		end
+
 		-- Configure linters by filetype
 		lint.linters_by_ft = {
 			-- Disable eslint_d for now due to flat config compatibility issues
-			lua = { "luacheck" },
+			lua = available({ "luacheck" }),
 			javascript = {},
 			typescript = {},
 			javascriptreact = {},
 			typescriptreact = {},
-			ruby = { "rubocop" },
-			go = { "revive" },
-			python = { "pylint" },
-			bash = { "shellcheck" },
-			sh = { "shellcheck" },
-			zsh = { "shellcheck" },
-			terraform = { "tflint" },
-			tf = { "tflint" },
-
+			ruby = available({ "rubocop" }),
+			go = available({ "revive" }),
+			python = available({ "pylint" }),
+			bash = available({ "shellcheck" }),
+			sh = available({ "shellcheck" }),
+			zsh = available({ "shellcheck" }),
+			terraform = available({ "tflint" }),
+			tf = available({ "tflint" }),
 		}
 
 		-- Create autocmd group for linting
