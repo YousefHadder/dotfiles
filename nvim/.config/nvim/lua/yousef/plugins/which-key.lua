@@ -20,7 +20,6 @@ return {
 				{ "<leader>h", group = "headers", icon = { icon = "󰉫 ", color = "blue" } },
 				{ "<leader>l", group = "lazy", icon = { icon = "󰒲 ", color = "cyan" } },
 				{ "<leader>m", group = "mason/markdown", icon = { icon = "󱌣 ", color = "cyan" } },
-				{ "<leader>M", group = "mcp hub", icon = { icon = "󰒋 ", color = "purple" } },
 				{ "<leader>n", group = "notifications", icon = { icon = "󰍡 ", color = "yellow" } },
 				{ "<leader>o", group = "open", icon = { icon = "󰏌 ", color = "blue" } },
 				{ "<leader>q", group = "quit/session", icon = { icon = "󰗼 ", color = "red" } },

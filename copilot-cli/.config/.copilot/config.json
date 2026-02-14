@@ -4,7 +4,7 @@
     "host": "https://github.com",
     "login": "YousefHadder"
   },
-  "model": "claude-opus-4.6-1m",
+  "model": "claude-opus-4.6-fast",
   "render_markdown": true,
   "theme": "auto",
   "staff": true,
