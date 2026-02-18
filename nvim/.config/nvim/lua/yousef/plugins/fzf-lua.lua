@@ -341,7 +341,7 @@ return {
 			grep = {
 				prompt = "Rg❯ ",
 				input_prompt = "Grep For❯ ",
-				cmd = "rg --column --line-number --no-heading --color=always --smart-case --max-columns=4096",
+				cmd = "rg --column --line-number --no-heading --color=always --smart-case --max-columns=4096 --hidden --follow -g '!.git'",
 				multiprocess = true,
 				git_icons = true,
 				file_icons = true,
