@@ -18,7 +18,8 @@ NC='\033[0m' # No Color
 # ==============================================================================
 
 # Global variables for timing
-declare -A TIMING_DATA
+TIMING_KEYS=()
+TIMING_VALUES=()
 INSTALL_START_TIME=$(date +%s)
 LOG_FILE="${HOME}/dotfiles_install.log"
 
@@ -136,7 +137,8 @@ log_with_timing() {
   local timestamp
   timestamp="$(date '+%Y-%m-%d %H:%M:%S')"
 
-  TIMING_DATA["$operation"]=$duration
+  TIMING_KEYS+=("$operation")
+  TIMING_VALUES+=("$duration")
 
   # Use green color for success
   echo -e "${GREEN}[ ${timestamp} ] ✅ $operation (${duration}s)${NC}"
@@ -155,8 +157,8 @@ generate_timing_summary() {
   _log_append "Operations by duration (longest first):"
 
   # Sort timing data by duration (longest first)
-  for operation in "${!TIMING_DATA[@]}"; do
-    echo "${TIMING_DATA[$operation]} $operation"
+  for i in "${!TIMING_KEYS[@]}"; do
+    echo "${TIMING_VALUES[$i]} ${TIMING_KEYS[$i]}"
   done | sort -nr | while read -r duration op; do
     if [ "$duration" -ge 60 ]; then
       _log_append "  $op: ${duration}s ($((duration / 60))m $((duration % 60))s)"
@@ -171,8 +173,9 @@ generate_timing_summary() {
   # Categorize slow operations
   local slow_ops=()
   local medium_ops=()
-  for operation in "${!TIMING_DATA[@]}"; do
-    local duration=${TIMING_DATA[$operation]}
+  for i in "${!TIMING_KEYS[@]}"; do
+    local operation="${TIMING_KEYS[$i]}"
+    local duration="${TIMING_VALUES[$i]}"
     if [ "$duration" -ge 60 ]; then
       slow_ops+=("$operation (${duration}s)")
     elif [ "$duration" -ge 10 ]; then
@@ -211,15 +214,15 @@ generate_timing_summary() {
 # ==============================================================================
 
 # Global array to track background job PIDs
-declare -a BACKGROUND_JOBS
-declare -A BACKGROUND_JOB_NAMES
+BACKGROUND_JOBS=()
+BACKGROUND_JOB_NAME_LIST=()
 
 # Track a background job
 track_background_job() {
   local pid="$1"
   local name="$2"
   BACKGROUND_JOBS+=("$pid")
-  BACKGROUND_JOB_NAMES["$pid"]="$name"
+  BACKGROUND_JOB_NAME_LIST+=("$name")
   log_info "Tracking background job: $name (PID: $pid)"
 }
 
@@ -236,8 +239,9 @@ wait_for_background_jobs() {
   local completed=0
   local total=${#BACKGROUND_JOBS[@]}
 
-  for pid in "${BACKGROUND_JOBS[@]}"; do
-    local job_name="${BACKGROUND_JOB_NAMES[$pid]}"
+  for i in "${!BACKGROUND_JOBS[@]}"; do
+    local pid="${BACKGROUND_JOBS[$i]}"
+    local job_name="${BACKGROUND_JOB_NAME_LIST[$i]}"
     log_progress "$((completed + 1))" "$total" "Waiting for: $job_name"
 
     if wait "$pid"; then
