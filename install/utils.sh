@@ -27,10 +27,27 @@ LOG_FILE="${HOME}/dotfiles_install.log"
 # This prevents multiple background jobs from corrupting the log.
 _log_append() {
   local line="$1"
-  {
-    flock -w 10 200 || return
+  if command -v flock >/dev/null 2>&1; then
+    {
+      flock -w 10 200 || return
+      printf '%s\n' "$line" >> "$LOG_FILE"
+    } 200>"${LOG_FILE}.lock"
+  else
+    # macOS fallback: use mkdir as an atomic lock primitive
+    local lockdir="${LOG_FILE}.lockdir"
+    local retries=0
+    while ! mkdir "$lockdir" 2>/dev/null; do
+      retries=$((retries + 1))
+      if [ "$retries" -ge 100 ]; then
+        # Give up on locking, write anyway
+        printf '%s\n' "$line" >> "$LOG_FILE"
+        return
+      fi
+      sleep 0.05
+    done
     printf '%s\n' "$line" >> "$LOG_FILE"
-  } 200>"${LOG_FILE}.lock"
+    rmdir "$lockdir"
+  fi
 }
 
 # Initialize log file with header
