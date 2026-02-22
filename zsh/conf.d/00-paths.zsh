@@ -1,6 +1,6 @@
 # PATH Configuration
 
-export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:$HOME/.local/bin:$HOME/scripts:/usr/local/bin:$PATH
 if [ -n "$BREW_HOME" ]; then
   export PATH="$BREW_HOME/bin:$PATH"
   export PATH="$BREW_HOME/opt/ruby/bin:$PATH"
