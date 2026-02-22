@@ -3,11 +3,13 @@
     "datadog": {
       "type": "http",
       "url": "https://mcp.datadoghq.com/api/unstable/mcp-server/mcp?",
-      "headers": {},
+      "headers": {
+        "DD_API_KEY": "$(DD_API_KEY)",
+        "DD_APPLICATION_KEY": "$(DD_APP_KEY)"
+      },
       "tools": [
         "*"
       ]
     }
   }
 }
-

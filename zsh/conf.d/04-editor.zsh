@@ -37,3 +37,5 @@ alias cpa="copilot --yolo"
 alias cpar="copilot --yolo --resume"
 
 # alias pbcopy='printf "\033]52;c;$(base64 | tr -d "\n")\a"'
+
+alias tn="zsh ~/scripts/tn"

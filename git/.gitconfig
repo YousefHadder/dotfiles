@@ -54,7 +54,7 @@
 [credential]
 	interactive = true
 	helper = 
-	helper = /usr/local/share/gcm-core/git-credential-manager
+	helper = osxkeychain
 [alias]
 	cf = "!f() { git clone https://github.com/$1/$2; }; f"
 	co = "checkout"

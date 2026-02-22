@@ -10,5 +10,11 @@
   "staff": true,
   "log_level": "all",
   "reasoning_effort": "high",
-  "streamer_mode": false
+  "streamer_mode": false,
+  "logged_in_users": [
+    {
+      "host": "https://github.com",
+      "login": "YousefHadder"
+    }
+  ]
 }

@@ -21,4 +21,7 @@ unset config_file ZSHRC_DIR
 export ANTHROPIC_BASE_URL=$(security find-generic-password -a "$USER" -s "ANTHROPIC_BASE_URL" -w)
 export ANTHROPIC_AUTH_TOKEN=$(security find-generic-password -a "$USER" -s "ANTHROPIC_AUTH_TOKEN" -w)
 export CATALOG_TOKEN=$(security find-generic-password -a "$USER" -s "CATALOG_TOKEN" -w)
+export DD_API_KEY=$(security find-generic-password -a "$USER" -s "DD_API_KEY" -w)
+export DD_APP_KEY=$(security find-generic-password -a "$USER" -s "DD_APP_KEY" -w)
+export AUTO_SYNC_TOKEN=$(security find-generic-password -a "$USER" -s "AUTO_SYNC_TOKEN" -w)
 # export ANTHROPIC_BASE_URL="http://localhost:4000"

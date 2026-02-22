@@ -46,5 +46,6 @@
     "lua-lsp@claude-plugins-official": true,
     "clangd-lsp@claude-plugins-official": true
   },
-  "alwaysThinkingEnabled": true
+  "alwaysThinkingEnabled": true,
+  "skipDangerousModePermissionPrompt": true
 }

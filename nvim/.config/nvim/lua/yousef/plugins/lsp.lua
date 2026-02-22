@@ -234,6 +234,18 @@ return {
 
 			-- Terraform
 			terraformls = {},
+
+			-- JSON
+			jsonls = {},
+
+			-- YAML
+			yamlls = {},
+
+			-- JQ
+			jqls = {},
+
+			-- CSS linting
+			stylelint_lsp = {},
 		}
 
 		---------------------------------------------------------------------------
@@ -244,20 +256,29 @@ return {
 			-- Formatters
 			"stylua",
 			"prettier",
+			"prettierd",
 			"black",
-			"gofumpt",
-			"rubocop",
+			"isort",
+			"goimports",
+			"shfmt",
+			-- "rubocop", -- Use rbenv-managed version for per-project compatibility
 			-- Linters
 			"eslint_d",
 			"shellcheck",
 			"golangci-lint",
 			"tflint",
+			"pylint",
+			"revive",
+			"luacheck",
+			"jsonlint",
+			"markdownlint",
 		})
 
 		require("mason-tool-installer").setup({
 			ensure_installed = ensure_installed,
-			auto_update = true,
+			auto_update = false,
 			run_on_start = true,
+			debounce_hours = 96,
 		})
 
 		require("mason-lspconfig").setup({

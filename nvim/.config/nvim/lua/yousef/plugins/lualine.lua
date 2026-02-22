@@ -74,6 +74,17 @@ return {
 						show_macro_recording,
 						color = { fg = "#ffd700" }, -- Define color from slate.vim line 88
 					},
+					{
+						function()
+							local ok, muslim = pcall(require, "muslim")
+							if ok and muslim.prayer_time then
+								return muslim.prayer_time()
+							end
+							return ""
+						end,
+						id = "muslim.nvim",
+						color = { fg = colors.cyan },
+					},
 					"encoding",
 					"fileformat",
 					"filetype"
