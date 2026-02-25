@@ -30,6 +30,7 @@ Sequential phases, each a separate script sourcing `install/utils.sh`:
 | `git` | `~/` | `.gitconfig` (Delta pager) |
 | `claude` | `~/.claude/` | `CLAUDE.md` + `settings.json` + skills/ |
 | `copilot-cli` | `~/.config/.copilot/` | `config.json` + skills/ |
+| `codex` | `~/.codex/` | `AGENTS.md` (Codex CLI global instructions) |
 | `claude-copilot-proxy` | `~/.claude-copilot-proxy/` | LiteLLM proxy routing |
 
 ## Conventions

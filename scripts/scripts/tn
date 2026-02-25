@@ -19,7 +19,7 @@ done
 if [ $# -eq 1 ]; then
     selected=$(zoxide query "$1")
 else
-    selected=$(zoxide query -l | fzf --height 100% --border | awk '{print $NF}')
+    selected=$(zoxide query -l | fzf --tmux center,60%,60% --border --reverse | awk '{print $NF}')
 fi
 
 if [ -z "$selected" ]; then

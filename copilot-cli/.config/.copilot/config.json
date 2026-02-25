@@ -4,17 +4,20 @@
     "host": "https://github.com",
     "login": "YousefHadder"
   },
-  "model": "claude-opus-4.6-fast",
   "render_markdown": true,
   "theme": "auto",
   "staff": true,
   "log_level": "all",
-  "reasoning_effort": "high",
   "streamer_mode": false,
   "logged_in_users": [
     {
       "host": "https://github.com",
       "login": "YousefHadder"
     }
-  ]
+  ],
+  "trusted_folders": [
+    "/Users/yousefhadder"
+  ],
+  "model": "claude-opus-4.6-fast",
+  "reasoning_effort": "high"
 }
