@@ -80,3 +80,5 @@ When spawning subagents:
 - **Sonnet** for: most implementation tasks, bug fixing, code generation
 - **Opus** for: security audits, architectural decisions, complex debugging, safety-critical code
 - Auto-escalate if a lighter model returns uncertainty or insufficient results
+
+@RTK.md

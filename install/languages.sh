@@ -50,7 +50,7 @@ install_languages() {
   # Install GitHub Copilot CLI in Background
   # -------------------------------
   if ! command -v copilot >/dev/null 2>&1; then
-    if command -v npm >/dev/null 2>&1; then
+    if command -v brew >/dev/null 2>&1; then
       log "Installing GitHub Copilot CLI in background..."
 
       (
@@ -63,7 +63,7 @@ install_languages() {
         source "${DOTFILES_DIR}/install/utils.sh"
 
         # Try to install Copilot CLI, but don't fail if it doesn't work
-        if npm install -g @github/copilot 2>&1 | while IFS= read -r line; do
+        if brew install copilot-cli 2>&1 | while IFS= read -r line; do
           _log_append "[COPILOT] $line"
         done; then
           local copilot_end=$(date +%s)
@@ -86,7 +86,7 @@ install_languages() {
       log "GitHub Copilot CLI installing in background (PID: $COPILOT_PID)"
       track_background_job "$COPILOT_PID" "Copilot CLI"
     else
-      log "Skipping GitHub Copilot CLI installation (npm not available)"
+      log "Skipping GitHub Copilot CLI installation (Homebrew not available)"
     fi
   else
     log "GitHub Copilot CLI already installed"
