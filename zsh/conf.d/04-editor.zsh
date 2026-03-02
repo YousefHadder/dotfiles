@@ -1,5 +1,10 @@
 # Editor Configuration and Basic Aliases
 
+# Zsh vi mode — h/j/k/l cursor movement on prompt
+bindkey -v
+bindkey -M viins 'jk' vi-cmd-mode
+export KEYTIMEOUT=15
+
 export EDITOR='nvim'
 alias n=nvim
 alias nvim-kickstart='NVIM_APPNAME="nvim-kickstart" nvim'
