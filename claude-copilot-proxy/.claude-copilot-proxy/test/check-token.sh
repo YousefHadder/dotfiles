@@ -9,6 +9,16 @@ export PROXY_DIR
 
 source "${SCRIPT_DIR}/../lib/common.sh"
 
+normalize_token() {
+    local token="$1"
+    token="$(printf '%s' "$token" | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//')"
+    if [[ "$token" =~ ^[Bb][Ee][Aa][Rr][Ee][Rr][[:space:]]+(.+) ]]; then
+        token="${BASH_REMATCH[1]}"
+    fi
+    token="$(printf '%s' "$token" | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//')"
+    echo "$token"
+}
+
 get_token() {
     local token=""
 
@@ -42,6 +52,7 @@ get_token() {
 }
 
 TOKEN=$(get_token)
+TOKEN=$(normalize_token "$TOKEN")
 
 if [[ -z "$TOKEN" ]]; then
     echo "No token found in Keychain, secret-tool, or LITELLM_TOKEN"

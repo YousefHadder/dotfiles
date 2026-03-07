@@ -20,6 +20,10 @@ litellm_settings:
 
 general_settings:
   allow_requests_on_db_unavailable: true
+  # Explicitly disable forwarding client/provider auth headers to upstream APIs.
+  # This prevents malformed proxy auth headers from being passed through.
+  forward_client_headers_to_llm_api: false
+  forward_llm_provider_auth_headers: false
 
 server_settings:
   port: 4000

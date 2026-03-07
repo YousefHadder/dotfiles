@@ -18,13 +18,29 @@ done
 unset config_file ZSHRC_DIR
 
 # Claude Code -> GitHub Copilot Proxy
-export ANTHROPIC_BASE_URL=$(security find-generic-password -a "$USER" -s "ANTHROPIC_BASE_URL" -w)
-export ANTHROPIC_AUTH_TOKEN=$(security find-generic-password -a "$USER" -s "ANTHROPIC_AUTH_TOKEN" -w)
+export SPLUNK_MCP_TOKEN=$(security find-generic-password -a "$USER" -s "SPLUNK_MCP_TOKEN" -w)
 export AUTO_SYNC_TOKEN=$(security find-generic-password -a "$USER" -s "AUTO_SYNC_TOKEN" -w)
 export CATALOG_TOKEN=$(security find-generic-password -a "$USER" -s "CATALOG_TOKEN" -w)
 export DD_API_KEY=$(security find-generic-password -a "$USER" -s "DD_API_KEY" -w)
 export DD_APP_KEY=$(security find-generic-password -a "$USER" -s "DD_APP_KEY" -w)
-# export ANTHROPIC_BASE_URL="http://localhost:4000"
+export ANTHROPIC_BASE_URL="http://localhost:4000"
 
 
 export COPILOT_TOKEN=$(security find-generic-password -s "github-fr-tools-local-token" -w)
+
+# rbenv
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init - zsh)"
+
+# Claude Code -> GitHub Copilot Proxy
+export ANTHROPIC_AUTH_TOKEN="fake-key"
+
+# Claude Code -> GitHub Copilot Proxy
+export CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS="1"
+
+# bun completions
+[ -s "/Users/yousefhadder/.bun/_bun" ] && source "/Users/yousefhadder/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

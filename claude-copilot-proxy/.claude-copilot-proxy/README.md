@@ -235,6 +235,7 @@ Add to your shell configuration (`~/.zshrc` or `~/.bashrc`):
 # Claude Code -> GitHub Copilot Proxy Configuration
 export ANTHROPIC_BASE_URL="http://localhost:4000"
 export ANTHROPIC_AUTH_TOKEN="fake-key"  # Required but not validated by proxy
+export CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS="1"  # Prevent unsupported anthropic-beta flags
 
 # If using env var for PAT (recommended for Linux/containers)
 export LITELLM_TOKEN="ghp_YOUR_TOKEN_HERE"
@@ -458,6 +459,7 @@ The test suite checks:
 | --------------------- | -------------------------- | ---------------------------------------- |
 | `ANTHROPIC_BASE_URL`  | (none)                     | Must be set to `http://localhost:4000`   |
 | `ANTHROPIC_AUTH_TOKEN`| (none)                     | Any value (e.g., `fake-key`)             |
+| `CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS` | `1`      | Disables experimental Anthropic beta headers from Claude Code |
 | `LITELLM_TOKEN`       | (none)                     | GitHub PAT (fallback if not in Keychain) |
 | `PROXY_PORT`          | `4000`                     | Port the proxy listens on                |
 | `KEYCHAIN_SERVICE`    | `litellm-copilot-token`    | Keychain/secret-tool service name        |
@@ -545,6 +547,51 @@ curl -H "Authorization: Bearer $LITELLM_TOKEN" \
      https://api.githubcopilot.com/models
 
 # If unauthorized, create a new PAT with copilot scope
+```
+
+### "Authorization header is badly formatted"
+
+This usually means the stored PAT has extra text (for example `Bearer ghp_...`) or surrounding whitespace.
+
+```bash
+# Inspect only the prefix (safe)
+echo "$LITELLM_TOKEN" | sed -E 's/^([A-Za-z_]+).*/\\1.../'
+
+# If you see "Bearer...", store only the raw token:
+export LITELLM_TOKEN="ghp_YOUR_TOKEN_ONLY"
+
+# Restart proxy
+launchctl kickstart -k gui/$(id -u)/com.claude-copilot-proxy  # macOS
+# or: systemctl --user restart claude-copilot-proxy           # Linux
+```
+
+The startup scripts now normalize token values automatically (trims whitespace and removes leading `Bearer `).
+
+### "unsupported beta header(s): context-1m-2025-08-07"
+
+Claude Code can send experimental `anthropic-beta` headers that some Copilot model backends reject.
+This error is also common when Claude Code bypasses the local proxy and calls Copilot directly.
+
+```bash
+# Must point to local proxy (not https://api.githubcopilot.com)
+echo "$ANTHROPIC_BASE_URL"   # should be http://localhost:4000
+
+# Ensure this is exported in your shell startup file
+export ANTHROPIC_BASE_URL="http://localhost:4000"
+export CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS="1"
+
+# Reload shell and restart proxy
+source ~/.zshrc   # or ~/.bashrc
+launchctl kickstart -k gui/$(id -u)/com.claude-copilot-proxy  # macOS
+# or: systemctl --user restart claude-copilot-proxy           # Linux
+```
+
+Also ensure `config.yaml` has:
+
+```yaml
+general_settings:
+  forward_client_headers_to_llm_api: false
+  forward_llm_provider_auth_headers: false
 ```
 
 ### "No connected db" or "prisma" Error

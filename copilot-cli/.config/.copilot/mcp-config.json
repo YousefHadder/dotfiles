@@ -1,14 +1,46 @@
 {
   "mcpServers": {
+    "playwright": {
+      "tools": [
+        "*"
+      ],
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest"
+      ],
+      "source": "user"
+    },
     "datadog": {
+      "tools": [
+        "*"
+      ],
       "type": "http",
       "url": "https://mcp.datadoghq.com/api/unstable/mcp-server/mcp?",
       "headers": {
         "DD_API_KEY": "$(DD_API_KEY)",
         "DD_APPLICATION_KEY": "$(DD_APP_KEY)"
       },
+      "source": "user"
+    },
+    "azure-mcp": {
+      "type": "local",
+      "command": "npx",
       "tools": [
         "*"
+      ],
+      "args": [
+        "-y",
+        "@azure/mcp@latest",
+        "server",
+        "start"
+      ]
+    },
+    "splunk": {
+      "type": "stdio",
+      "command": "/bin/sh",
+      "args": [
+        "-c",
+        "SPLUNK_BEARER_TOKEN=$(security find-generic-password -a $USER -s SPLUNK_MCP_TOKEN -w) SPLUNK_HOST=splunkazure-api-azure-eastus.octoca.ts.net SPLUNK_PORT=443 SPLUNK_SCHEME=https VERIFY_SSL=true docker run -i --rm -e SPLUNK_HOST -e SPLUNK_PORT -e SPLUNK_BEARER_TOKEN -e SPLUNK_SCHEME -e VERIFY_SSL ghcr.io/github/splunk-mcp-server:latest"
       ]
     }
   }

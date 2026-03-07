@@ -1,9 +1,9 @@
 # Editor Configuration and Basic Aliases
 
 # Zsh vi mode — h/j/k/l cursor movement on prompt
-bindkey -v
-bindkey -M viins 'jk' vi-cmd-mode
-export KEYTIMEOUT=15
+# bindkey -v
+# bindkey -M viins 'jk' vi-cmd-mode
+# export KEYTIMEOUT=15
 
 export EDITOR='nvim'
 alias n=nvim
@@ -12,7 +12,7 @@ alias lvim='NVIM_APPNAME="lvim" nvim'
 
 # Navigation Aliases
 alias cd=z
-
+alias tls="tmux ls"
 # File Listing Aliases
 alias l="eza --icons=always"
 alias ls="eza --icons=always"

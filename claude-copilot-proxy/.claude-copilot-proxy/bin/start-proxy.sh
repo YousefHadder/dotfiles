@@ -16,38 +16,17 @@ export PATH="/opt/homebrew/bin:/usr/local/bin:$HOME/.local/bin:$PATH"
 
 # Source minimal required modules
 source "${PROXY_DIR}/lib/common.sh"
-source "${PROXY_DIR}/lib/token/macos.sh"
-source "${PROXY_DIR}/lib/token/linux.sh"
-source "${PROXY_DIR}/lib/token/env.sh"
-
-# =============================================================================
-# Get Token
-# =============================================================================
-
-get_github_token() {
-    local token=""
-
-    # Try macOS Keychain
-    token=$(keychain_get 2>/dev/null) || true
-
-    # Try Linux secret-tool
-    if [[ -z "$token" ]]; then
-        token=$(secret_tool_get 2>/dev/null) || true
-    fi
-
-    # Try environment variable
-    if [[ -z "$token" ]]; then
-        token=$(env_get)
-    fi
-
-    echo "$token"
-}
+source "${PROXY_DIR}/lib/detect.sh"
+source "${PROXY_DIR}/lib/token/main.sh"
 
 # =============================================================================
 # Main
 # =============================================================================
 
-GITHUB_TOKEN=$(get_github_token)
+# Detect platform quietly (required by lib/token/main.sh)
+detect_platform_quiet
+
+GITHUB_TOKEN=$(get_token)
 
 if [[ -z "$GITHUB_TOKEN" ]]; then
     echo "Error: GitHub PAT not found"
@@ -55,6 +34,14 @@ if [[ -z "$GITHUB_TOKEN" ]]; then
     echo "  macOS:   security add-generic-password -s \"litellm-copilot-token\" -a \"\$USER\" -w \"ghp_YOUR_TOKEN\""
     echo "  Linux:   secret-tool store --label=\"LiteLLM Copilot Token\" service litellm-copilot-token username token"
     echo "  Any:     export LITELLM_TOKEN=\"ghp_YOUR_TOKEN\""
+    exit 1
+fi
+
+# Fail fast on obviously malformed token values
+if [[ ! "$GITHUB_TOKEN" =~ ^(ghp_|github_pat_) ]]; then
+    echo "Error: GitHub PAT format is invalid after normalization"
+    echo "Expected token to start with ghp_ or github_pat_."
+    echo "If you prefixed it with 'Bearer ', remove that prefix."
     exit 1
 fi
 

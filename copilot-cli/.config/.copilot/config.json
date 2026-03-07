@@ -18,6 +18,8 @@
   "trusted_folders": [
     "/Users/yousefhadder"
   ],
-  "model": "claude-opus-4.6-fast",
-  "reasoning_effort": "high"
+  "show_reasoning": false,
+  "installed_plugins": [],
+  "model": "gpt-5.3-codex",
+  "reasoning_effort": "xhigh"
 }

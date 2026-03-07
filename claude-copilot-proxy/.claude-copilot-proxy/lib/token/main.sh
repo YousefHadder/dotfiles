@@ -15,6 +15,34 @@ source "${PROXY_DIR}/lib/token/env.sh"
 # Track where token was found
 TOKEN_SOURCE=""
 
+# Normalize token from storage/user input.
+# - Trims surrounding whitespace
+# - Strips optional surrounding single/double quotes
+# - Strips optional leading "Bearer " prefix (case-insensitive)
+normalize_token() {
+    local token="$1"
+
+    # Trim leading/trailing whitespace
+    token="$(printf '%s' "$token" | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//')"
+
+    # Strip optional surrounding quotes
+    if [[ "$token" =~ ^\".*\"$ ]]; then
+        token="${token:1:${#token}-2}"
+    elif [[ "$token" =~ ^\'.*\'$ ]]; then
+        token="${token:1:${#token}-2}"
+    fi
+
+    # Strip optional bearer prefix
+    if [[ "$token" =~ ^[Bb][Ee][Aa][Rr][Ee][Rr][[:space:]]+(.+) ]]; then
+        token="${BASH_REMATCH[1]}"
+    fi
+
+    # Final trim in case prefix removal introduced whitespace
+    token="$(printf '%s' "$token" | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//')"
+
+    echo "$token"
+}
+
 # Get token from the appropriate source based on platform
 # Returns token on stdout, sets TOKEN_SOURCE
 get_token() {
@@ -39,12 +67,17 @@ get_token() {
         [[ -n "$token" ]] && TOKEN_SOURCE="environment variable (LITELLM_TOKEN)"
     fi
 
+    if [[ -n "$token" ]]; then
+        token=$(normalize_token "$token")
+    fi
+
     echo "$token"
 }
 
 # Store token using the appropriate method for the platform
 store_token() {
     local token="$1"
+    token=$(normalize_token "$token")
 
     case "${PLATFORM:-}" in
         macos)
@@ -72,6 +105,7 @@ store_token() {
 # Validate token with GitHub Copilot API
 validate_token() {
     local token="$1"
+    token=$(normalize_token "$token")
 
     # Basic format check
     if [[ ! "$token" =~ ^(ghp_|github_pat_) ]]; then
@@ -194,6 +228,8 @@ setup_pat() {
     while [[ -z "$new_token" ]]; do
         read -r -s -p "Paste your token: " new_token
         echo ""
+
+        new_token=$(normalize_token "$new_token")
 
         if [[ -z "$new_token" ]]; then
             error "Token cannot be empty"

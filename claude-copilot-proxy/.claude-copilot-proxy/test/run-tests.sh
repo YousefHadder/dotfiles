@@ -29,6 +29,7 @@ SKIPPED=0
 # Flags
 QUICK=false
 VERBOSE=false
+PROXY_PORT="${PROXY_PORT:-4000}"
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
@@ -151,8 +152,9 @@ echo ""
 echo -e "${BOLD}Environment Variables${NC}"
 echo "------------------------------------------------------------"
 
-run_test "ANTHROPIC_BASE_URL is set" "$SCRIPT_DIR/check-env.sh" "ANTHROPIC_BASE_URL"
+run_test "ANTHROPIC_BASE_URL points to local proxy" "$SCRIPT_DIR/check-env.sh" "ANTHROPIC_BASE_URL" "http://localhost:$PROXY_PORT"
 run_test "ANTHROPIC_AUTH_TOKEN is set" "$SCRIPT_DIR/check-env.sh" "ANTHROPIC_AUTH_TOKEN"
+run_test "CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS is set" "$SCRIPT_DIR/check-env.sh" "CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS" "1"
 
 echo ""
 
