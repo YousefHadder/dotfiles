@@ -1,5 +1,19 @@
 {
   "mcpServers": {
+    "github": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-github"
+      ]
+    },
+    "neovim": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/Users/yousefhadder/github/mcp-neovim-server/build/index.js"
+      ]
+    },
     "playwright": {
       "tools": [
         "*"

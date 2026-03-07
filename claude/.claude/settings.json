@@ -1,47 +1,6 @@
 {
-  "attribution": {
-    "commit": "",
-    "pr": ""
-  },
-  "permissions": {
-    "allow": [
-      "Bash(brew uninstall:*)",
-      "Bash(rm:*)",
-      "Bash(rustup self:*)",
-      "Bash(echo:*)",
-      "Bash(fd:*)",
-      "Bash([ -d \"$HOME/.config/eza\" ])",
-      "Bash(claude mcp list:*)",
-      "Bash(claude mcp add:*)",
-      "Bash(sed:*)",
-      "mcp__github__get_issue",
-      "WebSearch",
-      "WebFetch(domain:github.com)",
-      "WebFetch(domain:neovim.io)",
-      "Read(//Users/yousefhadder/Desktop/workspace/**)"
-    ],
-    "deny": [
-      "Bash(rm -rf ~:*)",
-      "Bash(rm -rf /:*)",
-      "Bash(rm -rf $HOME:*)",
-      "Bash(git push --force main:*)",
-      "Bash(git push --force master:*)",
-      "Bash(git push -f main:*)",
-      "Bash(git push -f master:*)",
-      "Bash(git clean -fd:*)",
-      "Bash(sudo rm:*)"
-    ],
-    "ask": [
-      "Bash(git commit:*)",
-      "Bash(git push:*)",
-      "Bash(gh pr create:*)"
-    ]
-  },
-  "model": "opus",
-  "statusLine": {
-    "type": "command",
-    "command": "npx -y @owloops/claude-powerline@latest"
-  },
-  "alwaysThinkingEnabled": true,
-  "skipDangerousModePermissionPrompt": true
+  "model": "opus[1m]",
+  "fastMode": true,
+  "skipDangerousModePermissionPrompt": true,
+  "effortLevel": "high"
 }
