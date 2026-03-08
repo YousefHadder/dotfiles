@@ -594,6 +594,20 @@ general_settings:
   forward_llm_provider_auth_headers: false
 ```
 
+### `The requested model is not supported... Received Model Group=claude-sonnet-4-6`
+
+This indicates your `model_group_alias` block is missing the Sonnet 4.6 compatibility alias used by Claude Code model IDs.
+
+Ensure `config.yaml` includes:
+
+```yaml
+router_settings:
+  model_group_alias:
+    "claude-sonnet-4-6": "claude-sonnet-4.6"
+```
+
+Then restart the proxy so the updated config is reloaded.
+
 ### "No connected db" or "prisma" Error
 
 This happens when LiteLLM tries to validate API keys. Fix:

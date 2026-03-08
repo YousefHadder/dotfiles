@@ -1,3 +1,7 @@
+---
+description: Capture the current session to a diary entry for cross-session continuity
+---
+
 Capture the current session to a diary entry for cross-session continuity.
 
 ## Purpose

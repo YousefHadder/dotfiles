@@ -1,6 +1,14 @@
 {
   "model": "opus[1m]",
-  "fastMode": true,
-  "skipDangerousModePermissionPrompt": true,
-  "effortLevel": "high"
+  "enabledPlugins": {
+    "compound-engineering@compound-engineering-plugin": true
+  },
+  "extraKnownMarketplaces": {
+    "compound-engineering-plugin": {
+      "source": {
+        "source": "github",
+        "repo": "EveryInc/compound-engineering-plugin"
+      }
+    }
+  }
 }

@@ -1,3 +1,7 @@
+---
+description: Synthesize diary entries into persistent learnings in REFLECTIONS.md
+---
+
 Synthesize diary entries into persistent learnings in REFLECTIONS.md.
 
 ## Purpose
