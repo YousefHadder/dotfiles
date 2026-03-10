@@ -23,3 +23,6 @@
 - JS/TS: Async/await with try-catch, or Result patterns when appropriate
 - Lua: Return nil/error tuples, pcall for recoverable errors
 - Bash: set -euo pipefail, explicit error checking
+
+## Git
+- Do not include a Co-authored-by trailer for Copilot in git commits

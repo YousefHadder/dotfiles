@@ -70,9 +70,11 @@ return {
 					ghost_text = { enabled = true },
 				},
 			},
+
 			keymap = {
 				preset = "enter",
-				["<C-y>"] = { "select_and_accept" },
+				["<S-CR>"] = { "select_and_accept" },
+				["<CR>"] = {},
 			},
 		},
 	},

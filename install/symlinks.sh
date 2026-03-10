@@ -44,7 +44,7 @@ stow_packages() {
       log "Removing existing .zshrc to be replaced by stowed version."
       rm -f "${HOME}/.zshrc"
     fi
-    stow -R -t "$HOME" "$package"
+    stow --no-folding -R -t "$HOME" "$package"
   done
 
   log "Stow operation complete."

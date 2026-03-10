@@ -1,5 +1,15 @@
 # CLAUDE.md - Dotfiles Repository
 
+## MANDATORY: Use td for Task Management
+
+Run td usage --new-session at conversation start (or after /clear). This tells you what to work on next.
+
+Sessions are automatic (based on terminal/agent context). Optional:
+- td session "name" to label the current session
+- td session --new to force a new session in the same context
+
+Use td usage -q after first read.
+
 ## Quick Reference
 
 - **Install**: `./install.sh` (full setup) or `stow <package>` (individual)
@@ -29,14 +39,14 @@ Sequential phases, each a separate script sourcing `install/utils.sh`:
 | `tmux` | `~/` | `.tmux.conf` (TPM + 14 plugins) |
 | `git` | `~/` | `.gitconfig` (Delta pager) |
 | `claude` | `~/.claude/` | `CLAUDE.md` + `settings.json` + skills/ |
-| `copilot-cli` | `~/.config/.copilot/` | `config.json` + skills/ |
-| `codex` | `~/.codex/` | `AGENTS.md` (Codex CLI global instructions) |
+| `copilot-cli` | `~/.copilot/` | `config.json` + skills/ |
 | `claude-copilot-proxy` | `~/.claude-copilot-proxy/` | LiteLLM proxy routing |
+| `shared-ai-instructions` | `~/.claude/` (via CLAUDE.md `@` import) | Global AI instructions shared across Claude + Copilot |
 
 ## Conventions
 
 ### Bash Scripts
-- Always `set -euo pipefail` at top
+- Prefer `set -euo pipefail` for executable scripts; `test/run-tests.sh` intentionally uses `set -uo pipefail` so all checks run
 - Functions: `snake_case` — Variables: `UPPER_CASE` constants, `lower_case` locals
 - Use `command_exists()` check before relying on tools
 - Logging via `log()`, `log_success()`, `log_error()`, `log_warning()`, `log_info()`
@@ -59,8 +69,11 @@ Sequential phases, each a separate script sourcing `install/utils.sh`:
 4. Update `install/symlinks.sh` exclusion list if needed
 
 ## Gotchas
-- `.stowrc` ignores: `.stowrc`, `DS_Store`, `Brewfile*`, `install.sh`, `scripts/`, `install/`
-- Codespaces excludes `git`, `ghostty`, `claude` packages from auto-stow
+- `.stowrc` currently ignores `.stowrc`, `DS_Store`, `Brewfile`, and `install.sh`; package skip logic is in `install/symlinks.sh`
+- Full auto-stow currently skips `git`, `ghostty`, and `install` packages in `install/symlinks.sh`
+- Codespaces changes `DOTFILES_DIR` to `/workspaces/.codespaces/.persistedshare/dotfiles`
 - `claude/.claude/CLAUDE.md` is the Claude Code global instructions (stowed to `~/.claude/`) — different from this file
 - Brewfile.essential is blocking; Brewfile.optional runs async — don't put critical deps in optional
 - No CI/CD pipeline — testing is manual via proxy test suite and editor validation
+- `logs/` is gitignored (only `.gitkeep` committed) — install logs written to `~/dotfiles_install.log`
+- `shared-ai-instructions/instructions.md` is the single source of truth for AI behavior; both `claude/.claude/CLAUDE.md` (`@` import) and `copilot-cli/.copilot/copilot-instructions.md` (symlink) reference it

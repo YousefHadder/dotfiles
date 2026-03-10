@@ -1,4 +1,4 @@
-local use_local_markdown_plus = false
+local use_local_markdown_plus = true
 
 local markdown_plus_spec = {
 	ft = { "markdown", "csv" },

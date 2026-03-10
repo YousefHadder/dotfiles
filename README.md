@@ -183,7 +183,7 @@ dotfiles/
 │       └── test/            # Health checks, API tests
 │
 ├── copilot-cli/             # GitHub Copilot CLI configuration
-│   └── .config/.copilot/
+│   └── .copilot/
 │       ├── config.json      # CLI settings (model, logging)
 │       ├── copilot-instructions.md  # Global instructions
 │       └── skills/          # Custom skills (code-review, etc.)
