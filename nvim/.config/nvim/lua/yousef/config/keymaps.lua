@@ -301,15 +301,8 @@ end, { desc = "Toggle boolean/operator" })
 -- LSP Cleanup
 -- ======================================================
 
+-- Remove Neovim default LSP mappings (overridden by fzf-lua bindings)
 local function clean_lsp_mappings()
-	-- Remove default mappings from Neovim < 0.11
-	pcall(vim.keymap.del, "n", "gd")
-	pcall(vim.keymap.del, "n", "gD")
-	pcall(vim.keymap.del, "n", "gr")
-	pcall(vim.keymap.del, "n", "gI")
-	pcall(vim.keymap.del, "n", "gy")
-
-	-- Remove new default mappings from Neovim 0.11+
 	pcall(vim.keymap.del, "n", "grn") -- Rename
 	pcall(vim.keymap.del, "n", "gra") -- Code action
 	pcall(vim.keymap.del, "n", "grr") -- References

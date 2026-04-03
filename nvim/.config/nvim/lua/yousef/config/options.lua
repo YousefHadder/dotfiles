@@ -54,6 +54,7 @@ opt.smartindent = true -- Smart indentation
 -- Completion options
 opt.completeopt = { "menu", "menuone", "noselect", "fuzzy" }
 opt.pumheight = 10 -- Popup menu height
+opt.pummaxwidth = 80 -- Popup menu max width (0.12+)
 
 -- Performance options
 opt.updatetime = 50 -- Faster completion
