@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+direction="${1:-next}"
+current=$(tmux display-message -p '#S')
+
+# Sessions sorted by creation time — same order as prefix+s (choose-tree)
+sessions=$(tmux list-sessions -F "#{session_created} #{session_name}" | sort -n | awk '{print $2}')
+count=$(echo "$sessions" | wc -l | tr -d ' ')
+
+idx=0
+i=1
+while IFS= read -r name; do
+    if [ "$name" = "$current" ]; then
+        idx=$i
+        break
+    fi
+    i=$((i + 1))
+done <<< "$sessions"
+
+if [ "$direction" = "next" ]; then
+    target_idx=$(( idx % count + 1 ))
+else
+    target_idx=$(( (idx - 2 + count) % count + 1 ))
+fi
+
+target=$(echo "$sessions" | sed -n "${target_idx}p")
+tmux switch-client -t "$target"

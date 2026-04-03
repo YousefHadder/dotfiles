@@ -10,6 +10,10 @@ alias n=nvim
 alias nvim-kickstart='NVIM_APPNAME="nvim-kickstart" nvim'
 alias lvim='NVIM_APPNAME="lvim" nvim'
 
+# Search Aliases
+alias find="fd"
+alias grep="rg"
+
 # Navigation Aliases
 alias cd=z
 alias tls="tmux ls"
