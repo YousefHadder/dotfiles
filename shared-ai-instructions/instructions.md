@@ -36,6 +36,14 @@
 - Use: `if [ -n "$VAR" ]; then echo "result: yes"; else echo "result: no"; fi`
 - General rule: capture command output into a variable first, then reference it with `$VAR`
 
+## GitHub Link Handling (Patch-First)
+
+- If the user shares a GitHub PR, commit, or compare link, fetch patch content first and use it as the primary review context.
+- Prefer `application/vnd.github.patch` where possible (especially for private repos), then fall back to `.patch` URL fetches.
+- Use the local helper `gh-patch-from-url` when available:
+  - `gh-patch-from-url <github-url>`
+- If patch fetch fails or the change is too large, fetch targeted file context next (changed files first).
+
 ## Error Handling (Language-Specific)
 
 - Go: Explicit error returns with proper wrapping

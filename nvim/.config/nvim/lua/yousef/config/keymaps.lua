@@ -62,6 +62,7 @@ keymap("n", "<leader>rf", "<cmd>so %<CR>", { silent = true })
 keymap("n", "<leader>wa", "<cmd>wa<CR>", { desc = "Save file" })
 keymap("n", "<leader>q", "<cmd>quit<CR>", { desc = "Quit" })
 keymap("n", "<leader>Q", "<cmd>qall<CR>", { desc = "Quit all" })
+keymap("n", "<leader>rn", "<cmd>wa | restart<CR>", { desc = "Save and restart Neovim" })
 
 -- ======================================================
 -- Window Management

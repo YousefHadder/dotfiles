@@ -33,6 +33,9 @@ alias lta4="eza -lTag --level=4 --icons=always"
 
 # Git Aliases
 alias lg="lazygit"
+alias gfp="git fetch && git pull"
+alias gsm="git switch main && git fetch && git pull"
+alias gpe="git push-empty"
 
 # Reload Aliases
 alias sourcezsh="omz reload && exec zsh"
@@ -48,3 +51,4 @@ alias cpar="copilot --yolo --resume"
 # alias pbcopy='printf "\033]52;c;$(base64 | tr -d "\n")\a"'
 
 alias tn="zsh ~/scripts/tn"
+alias cpenv="env | cut -d= -f1 | fzf --preview 'printenv {}' | xargs printenv | pbcopy"

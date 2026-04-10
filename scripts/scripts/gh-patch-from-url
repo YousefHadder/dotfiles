@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  echo "Usage: gh-patch-from-url <github-pr-commit-compare-url>" >&2
+}
+
+if [ "$#" -ne 1 ]; then
+  usage
+  exit 1
+fi
+
+url="$1"
+url="${url%%#*}"
+url="${url%%\?*}"
+url="${url%/}"
+
+if [[ "$url" =~ ^https://github\.com/([^/]+)/([^/]+)/pull/([0-9]+)(\.(patch|diff))?$ ]]; then
+  owner="${BASH_REMATCH[1]}"
+  repo="${BASH_REMATCH[2]}"
+  number="${BASH_REMATCH[3]}"
+  gh api -H "Accept: application/vnd.github.patch" "/repos/${owner}/${repo}/pulls/${number}"
+  exit 0
+fi
+
+if [[ "$url" =~ ^https://github\.com/([^/]+)/([^/]+)/commit/([0-9a-fA-F]{7,40})(\.(patch|diff))?$ ]]; then
+  owner="${BASH_REMATCH[1]}"
+  repo="${BASH_REMATCH[2]}"
+  sha="${BASH_REMATCH[3]}"
+  gh api -H "Accept: application/vnd.github.patch" "/repos/${owner}/${repo}/commits/${sha}"
+  exit 0
+fi
+
+if [[ "$url" =~ ^https://github\.com/([^/]+)/([^/]+)/compare/(.+)$ ]]; then
+  owner="${BASH_REMATCH[1]}"
+  repo="${BASH_REMATCH[2]}"
+  range="${BASH_REMATCH[3]}"
+  range="${range%.patch}"
+  range="${range%.diff}"
+
+  if [[ "$range" == *...* ]]; then
+    gh api -H "Accept: application/vnd.github.patch" "/repos/${owner}/${repo}/compare/${range}"
+    exit 0
+  fi
+
+  patch_url="https://github.com/${owner}/${repo}/compare/${range}.patch"
+  token="$(gh auth token 2>/dev/null || true)"
+  if [ -n "$token" ]; then
+    curl -fsSL -H "Authorization: Bearer ${token}" "$patch_url"
+  else
+    curl -fsSL "$patch_url"
+  fi
+  exit 0
+fi
+
+echo "Unsupported URL: $url" >&2
+usage
+exit 2

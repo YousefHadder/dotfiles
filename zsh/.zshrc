@@ -23,8 +23,7 @@ export AUTO_SYNC_TOKEN=$(security find-generic-password -a "$USER" -s "AUTO_SYNC
 export CATALOG_TOKEN=$(security find-generic-password -a "$USER" -s "CATALOG_TOKEN" -w)
 export DD_API_KEY=$(security find-generic-password -a "$USER" -s "DD_API_KEY" -w)
 export DD_APP_KEY=$(security find-generic-password -a "$USER" -s "DD_APP_KEY" -w)
-export ANTHROPIC_BASE_URL="http://localhost:4000"
-
+export ANTHROPIC_BASE_URL="http://localhost:4001"
 
 export COPILOT_TOKEN=$(security find-generic-password -s "github-fr-tools-local-token" -w)
 
