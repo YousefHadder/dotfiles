@@ -8,11 +8,9 @@ return {
   config = function()
     require("noice").setup({
       lsp = {
-        override = {
-          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-          ["vim.lsp.util.stylize_markdown"] = true,
-          -- Removed cmp.entry.get_documentation — using blink.cmp, not nvim-cmp
-        },
+        -- Removed deprecated overrides: stylize_markdown and convert_input_to_markdown_lines
+        -- are deprecated in 0.11+ and removed in 0.12. Native LSP UI + winborder handles this.
+        override = {},
       },
       views = {
         cmdline_popup = { border = { style = "rounded", padding = { 0, 1 } } },

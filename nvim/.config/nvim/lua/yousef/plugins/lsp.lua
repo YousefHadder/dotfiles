@@ -1,11 +1,9 @@
 return {
-	-- Core LSP
-	"neovim/nvim-lspconfig",
+	-- Mason for automatic LSP/tool installation
+	"williamboman/mason.nvim",
 	event = "VeryLazy",
 
 	dependencies = {
-		-- Mason
-		"williamboman/mason.nvim",
 		"williamboman/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 
@@ -26,8 +24,6 @@ return {
 				local function map(lhs, rhs, desc, mode)
 					vim.keymap.set(mode or "n", lhs, rhs, { buffer = event.buf, desc = "LSP: " .. desc })
 				end
-
-				-- map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 
 				local client = vim.lsp.get_client_by_id(event.data.client_id)
 				if not client then
@@ -61,6 +57,21 @@ return {
 					map("<leader>th", function()
 						vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
 					end, "[T]oggle Inlay [H]ints")
+				end
+
+				-- Document color support (0.12+)
+				if client:supports_method("textDocument/documentColor") then
+					map("grc", function()
+						vim.lsp.document_color.color_presentation()
+					end, "Color presentation", { "n", "x" })
+				end
+
+				-- Attach nvim-navic for breadcrumb navigation (used by incline.nvim)
+				if client:supports_method(vim.lsp.protocol.Methods.textDocument_documentSymbol) then
+					local ok, navic = pcall(require, "nvim-navic")
+					if ok then
+						navic.attach(client, event.buf)
+					end
 				end
 
 				-- Formatting is handled by conform.nvim's format_on_save
@@ -103,200 +114,93 @@ return {
 					[vim.diagnostic.severity.HINT] = "󰌶",
 				},
 			},
+			-- Enable vim.diagnostic.status() for statusline integration (0.12+)
+			status = {
+				format = {
+					[vim.diagnostic.severity.ERROR] = "󰅚",
+					[vim.diagnostic.severity.WARN] = "󰀪",
+					[vim.diagnostic.severity.INFO] = "󰋽",
+					[vim.diagnostic.severity.HINT] = "󰌶",
+				},
+			},
 		})
 
 		---------------------------------------------------------------------------
-		-- Capabilities (blink.cmp)
+		-- Native LSP setup (0.12 pattern)
+		-- Server configs live in top-level lsp/*.lua files (vim.lsp.Config tables).
+		-- Shared capabilities are set via vim.lsp.config('*').
+		-- Servers are discovered from lsp/ and enabled in a single call.
 		---------------------------------------------------------------------------
-		local capabilities = require("blink.cmp").get_lsp_capabilities()
+		vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
+			once = true,
+			callback = function()
+				-- Shared capabilities for all servers
+				vim.lsp.config("*", {
+					capabilities = require("blink.cmp").get_lsp_capabilities(nil, true),
+				})
 
-		---------------------------------------------------------------------------
-		-- Server-specific settings
-		---------------------------------------------------------------------------
-		local servers = {
-			-- C/C++
-			clangd = {
-				cmd = {
-					"clangd",
-					"--background-index",
-					"--clang-tidy",
-					"--header-insertion=iwyu",
-					"--completion-style=detailed",
-					"--function-arg-placeholders",
-					"--fallback-style=llvm",
-				},
-				init_options = {
-					usePlaceholders = true,
-					completeUnimported = true,
-					clangdFileStatus = true,
-				},
-			},
-
-			-- Go
-			gopls = {
-				settings = {
-					gopls = {
-						gofumpt = true,
-						staticcheck = true,
-						usePlaceholders = true,
-						analyses = {
-							unusedparams = true,
-							fieldalignment = true,
-							shadow = true,
-							useany = true,
-						},
-						codelenses = {
-							test = true,
-							tidy = true,
-							upgrade_dependency = true,
-							generate = true,
-						},
-						completeUnimported = true,
-						directoryFilters = { "-vendor", "-node_modules" },
-						buildFlags = { "-tags=integration" },
-						hints = {
-							assignVariableTypes = true,
-							compositeLiteralFields = true,
-							compositeLiteralTypes = true,
-							constantValues = true,
-							functionTypeParameters = true,
-							parameterNames = true,
-							rangeVariableTypes = true,
-						},
-					},
-				},
-			},
-
-			-- ESLint
-			eslint = {
-				filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
-			},
-
-			-- TypeScript/JavaScript
-			ts_ls = {
-				filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "json" },
-				settings = {
-					typescript = {
-						inlayHints = {
-							includeInlayParameterNameHints = "all",
-						},
-					},
-					javascript = {
-						inlayHints = {
-							includeInlayParameterNameHints = "all",
-						},
-					},
-				},
-			},
-
-			-- Lua
-			lua_ls = {
-				settings = {
-					Lua = {
-						runtime = { version = "LuaJIT" },
-						workspace = {
-							checkThirdParty = false,
-							library = { "${3rd}/luv/library", unpack(vim.api.nvim_get_runtime_file("", true)) },
-						},
-						completion = {
-							callSnippet = "Replace",
-							postfix = ".",
-							showWord = "Fallback",
-							workspaceWord = true,
-						},
-						diagnostics = { disable = { "missing-fields" }, globals = { "vim" } },
-						hint = {
-							enable = true,
-							arrayIndex = "Disable",
-							await = true,
-							paramName = "Disable",
-							paramType = true,
-							semicolon = "Disable",
-							setType = false,
-						},
-						format = { enable = false }, -- stylua instead
-						telemetry = { enable = false },
-					},
-				},
-			},
-
-			-- Ruby
-			ruby_lsp = { init_options = { formatter = "auto", linters = { "rubocop" } } },
-
-			-- Bash (zsh added to default sh, bash)
-			bashls = { filetypes = { "sh", "bash", "zsh" } },
-
-			-- Python (using defaults)
-			pyright = {},
-
-			-- Markdown (using defaults)
-			marksman = {},
-
-			-- Terraform
-			terraformls = {},
-
-			-- JSON
-			jsonls = {},
-
-			-- YAML
-			yamlls = {},
-
-			-- JQ
-			jqls = {},
-
-			-- CSS linting
-			stylelint_lsp = {},
-		}
-
-		---------------------------------------------------------------------------
-		-- Mason: tools + servers
-		---------------------------------------------------------------------------
-		local ensure_installed = vim.tbl_keys(servers)
-		vim.list_extend(ensure_installed, {
-			-- Formatters
-			"stylua",
-			"prettier",
-			"prettierd",
-			"black",
-			"isort",
-			"goimports",
-			"shfmt",
-			-- "rubocop", -- Use rbenv-managed version for per-project compatibility
-			-- Linters
-			"eslint_d",
-			"shellcheck",
-			"golangci-lint",
-			"tflint",
-			"pylint",
-			"revive",
-			"luacheck",
-			"jsonlint",
-			"markdownlint",
+				-- Discover and enable servers from our lsp/ directory
+				local config_dir = vim.fn.stdpath("config")
+				local servers = vim.iter(vim.api.nvim_get_runtime_file("lsp/*.lua", true))
+					:filter(function(file)
+						-- Only include files from our config directory
+						return vim.startswith(file, config_dir)
+					end)
+					:map(function(file)
+						return vim.fn.fnamemodify(file, ":t:r")
+					end)
+					:totable()
+				vim.lsp.enable(servers)
+			end,
 		})
 
+		---------------------------------------------------------------------------
+		-- Mason: tool installation (servers + formatters + linters)
+		---------------------------------------------------------------------------
 		require("mason-tool-installer").setup({
-			ensure_installed = ensure_installed,
+			ensure_installed = {
+				-- LSP servers
+				"clangd",
+				"gopls",
+				"eslint-lsp",
+				"typescript-language-server",
+				"lua-language-server",
+				"ruby-lsp",
+				"bash-language-server",
+				"pyright",
+				"marksman",
+				"terraform-ls",
+				"json-lsp",
+				"yaml-language-server",
+				"jq-lsp",
+				"stylelint-lsp",
+				-- Formatters
+				"stylua",
+				"prettier",
+				"prettierd",
+				"black",
+				"isort",
+				"goimports",
+				"shfmt",
+				-- Linters
+				"eslint_d",
+				"shellcheck",
+				"golangci-lint",
+				"tflint",
+				"pylint",
+				"revive",
+				"luacheck",
+				"jsonlint",
+				"markdownlint",
+			},
 			auto_update = false,
 			run_on_start = true,
 			debounce_hours = 96,
 		})
 
+		-- Mason-lspconfig: ensure servers are installed (no handler loop needed)
 		require("mason-lspconfig").setup({
-			ensure_installed = vim.tbl_keys(servers),
 			automatic_installation = true,
-			handlers = {
-				-- default handler
-				function(server_name)
-					local server = servers[server_name] or {}
-					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-
-					-- Use new vim.lsp.config API instead of deprecated lspconfig
-					vim.lsp.config(server_name, server)
-					vim.lsp.enable(server_name)
-				end,
-				-- prevent tsserver from being configured alongside ts_ls
-				["tsserver"] = function() end,
-			},
 		})
 
 		---------------------------------------------------------------------------

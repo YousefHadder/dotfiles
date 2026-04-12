@@ -14,6 +14,7 @@ opt.swapfile = false -- Disable swap files
 opt.backup = false -- Disable backup files
 opt.undofile = true -- Enable persistent undo
 opt.undodir = vim.fn.stdpath("data") .. "/undo"
+opt.exrc = true -- Enable project-local config (.nvim.lua, .nvimrc, .exrc)
 
 -- UI options
 opt.number = true -- Show line numbers
@@ -55,6 +56,7 @@ opt.smartindent = true -- Smart indentation
 opt.completeopt = { "menu", "menuone", "noselect", "fuzzy" }
 opt.pumheight = 10 -- Popup menu height
 opt.pummaxwidth = 80 -- Popup menu max width (0.12+)
+opt.pumborder = "rounded" -- Popup menu border (0.12+)
 
 -- Performance options
 opt.updatetime = 50 -- Faster completion
@@ -84,7 +86,14 @@ api.nvim_set_hl(0, "WinSeparator", { fg = "#5a5a5a", bg = "#5a5a5a", bold = true
 
 -- Use vim.defer_fn to set fillchars after startup
 vim.defer_fn(function()
-	opt.fillchars:append(separators.blocks)
+	opt.fillchars:append(vim.tbl_extend("force", separators.blocks, {
+		fold = " ",
+		foldopen = "▼",
+		foldclose = "▶",
+		foldsep = " ",
+		foldinner = " ",
+		msgsep = "─",
+	}))
 end, 100)
 
 -- Miscellaneous options

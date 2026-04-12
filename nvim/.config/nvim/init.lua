@@ -1,14 +1,3 @@
 require("yousef.config")
 require("yousef.lazy")
-vim.filetype.add({
-  extension = {
-    gs = "javascript",
-    tf = "terraform",
-    tfvars = "terraform",
-    hcl = "hcl",
-
-  },
-  filename = {
-    ["test"] = "ruby",
-  },
-})
+-- Filetype detection is now in the top-level filetype.lua (auto-loaded by Neovim)

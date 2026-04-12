@@ -208,16 +208,7 @@ autocmd({ "WinEnter", "BufWinEnter", "TermOpen" }, {
 -- Project Specific
 -- ======================================================
 
--- Load project-specific settings from .nvim.lua if present
-autocmd("VimEnter", {
-	group = general_group,
-	callback = function()
-		local project_config = vim.fn.getcwd() .. "/.nvim.lua"
-		if vim.fn.filereadable(project_config) == 1 then
-			vim.cmd("source " .. project_config)
-		end
-	end,
-})
+-- Project-local config is now handled natively via opt.exrc = true in options.lua
 
 -- Large file handling
 autocmd("BufReadPre", {

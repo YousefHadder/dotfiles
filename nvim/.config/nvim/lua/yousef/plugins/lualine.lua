@@ -3,7 +3,7 @@ return {
 	event = "VeryLazy",
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	config = function()
-		vim.opt.laststatus = 2
+		-- Use laststatus = 3 (global statusline) from options.lua
 		local function show_macro_recording()
 			local recording_register = vim.fn.reg_recording()
 			if recording_register == "" then
